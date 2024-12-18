@@ -3,19 +3,30 @@
 @tailwind utilities;
 
 :root {
+  --primary-color: rgba(255, 255, 255, 0.1);
+  --secondary-font: rgba(255, 255, 255, 0.5);
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #EB5757;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --primary: #1DB954;
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(to bottom, #333, black);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color: #f0f0f0;
+  scroll-behavior: smooth;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
