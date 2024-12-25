@@ -3,21 +3,40 @@
 import Link from "next/link";
 import '@/app/login/login.css'
 import { useState } from "react";
+import PasswordField from "@/components/auth/passwordField";
+import { useSelector, useDispatch } from 'react-redux'
+import { loginUser } from "@/reducer/authSlice";
+import { AppDispatch, RootState } from "@/reducer/store";
+import { useRouter } from 'next/navigation';
+import { toast } from "sonner"
 
 export default function LoginPage() {
 
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    })
+    const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter()
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
+    const authState = useSelector((state: RootState) => state.auth);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('')
+
+
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const nePassword = e.target.value
+        setPassword(nePassword)
+
+    };
+
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData)
+        try {
+            await dispatch(loginUser({email, password}));
+            router.push('/')
+        } catch (err) {
+            toast.error('Login failed. Please try again.');
+
+        }
     }
     return (
         <section className="md:flex justify-center items-center h-screen">
@@ -28,12 +47,13 @@ export default function LoginPage() {
                         <div className="form mt-5 text-left">
                             <div className="email grid-cols-1">
                                 <label className="text-xs font-bold" htmlFor="email">Email or username</label>
-                                <input className="auth" type="email" name="email" placeholder="Email or username" onChange={handleChange} required />
+                                <input className="auth" type="email" name="email" placeholder="Email or username" onChange={(e)=>setEmail(e.target.value)} required />
                             </div>
-                            <div className="password">
-                                <label className="text-xs font-bold" htmlFor="password">Password</label>
-                                <input className="auth" type="password" name="password" placeholder="Password" onChange={handleChange} required />
-                            </div>
+                            <PasswordField
+                                password={password}
+                                handlePassword={handlePassword}
+                                name={'Password'}
+                            />
                             <div className="check flex">
                                 <label className="switch">
                                     <input type="checkbox" />
