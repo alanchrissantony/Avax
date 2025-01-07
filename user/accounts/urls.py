@@ -1,6 +1,7 @@
 from django.urls import path
 from accounts.views import VerifyOTPView, SendOTPView, CustomTokenObtainPairView, CustomTokenRefreshView, ResetView
 
+
 urlpatterns = [
     path('verify/', SendOTPView.as_view(), name='user_verify'),
     path('register/', VerifyOTPView.as_view(), name='user_register'),

@@ -52,10 +52,12 @@ export default function SignupPage() {
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await dispatch(registerUser({ email, password, otp }));
+            const resultAction = await dispatch(registerUser({ email, password, otp })).unwrap();
             router.push('/login')
         } catch (err) {
-            toast.error('Registration failed. Please try again.');
+            toast.error("Registration failed. Please try again.", {
+                description: err || "Registration failed.",
+              })
         }
 
     };
@@ -64,17 +66,11 @@ export default function SignupPage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await dispatch(verifyUser({ email, registered:false }));
-
-            setIsOtpSent(true)
-      
+            const resultAction = await dispatch(verifyUser({ email, registered: false })).unwrap();
+            setIsOtpSent(true)   
         } catch (err) {
-            toast.error("Varification failed", {
-                description: "Please try again.",
-                action: {
-                  label: "Undo",
-                  onClick: () => console.log("Undo"),
-                },
+            toast.error("Varification failed. Please try again.", {
+                description: err || "Varification failed.",
               })
             
         }

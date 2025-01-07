@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { apiRegisterUser, apiLoginUser, apiVerifyUser, apiResetPassUser } from "@/api/api";
-import { AuthState, RegisterData, LoginData, VerifyData, ResetData } from "@/types/user";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { apiRegisterUser, apiLoginUser, apiVerifyUser, apiResetPassUser } from '@/api/api';
+import { AuthState, RegisterData, LoginData, VerifyData, ResetData } from '@/types/user';
 
 const initialState: AuthState = {
     accessToken: null,
@@ -18,7 +18,7 @@ export const registerUser = createAsyncThunk(
             const response = await apiRegisterUser(data);
             return response;
         } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || "Failed to register");
+            return rejectWithValue(error.response?.data?.detail || "Failed to register");
         }
     }
 );
@@ -30,7 +30,7 @@ export const loginUser = createAsyncThunk(
             const response = await apiLoginUser(data);
             return response;
         } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || "Failed to login");
+            return rejectWithValue(error.response?.data?.detail || "Failed to login");
         }
     }
 );
@@ -42,7 +42,7 @@ export const verifyUser = createAsyncThunk(
             const response = await apiVerifyUser(data);
             return response;
         } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || "Failed to verify");
+            return rejectWithValue(error.response?.data?.detail || "Failed to verify");
         }
     }
 );
@@ -54,7 +54,7 @@ export const resetPassUser = createAsyncThunk(
             const response = await apiResetPassUser(data);
             return response;
         } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || "Failed to reset password");
+            return rejectWithValue(error.response?.data?.detail || "Failed to reset password");
         }
     }
 );
@@ -128,5 +128,6 @@ const authSlice = createSlice({
     },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+
 export default authSlice.reducer;
+export const { setCredentials, logout } = authSlice.actions;

@@ -31,11 +31,12 @@ export default function LoginPage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await dispatch(loginUser({email, password}));
+            const result = await dispatch(loginUser({ email, password })).unwrap()
             router.push('/')
         } catch (err) {
-            toast.error('Login failed. Please try again.');
-
+            toast.error('Login failed. Please try again.', {
+                description: err || 'Login failed.'
+            });
         }
     }
     return (

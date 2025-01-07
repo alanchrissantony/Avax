@@ -28,7 +28,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         
         data = super().validate(attrs)
         user = self.user
-        print(user)
+
         if not user.is_active:
             raise AuthenticationFailed('User is inactive')
         

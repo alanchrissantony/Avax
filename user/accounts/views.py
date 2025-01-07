@@ -1,17 +1,21 @@
-from rest_framework import generics, status
+from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from accounts.models import Users, OTP
 from accounts.serializers import UserSerializer, CustomTokenObtainPairSerializer
-from django.core.mail import send_mail
+from accounts.tasks import send_otp_email
 from django.utils.crypto import get_random_string
 
 
 # Create your views here.
-class SendOTPView(generics.GenericAPIView):
+class SendOTPView(APIView):
+
+    permission_classes = [AllowAny]
 
     def post(self, request):
+
         email = request.data.get('email')
         registered = request.data.get('registered')
         if not email:
@@ -30,22 +34,14 @@ class SendOTPView(generics.GenericAPIView):
         OTP.objects.create(email=email, otp=otp)
 
         try:
-            send_mail(
-                subject='OTP Verification',
-                message=(
-                    f"{otp} is your One-Time Password for account verification on Avax. "
-                    "This OTP is valid for 1 minute. Please do not share it with anyone."
-                ),
-                from_email='info.avax@gmail.com',
-                recipient_list=[email],
-                fail_silently=False,
-            )
+            send_otp_email.delay(email, otp)
         except Exception as e:
+            print(e)
             return Response({'error': 'Failed to send OTP. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         print(otp)
         return Response({'message': 'OTP sent successfully'}, status=status.HTTP_200_OK)
     
-class VerifyOTPView(generics.GenericAPIView):
+class VerifyOTPView(APIView):
     serializer_class = UserSerializer
 
     def post(self, request):
@@ -70,7 +66,7 @@ class VerifyOTPView(generics.GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-class ResetView(generics.GenericAPIView):
+class ResetView(APIView):
     serializer_class = UserSerializer
 
     def post(self, request):
