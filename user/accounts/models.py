@@ -20,10 +20,16 @@ class Users(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
 
-    
-
     def __str__(self):
         return self.email
+    
+    def block(self):
+        self.is_active = False
+        self.save()
+
+    def unblock(self):
+        self.is_active = True
+        self.save()
     
 
 class OTP(models.Model):

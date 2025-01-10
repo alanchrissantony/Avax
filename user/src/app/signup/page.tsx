@@ -19,7 +19,7 @@ export default function SignupPage() {
 
     const authState = useSelector((state: RootState) => state.auth);
 
-
+    
     const [email, setEmail] = useState('');
     const [reqPassNum, setReqPassNum] = useState<boolean>(false);
     const [reqPassSpecChar, setReqPassSpecChar] = useState<boolean>(false);
@@ -56,7 +56,7 @@ export default function SignupPage() {
             router.push('/login')
         } catch (err) {
             toast.error("Registration failed. Please try again.", {
-                description: err || "Registration failed.",
+                description: `${err}` || "Registration failed.",
               })
         }
 
@@ -70,7 +70,7 @@ export default function SignupPage() {
             setIsOtpSent(true)   
         } catch (err) {
             toast.error("Varification failed. Please try again.", {
-                description: err || "Varification failed.",
+                description: `${err}` || "Varification failed.",
               })
             
         }

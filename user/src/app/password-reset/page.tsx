@@ -57,15 +57,11 @@ export default function PasswordReset() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await dispatch(verifyUser({ email, registered: true }));
+            await dispatch(verifyUser({ email, registered: true })).unwrap();
             setIsOtpSent(true)
         } catch (err) {
-            toast.error("Varification failed", {
-                description: "Please try again.",
-                action: {
-                    label: "Undo",
-                    onClick: () => console.log("Undo"),
-                },
+            toast.error("Varification failed. Please try again.", {
+                description: `${err}` || "Varification failed.",
             })
 
         }
@@ -83,7 +79,7 @@ export default function PasswordReset() {
                             <div className="form mt-5 text-left">
                                 <div className="email grid-cols-1">
                                     <label className="text-xs font-bold" htmlFor="otp">One time password</label>
-                                    <input className="auth" type="text" placeholder="OTP" value={otp} onChange={handleOtp} required />
+                                    <input className="auth" type="text" placeholder="OTP" value={otp || ''} onChange={handleOtp} required />
                                 </div>
                                 <PasswordField
                                     password={password}
@@ -120,7 +116,7 @@ export default function PasswordReset() {
                                 <div className="form mt-5 text-left">
                                     <div className="email grid-cols-1">
                                         <label className="text-xs font-bold" htmlFor="email">Email or username</label>
-                                        <input className="auth" type="email" placeholder="Email or username" onChange={(e) => setEmail(e.target.value)} required />
+                                        <input className="auth" type="email" placeholder="Email or username" onChange={(e) => setEmail(e.target.value)} value={email || ''} required />
                                     </div>
                                 </div>
 

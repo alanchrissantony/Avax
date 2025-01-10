@@ -1,54 +1,64 @@
 from rest_framework import serializers
-from accounts.models import Users
-from rest_framework.exceptions import AuthenticationFailed
+from accounts.models import Admins
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-class UserSerializer(serializers.ModelSerializer):
+class AdminSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
-        fields = [ 'name', 'email', 'password', 'date_of_birth', 'profile_image', 'subscription_type', 'created_at', 'updated_at', 'is_active']
+        model = Admins
+        fields = [
+            'id', 'name', 'email', 'password', 'profile_image', 'is_active', 'is_staff', 
+            'is_superuser', 'created_at', 'updated_at'
+        ]
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+
         validated_data['name'] = validated_data.get('name', 'Anonymous')
-        validated_data['subscription_type'] = validated_data.get('subscription_type', 'free')
-        user = Users(
-        email=validated_data['email'],
-        name=validated_data['name'],
-        subscription_type=validated_data['subscription_type']
-    )
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
+        admin = Admins(
+            email=validated_data['email'],
+            name=validated_data['name'],
+            is_staff=validated_data.get('is_staff', False),
+            is_superuser=validated_data.get('is_superuser', False)
+        )
+        admin.set_password(validated_data['password'])  # Hash the password
+        admin.save()
+        return admin
+    
+    def update(self, instance, validated_data):
+        
+        for attr, value in validated_data.items():
+            if attr == 'password':
+                instance.set_password(value)
+            else:
+                setattr(instance, attr, value)
+        instance.save()
+        return instance
         
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     
     def validate(self, attrs):
         
         data = super().validate(attrs)
-        user = self.user
-        print(user)
-        if not user.is_active:
-            raise AuthenticationFailed('User is inactive')
+        admin = self.user
         
         data['user'] = {
-            "name": user.name,
-            "email": user.email,
-            "date_of_birth": user.date_of_birth,
-            "profile_image": user.profile_image.url if user.profile_image else None,
-            "subscription_type": user.subscription_type,
-            "is_active": user.is_active,
+            "name": admin.name,
+            "email": admin.email,
+            "profile_image": admin.profile_image.url if admin.profile_image else None,
+            "is_active": admin.is_active,
+            "is_staff": admin.is_staff,
+            "is_superuser": admin.is_superuser,
         }
 
         return data
 
     @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
+    def get_token(cls, admin):
+        token = super().get_token(admin)
 
-        token['name'] = user.name
-        token['email'] = user.email
+        token['name'] = admin.name
+        token['email'] = admin.email
 
         return token
     
