@@ -2,7 +2,7 @@ import { Input } from "@nextui-org/react";
 import { SearchIcon } from "lucide-react";
 import Image from "next/image";
 import "@/components/navbar/navbar.css"
-import Notification from "../svg/notification";
+import Notification from "@/components/svg/notification";
 import { toast } from "sonner";
 import { logout } from "@/slices/authSlice";
 import { useRouter } from "next/navigation";

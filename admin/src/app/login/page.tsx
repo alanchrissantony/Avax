@@ -4,7 +4,7 @@ import '@/app/login/login.css'
 import { useEffect, useState } from "react";
 import PasswordField from "@/components/auth/passwordField";
 import { useSelector, useDispatch } from 'react-redux'
-import { loginAdmin } from "../../slices/authSlice";
+import { loginAdmin } from "@/slices/authSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from 'next/navigation';
 import { toast } from "sonner"

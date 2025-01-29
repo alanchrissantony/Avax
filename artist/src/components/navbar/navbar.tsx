@@ -5,9 +5,9 @@ import Image from "next/image"
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { MenuVerticalIcon } from "../svg/menu";
+import { MenuVerticalIcon } from "@/components/svg/menu";
 import Link from "next/link";
-import NotificationIcon from "../svg/notification";
+import NotificationIcon from "@/components/svg/notification";
 
 export default function Navbar() {
 
