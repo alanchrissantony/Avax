@@ -6,8 +6,8 @@ import PasswordRequirements from "@/components/signup/requirements";
 import PasswordField from "@/components/auth/passwordField";
 import { useSelector, useDispatch } from 'react-redux'
 import React, { useState } from "react";
-import { registerUser, verifyUser } from "@/reducer/authSlice";
-import { AppDispatch, RootState } from "@/reducer/store";
+import { registerUser, verifyUser } from "@/slices/authSlice";
+import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from 'next/navigation';
 import OtpPage from "@/components/auth/otp";
 import { toast } from "sonner"

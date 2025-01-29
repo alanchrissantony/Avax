@@ -1,5 +1,5 @@
 import { useState } from "react";
-import '@/app/signup/signup.css';
+import '@/app/(auth)/signup/signup.css';
 
 export default function PasswordField({ password, handlePassword, name }) {
 

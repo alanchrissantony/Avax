@@ -4,8 +4,8 @@ import '@/app/login/login.css'
 import { useEffect, useState } from "react";
 import PasswordField from "@/components/auth/passwordField";
 import { useSelector, useDispatch } from 'react-redux'
-import { loginAdmin } from "@/reducer/authSlice";
-import { AppDispatch, RootState } from "@/reducer/store";
+import { loginAdmin } from "../../slices/authSlice";
+import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from 'next/navigation';
 import { toast } from "sonner"
 
@@ -17,10 +17,10 @@ export default function LoginPage() {
     const authState = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
-        if (authState.user) {
+        if (authState.admin) {
             router.push('/')
         }
-    }, [authState.user, router])
+    }, [authState.admin, router])
 
 
     const [email, setEmail] = useState('');
@@ -47,7 +47,7 @@ export default function LoginPage() {
     }
     return (
         <>
-            {!authState.user && (<section className="md:flex justify-center items-center h-screen">
+            {!authState.admin && (<section className="md:flex justify-center items-center h-screen">
                 <div className="loginSection lg:w-6/12 xl:5/12 m-auto">
                     <div className="container sm:10/12 md:w-6/12 grid-cols-1 m-auto text-center pt-10">
                         <h1 className="text-3xl lg:text-4xl font-extrabold mb-5">Log in to Avax</h1>

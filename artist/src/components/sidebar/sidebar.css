@@ -55,7 +55,7 @@
 .playlistTitle{
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    margin: 0 0.75rem 0 0.75rem;
 }
 
 .playlistTitle h3{
@@ -88,7 +88,9 @@
 }
 
 .userSection{
-    padding: 1rem;
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
 }
 .userTitle{
     display: flex;
@@ -108,8 +110,39 @@
     background-color: #111;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
     .sidebar {
         display: none;
     }
+}
+
+.playlistContentContainer {
+    overflow-y: auto;
+    overflow-x: hidden;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: max-height 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+.playlistContentContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.playlistContentContainer.visible {
+    max-height: 220px;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.playlist-content {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+
+.playlistTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    cursor: pointer;
 }

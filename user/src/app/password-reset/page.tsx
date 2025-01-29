@@ -3,8 +3,8 @@
 import Link from "next/link";
 import "@/app/password-reset/password-reset.css";
 import { useState } from "react";
-import { registerUser, resetPassUser, verifyUser } from "@/reducer/authSlice";
-import { AppDispatch, RootState } from "@/reducer/store";
+import { registerUser, resetPassUser, verifyUser } from "@/slices/authSlice";
+import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from "sonner"

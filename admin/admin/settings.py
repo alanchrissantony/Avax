@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'corsheaders',
     'accounts',
+    'artists',
 ]
 
 AUTH_USER_MODEL = 'accounts.Admins'

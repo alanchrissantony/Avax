@@ -8,10 +8,12 @@
 }
 
 body {
-  background: linear-gradient(to bottom, #333, black);
+  background: linear-gradient(to bottom, #000, black);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   min-height: 100vh;
-  width: 100%;
+  min-width: 100%;
+  width: fit-content;
+  height: auto;
   margin: 0;
   padding: 0;
   color: #f0f0f0;

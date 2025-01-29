@@ -1,4 +1,4 @@
-import "@/app/password-reset/password-reset.css";
+import "@/app/(auth)/password-reset/password-reset.css";
 import React from "react";
 
 interface OtpPageProps {

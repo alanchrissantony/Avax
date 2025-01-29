@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import '@/app/login/login.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PasswordField from "@/components/auth/passwordField";
 import { useSelector, useDispatch } from 'react-redux'
-import { loginUser } from "@/reducer/authSlice";
-import { AppDispatch, RootState } from "@/reducer/store";
+import { loginUser } from "@/slices/authSlice";
+import { AppDispatch, RootState } from "@/store/store";
 import { useRouter } from 'next/navigation';
 import { toast } from "sonner"
 
@@ -20,6 +20,11 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
 
+    useEffect(()=>{
+        if(!authState.user){
+            router.push('/login')
+        }
+    },[authState.user])
 
     const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         const nePassword = e.target.value

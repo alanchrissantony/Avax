@@ -8,7 +8,7 @@ export interface User {
 export interface AuthState {
     accessToken: string | null;
     refreshToken: string | null;
-    user: User | null;
+    artist: User | null;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
 }

@@ -24,11 +24,12 @@ class ArtistSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {
             'password': {'write_only': True},
+            'email': {'required': True},
         }
 
     def create(self, validated_data):
-        print(validated_data)
-        artist = Artists(
+        
+        user = Artists(
             email=validated_data.get('email'),
             name=validated_data.get('name', 'Anonymous'),
             date_of_birth=validated_data.get('date_of_birth'),
@@ -37,9 +38,9 @@ class ArtistSerializer(serializers.ModelSerializer):
             genre=validated_data.get('genre'),
             social_links=validated_data.get('social_links'),
         )
-        artist.set_password(validated_data['password'])
-        artist.save()
-        return artist
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
     def update(self, instance, validated_data):
         
@@ -56,36 +57,36 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         
         data = super().validate(attrs)
-        artist = self.user
+        user = self.user
 
-        if not artist.is_active:
+        if not user.is_active:
             raise AuthenticationFailed('User is inactive')
         
-        if not artist.verified:
+        if not user.verified:
             raise AuthenticationFailed('User is not verified')
         
-        data['artist'] = {
-            "name": artist.name,
-            "email": artist.email,
-            "date_of_birth": artist.date_of_birth,
-            "profile_image": artist.profile_image.url if artist.profile_image else None,
-            "bio": artist.bio,
-            "genre": artist.genre,
-            "social_links": artist.social_links,
-            "verified": artist.verified,
-            "followers_count": artist.followers_count,
-            "is_active": artist.is_active,
+        data['user'] = {
+            "name": user.name,
+            "email": user.email,
+            "date_of_birth": user.date_of_birth,
+            "profile_image": user.profile_image.url if user.profile_image else None,
+            "bio": user.bio,
+            "genre": user.genre,
+            "social_links": user.social_links,
+            "verified": user.verified,
+            "followers_count": user.followers_count,
+            "is_active": user.is_active,
         }
 
         return data
 
     @classmethod
-    def get_token(cls, artist):
-        token = super().get_token(artist)
+    def get_token(cls, user):
+        token = super().get_token(user)
 
-        token['name'] = artist.name
-        token['email'] = artist.email
-        token['verified'] = artist.verified
-        token['followers_count'] = artist.followers_count
+        token['name'] = user.name
+        token['email'] = user.email
+        token['verified'] = user.verified
+        token['followers_count'] = user.followers_count
 
         return token

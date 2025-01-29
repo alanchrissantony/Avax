@@ -1,0 +1,45 @@
+nav{
+    background-color: #222;
+    padding: 0 1rem 0 1rem;
+}
+
+.profile-rounded {
+    border-radius: 50%;
+}
+
+.userTitle{
+    display: flex;
+    align-items: center;
+}
+.userContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: solid 3px #333;
+    border-radius: 50%;
+    height: 3rem;
+    width: 3rem;
+}
+
+.notificationContainer{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    background-color: #2F2F34;
+}
+
+.notificationContainer span{
+    position: absolute;
+    top: 7;
+    right: 10;
+    border-radius: 50%;
+    height: 7px;
+    width: 7px;
+    background-color: var(--secondary-theme);
+}
