@@ -2,22 +2,25 @@ import "@/components/navbar/navbar.css"
 import { logout } from "@/slices/authSlice";
 import { AppDispatch } from "@/store/store";
 import Image from "next/image"
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { MenuVerticalIcon } from "@/components/svg/menu";
+import { MenuListIcon, MenuVerticalIcon } from "@/components/svg/menu";
 import Link from "next/link";
 import NotificationIcon from "@/components/svg/notification";
+
 
 export default function Navbar() {
 
     const navItems = [
         { name: 'Dashboard', route: '/dashboard' },
-        { name: 'Analytics', route: '/analytics' },
-        { name: 'Music', route: '/music' },
-        { name: 'Audience', route: '/audience' },
         { name: 'Releases', route: '/releases' },
+        { name: 'Audience', route: '/audience' },
+        { name: 'Analytics', route: '/analytics' },
     ];
+
+    const pathname = usePathname();
+    const isActive = (route: string) => pathname === route;
 
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter()
@@ -32,7 +35,7 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="w-ful h-[4rem] flex items-center">
+        <nav className="w-full h-[4rem] flex items-center">
             <div className="flex justify-between items-center h-full cursor-pointer">
                 <MenuVerticalIcon />
             </div>
@@ -49,15 +52,15 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-around items-center w-6/12 mx-auto">
+            <div className="flex justify-around items-center w-6/12 lg:w-4/12 mx-auto">
                 {navItems.map(({ name, route }) => (
                     <Link key={name} href={route}>
-                        <span className="text-gray-500 cursor-pointer">{name}</span>
+                        <span className={`${isActive(route)? "text-white" : "text-gray-500"} cursor-pointer`}>{name}</span>
                     </Link>
                 ))}
             </div>
 
-            <div className="notificationSection my-auto cursor-pointer">
+            <div className="notificationSection my-auto cursor-pointer flex justify-around items-center gap-6">
                 <div className="notificationContainer">
                     <NotificationIcon />
                     <span></span>

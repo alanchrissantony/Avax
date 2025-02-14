@@ -7,6 +7,7 @@ import { RootState } from "@/store/store";
 import Sidebar from "@/components/sidebar/sidebar";
 import Navbar from "@/components/navbar/navbar";
 import "@/components/sidebar/sidebar.css";
+import PlayerComponent from "@/components/player/page";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
@@ -30,7 +31,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="grid grid-rows-[auto_1fr] h-screen">
       {/* Navbar */}
-      <div className="sticky top-0 z-10">
+      <div className="fixed top-0 w-full z-10">
         <Navbar />
       </div>
 
@@ -40,8 +41,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* Main Content */}
-      <div className="ml-[0%] md:ml-[8%] lg:ml-[16.666%] lg:w-[83.333%] p-4">
+      <div className="mt-[4rem] ml-[0%] md:ml-[8%] lg:ml-[16.666%] lg:w-[83.333%]">
         {children}
+        <PlayerComponent />
       </div>
 
       {/* Mobile Sidebar Placeholder */}
