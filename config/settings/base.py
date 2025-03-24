@@ -184,7 +184,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 SPECTACULAR_SETTINGS = {
     "TITLE": "avax Clone API",
     "DESCRIPTION": "This is the avax-Clone-API project, which is a clone of the avax web service."
-                   " This API implements a basic set of functionalities allowing users to interact with the platform.",
+    " This API implements a basic set of functionalities allowing users to interact with the platform.",
     "VERSION": "0.1",
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,

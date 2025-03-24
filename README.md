@@ -4,17 +4,19 @@ This is the repository for the avax_API project, which is a clone of the avax we
 implements
 a basic set of functionalities allowing users to interact with the platform.
 
-![avax title]()
+![avax title](https://raw.githubusercontent.com/alanchrissantony/avax_API/main/assets/avax_data_flow.svg)
 
 ### Diagram DB
 
-![avax diagram DB]()
+![avax diagram DB](https://raw.githubusercontent.com/alanchrissantony/avax_API/main/assets/db_diagram.svg)
 
 ## Description
 
 avax_API is developed using Django, one of the most popular frameworks for building web applications in Python.
 This API provides features such as user registration, advertisement creation, user profile management, and other core
 functionalities.
+
+![avax front](https://raw.githubusercontent.com/alanchrissantony/avax_API/main/assets/avax_front.png)
 
 ## Requirements
 
@@ -161,7 +163,12 @@ $ docker compose -f local.yml run --rm server coverage html
 
 The API documentation is not available [localhost:8080](http://localhost:8080).
 
-![avax endpoints]()
+![avax swagger](https://raw.githubusercontent.com/alanchrissantony/avax_API/main/assets/swagger.png)
+![avax redoc](https://raw.githubusercontent.com/alanchrissantony/avax_API/main/assets/redoc.png)
+
+## Custom Admin
+
+![avax admin](https://raw.githubusercontent.com/alanchrissantony/avax_API/main/assets/admin.png)
 
 ## Author
 
