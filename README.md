@@ -129,7 +129,7 @@ $ make down
 
 For testing and generate coverage
 
-![cov tests]()
+![cov tests](https://raw.githubusercontent.com/alanchrissantony/avax_API/main/assets/coverage.png)
 
 #### makefile
 
