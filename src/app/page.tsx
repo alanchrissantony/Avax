@@ -1,7 +1,19 @@
+"use client";
+import ArtistCards from "@/components/general/ArtistCards";
+import {useListArtistQuery} from "@/lib/features/other/publicApiSlice";
+import Link from "next/link";
+
 export default function Home() {
+  const {data: topArtists, isLoading, isFetching} = useListArtistQuery()
+
+  console.log(topArtists)
   return (
-    <section className="flex flex-col items-start">
-      <h1 className="mb-5 text-3xl font-bold">Good {"<YOUR NAME>"}</h1>
+    <section className="flex flex-col items-start text-xl font-bold">
+      <div className="flex items-center justify-between w-full">
+        <Link href={"/artists"} className="mt-3 hover:text-white/60">Popular artists</Link>
+        <Link href={"/artists"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
+      </div>
+      <ArtistCards artists={topArtists?.results}/>
 
       <h1 className="mt-8">Top Tracks</h1>
       <div className="grid w-full grid-cols-12 gap-4">
@@ -46,6 +58,15 @@ export default function Home() {
 
       <h1 className="mt-16">New releases</h1>
       {/*<AlbumCards albums={newReleases}/>*/}
+
+      <h1 className="mt-16">New releases</h1>
+      <h1 className="mt-16">New releases</h1>
+      <h1 className="mt-16">New releases</h1>
+      <h1 className="mt-16">New releases</h1>
+      <h1 className="mt-16">New releases</h1>
+      <h1 className="mt-16">New releases</h1>
+      <h1 className="mt-16">New releases</h1>
+
     </section>
   )
 }
