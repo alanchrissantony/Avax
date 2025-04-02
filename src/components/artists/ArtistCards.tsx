@@ -1,5 +1,5 @@
-import CardItem from "./CardItem";
-import CardItemGrid from "./CardItemGrid";
+import CardItem from "../general/CardItem";
+import CardItemGrid from "../general/CardItemGrid";
 import {Artist} from "@/types/types";
 
 interface Props {

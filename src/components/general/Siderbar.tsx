@@ -27,6 +27,8 @@ export function Sidebar() {
           // artists={artists}
           // albums={albums}
         />
+
+
       </div>
     </aside>
   )

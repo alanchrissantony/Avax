@@ -43,7 +43,7 @@ export default function RootLayout({
         <div className="grid grid-cols-10">
           <Sidebar/>
           <div
-            className="flex flex-col h-[87vh] col-span-8 overflow-auto rounded-lg bg-[#131313] bg-gradient-to-b from-[#202020] to-[#131313] mt-2 mr-2">
+            className="flex flex-col h-[87vh] col-span-8 overflow-auto rounded-lg bg-[#131313] bg-gradient-to-b from-[#202020] via-[#131313] to-[#131313] mt-2 mr-2">
             <Header/>
             <main className="mx-6 my-6">{children}</main>
             <Footer/>

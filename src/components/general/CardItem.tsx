@@ -25,7 +25,9 @@ export default function CardItem({
                                  }: Props) {
   return (
     <Link href={`/${type}/${slug}`}>
-      <div className="h-full p-4 transition duration-300 rounded-md cursor-pointer hover:bg-gradient-to-t hover:from-[#242424]">
+      <div
+        className={`h-full p-4 transition duration-300 rounded-md cursor-pointer 
+        ${type === "artists" ? "hover:bg-gradient-to-t hover:from-[#242424]" : "hover:bg-[#202020]"}`}>
         {image.length > 0 ? (
           <Image
             src={image}
@@ -41,9 +43,9 @@ export default function CardItem({
             <Music className="w-full h-full bg-paper "/>
           </div>
         )}
-        <h3 className="mt-5 font-bold truncate">{heading}</h3>
+        <h3 className="mt-2 font-bold text-base truncate">{heading}</h3>
         {subheading && (
-          <h6 className="mt-1 text-xs font-semibold truncate text-gray">
+          <h6 className="mt-1 text-xs font-semibold truncate text-white/70">
             {subheading}
           </h6>
         )}

@@ -44,3 +44,21 @@ export interface Artist extends BaseApi {
 export interface Artists extends ListBaseApi {
   results: Artist[];
 }
+
+export interface Album extends BaseApi {
+  slug: string;
+  title: string;
+  artist: {
+    id: number;
+    slug: string;
+    display_name: string;
+    image: string;
+    is_verify: boolean;
+  };
+  image: string;
+  is_private: boolean;
+}
+
+export interface Albums extends ListBaseApi {
+  results: Album[];
+}
