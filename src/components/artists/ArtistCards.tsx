@@ -19,6 +19,7 @@ export default function ArtistCards({artists}: Props) {
           altTitle={artist.display_name}
           subheading="Artist"
           imageRounded
+          track_slug={artist.track_slug}
           type="artists"
         />
       ))}

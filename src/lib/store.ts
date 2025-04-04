@@ -2,6 +2,7 @@ import {configureStore} from '@reduxjs/toolkit'
 import {apiSlice} from "@/lib/services/apiSlice";
 import {apiPublicSlice} from "@/lib/services/apiPublicSlice";
 import authReducer from "@/lib/features/auth/authSlice";
+import trackReducer from "@/lib/features/tracks/trackSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       [apiSlice.reducerPath]: apiSlice.reducer,
       [apiPublicSlice.reducerPath]: apiPublicSlice.reducer,
       auth: authReducer,
+      track: trackReducer,
     },
     middleware: getDefaultMiddleware =>
       getDefaultMiddleware().concat(
