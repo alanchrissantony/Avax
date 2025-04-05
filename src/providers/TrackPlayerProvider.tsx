@@ -22,6 +22,8 @@ interface TrackProviderState {
   setSlider: Dispatch<SetStateAction<number>>;
   drag: number;
   setDrag: Dispatch<SetStateAction<number>>;
+  volume: number;
+  setVolume: Dispatch<SetStateAction<number>>;
 }
 
 const PlayerContext = createContext<TrackProviderState>({} as any);
@@ -33,8 +35,6 @@ interface Props {
 export default function TrackPlayerProvider({children}: Props) {
   const {currentTrack} = useAppSelector(state => state.track);
 
-  // const { currentTrack } = useStore();
-
   const [currentTrackAudio, setCurrentTrackAudio] =
     useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -42,6 +42,7 @@ export default function TrackPlayerProvider({children}: Props) {
   const [currentTime, setCurrentTime] = useState(0);
   const [slider, setSlider] = useState(1);
   const [drag, setDrag] = useState(0);
+  const [volume, setVolume] = useState(0.33);
 
   useEffect(() => {
     if (!currentTrack) return;
@@ -69,6 +70,7 @@ export default function TrackPlayerProvider({children}: Props) {
     tempAudio.addEventListener("loadeddata", setAudioData);
     tempAudio.addEventListener("timeupdate", setAudioTime);
     tempAudio.preload = "none";
+    tempAudio.volume = volume;
 
     setCurrentTrackAudio(tempAudio);
 
@@ -110,6 +112,12 @@ export default function TrackPlayerProvider({children}: Props) {
     }
   }, [drag]);
 
+  useEffect(() => {
+    if (currentTrackAudio) {
+      currentTrackAudio.volume = volume;
+    }
+  }, [volume]);
+
   return (
     <PlayerContext.Provider
       value={{
@@ -124,6 +132,8 @@ export default function TrackPlayerProvider({children}: Props) {
         setSlider,
         drag,
         setDrag,
+        volume,
+        setVolume,
       }}
     >
       {children}

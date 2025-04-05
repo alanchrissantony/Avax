@@ -5,7 +5,7 @@ import UserLibrary from "@/components/general/UserLibrary";
 
 export function Sidebar() {
   return (
-    <aside className="flex flex-col h-auto col-span-2 text-m">
+    <aside className="flex flex-col h-[88vh] col-span-2 text-m">
       <div className="flex flex-col items-center p-4 rounded-lg bg-[#131313] m-2 pb-2">
         <div className="items-stretch w-full ml-4 mt-1">
           <Image
@@ -19,7 +19,7 @@ export function Sidebar() {
         <SidebarLinksList/>
       </div>
 
-      <div className="p-2 rounded-lg bg-[#131313] m-2 pt-0 mt-0">
+      <div className="p-2 rounded-lg bg-[#131313] m-2 pt-0 mt-0 h-full overflow-y-auto">
 
         <UserLibrary
           // likedSongsCount={likedSongsCount}

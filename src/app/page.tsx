@@ -15,6 +15,8 @@ import TrackCards from "@/components/tracks/TrackCards";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import Image from "next/image";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
+import {usePlayer} from "@/providers/TrackPlayerProvider";
+import TrackCardsLittle from "@/components/tracks/TrackCardsLittle";
 
 export default function Home() {
   const {data: topArtists, isLoading, isFetching} = useListArtistQuery()
@@ -23,6 +25,7 @@ export default function Home() {
   const {data: topPlaylists, isLoading: isLoadingPlaylist, isFetching: isFetchingPlaylist} = useListPlaylistQuery()
 
   const load = isLoading || isFetching || isLoadingAlbums || isFetchingAlbums || isLoadingTrack || isFetchingTrack || isLoadingPlaylist || isFetchingPlaylist;
+
 
   let loader = null;
   if (load) {
@@ -79,40 +82,18 @@ export default function Home() {
         <PlaylistCards playlists={topPlaylists?.results.slice(0, 5)}/>
       </div>
 
-      <h1 className="mt-8 mb-4">Top Tracks</h1>
-      <div className="grid w-full grid-cols-12 gap-4">
-        {topTracks?.results.map((track) => (
-          <Link
-            href={`/tracks/${track.id}`}
-            key={track.id}
-            className="flex items-center justify-between col-span-4 pr-4 truncate rounded-md group/item hover:bg-[#202020]"
-          >
-            <div className="flex items-center gap-4">
-              {track.album.image.length > 0 ? (
-                <Image
-                  src={track.image}
-                  alt={track.title}
-                  width={72}
-                  height={72}
-                  className="object-cover h-full rounded-tl-md rounded-bl-md aspect-square"
-                />
-              ) : (
-                <Album size={20}/>
-              )}
-              <h3 className="font-semibold truncate">{track.title}</h3>
-            </div>
-
-            <PlayTrackButton
-              track={track}
-              variant="filled"
-              className="invisible w-12 h-12 text-3xl group/btn group-hover/item:visible"
-            />
-          </Link>
-        ))}
+      <div className="flex items-center mb-2">
+        <Link href={"/tracks"} className="mt-8">Top tracks</Link>
       </div>
+      <TrackCardsLittle tracks={topTracks?.results.slice(0, 6)}/>
 
-      <h1 className="mt-16">Time Capsule</h1>
-      <TrackCards tracks={topTracks?.results.slice(0, 5)}/>
+      <div>
+        <div className="flex items-center justify-between w-full mb-2">
+          <Link href={"/tracks"} className="mt-3 hover:text-white/60">Popular tracks</Link>
+          <Link href={"/tracks"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
+        </div>
+        <TrackCards tracks={topTracks?.results.slice(0, 5)}/>
+      </div>
 
 
       <footer>

@@ -12,7 +12,7 @@ import {Button} from "@/components/ui/button";
 export default function UserLibrary() {
 
   return (
-    <div className="flex flex-col items-stretch flex-1 max-h-full px-2 mt-0 overflow-y-hidden rounded-lg">
+    <div className="flex flex-col items-stretch flex-1 max-h-full px-2 mt-0 rounded-lg">
       <div className="flex items-center justify-between">
 
         <TooltipProvider>

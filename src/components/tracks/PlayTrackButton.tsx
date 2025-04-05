@@ -1,9 +1,10 @@
 "use client";
 
-import {MdPlayArrow} from "react-icons/md";
+import {MdPause, MdPlayArrow} from "react-icons/md";
 import {setCurrentTrack} from "@/lib/features/tracks/trackSlice";
-import {useAppDispatch} from "@/lib/hooks";
+import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {Track} from "@/types/types";
+import {usePlayer} from "@/providers/TrackPlayerProvider";
 
 interface Props {
   variant?: "simple" | "filled";
@@ -17,6 +18,10 @@ export default function PlayTrackButton({
                                           className,
                                         }: Props) {
   const dispatch = useAppDispatch();
+  const {currentTrack} = useAppSelector(state => state.track);
+  const {isPlaying} = usePlayer();
+
+  const isPlayingButton =  currentTrack?.slug === track?.slug
 
 
   const simpleButtonStyle = "flex items-center col-span-1 text-white";
@@ -25,7 +30,7 @@ export default function PlayTrackButton({
 
   return (
     <button
-      className={`hover:scale-105 duration-150 ${
+      className={`hover:scale-105 duration-100 drop-shadow-sm hover:drop-shadow-2xl ${
         variant === "filled" ? filledButtonStyle : simpleButtonStyle
       } ${className} ${!track && "cursor-not-allowed"}`}
       onClick={(e) => {
@@ -36,13 +41,17 @@ export default function PlayTrackButton({
       }}
       disabled={track === null}
     >
-      <MdPlayArrow
-        className={
-          variant === "filled"
-            ? "text-black"
-            : "flex items-center text-white"
-        }
-      />
+      {isPlayingButton && isPlaying ? (
+        <MdPause className="text-black"/>
+      ) : (
+        <MdPlayArrow
+          className={
+            variant === "filled"
+              ? "text-black"
+              : "flex items-center text-white"
+          }
+        />
+      )}
     </button>
   );
 }

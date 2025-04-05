@@ -8,9 +8,9 @@ import {useAppSelector} from "@/lib/hooks";
 export default function PreviewPlayer() {
   const {currentTrack} = useAppSelector(state => state.track);
 
-  if (!currentTrack) {
-    return null;
-  }
+  // if (!currentTrack) {
+  //   return null;
+  // }
 
   return (
     <footer
@@ -19,9 +19,9 @@ export default function PreviewPlayer() {
         currentTrack ? "py-3" : "py-0"
       }`}
     >
-      <PlayerTrackInfo currentTrack={currentTrack} />
-      <MainControllers />
-      <AdditionalControllers />
+      <PlayerTrackInfo currentTrack={currentTrack}/>
+      <MainControllers currentTrack={currentTrack}/>
+      <AdditionalControllers/>
     </footer>
   );
 }
