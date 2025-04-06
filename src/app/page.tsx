@@ -7,16 +7,12 @@ import {
   useListTrackQuery
 } from "@/lib/features/other/publicApiSlice";
 import Link from "next/link";
-import {Button} from "@/components/ui/button";
-import {Album, Globe} from "lucide-react";
 import {Skeleton} from "@/components/ui/skeleton";
 import AlbumCards from "@/components/albums/AlbumCards";
 import TrackCards from "@/components/tracks/TrackCards";
-import PlayTrackButton from "@/components/tracks/PlayTrackButton";
-import Image from "next/image";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
-import {usePlayer} from "@/providers/TrackPlayerProvider";
 import TrackCardsLittle from "@/components/tracks/TrackCardsLittle";
+import Footer from "@/components/general/Footer";
 
 export default function Home() {
   const {data: topArtists, isLoading, isFetching} = useListArtistQuery()
@@ -57,7 +53,13 @@ export default function Home() {
   }
 
   return (
-    <section className="flex flex-col items-start text-xl font-bold">
+    <section className="flex flex-col items-start text-xl font-bold space-y-4">
+
+      <div className="flex items-center">
+        <Link href={"/tracks"} className="mt-4">Top tracks</Link>
+      </div>
+      <TrackCardsLittle tracks={topTracks?.results.slice(0, 6)}/>
+
       <div>
         <div className="flex items-center justify-between w-full mb-2">
           <Link href={"/artists"} className="mt-3 hover:text-white/60">Popular artists</Link>
@@ -82,11 +84,6 @@ export default function Home() {
         <PlaylistCards playlists={topPlaylists?.results.slice(0, 5)}/>
       </div>
 
-      <div className="flex items-center mb-2">
-        <Link href={"/tracks"} className="mt-8">Top tracks</Link>
-      </div>
-      <TrackCardsLittle tracks={topTracks?.results.slice(0, 6)}/>
-
       <div>
         <div className="flex items-center justify-between w-full mb-2">
           <Link href={"/tracks"} className="mt-3 hover:text-white/60">Popular tracks</Link>
@@ -96,29 +93,7 @@ export default function Home() {
       </div>
 
 
-      <footer>
-        <div className="grid lg:grid-cols-3 grid-cols-2 gap-2 p-4 pt-10 text-xs text-muted-foreground">
-          <a href="#" className="block">
-            Legal
-          </a>
-          <a href="#" className="block">
-            Safety & Privacy Center
-          </a>
-          <a href="#" className="block">
-            Privacy Policy
-          </a>
-          <a href="#" className="block">
-            Cookies
-          </a>
-          <a href="#" className="block">
-            About Ads
-          </a>
-          <a href="#" className="block">
-            Accessibility
-          </a>
-        </div>
-      </footer>
-
+      <Footer/>
     </section>
   )
 }

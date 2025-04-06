@@ -38,6 +38,7 @@ export interface Artist extends BaseApi {
   last_name: string;
   display_name: string;
   image: string;
+  color: string;
   track_slug: string;
   is_verify: boolean;
 }
@@ -54,9 +55,11 @@ export interface Album extends BaseApi {
     slug: string;
     display_name: string;
     image: string;
+    color: string;
     is_verify: boolean;
   };
   image: string;
+  color: string;
   track_slug: string;
   is_private: boolean;
 }
@@ -71,11 +74,13 @@ export interface Track extends BaseApi {
   duration: string;
   file: string;
   image: string;
+  color: string;
   artist: {
     id: number;
     slug: string;
     display_name: string;
     image: string;
+    color: string;
     is_verify: boolean;
   };
   genre: {
@@ -90,6 +95,7 @@ export interface Track extends BaseApi {
     slug: string;
     title: string;
     image: string;
+    color: string;
     is_private: boolean;
   };
 }
@@ -102,6 +108,7 @@ export interface Playlist extends BaseApi {
   slug: string;
   title: string;
   image: string;
+  color: string;
   track_slug: string;
   user: {
     id: number;

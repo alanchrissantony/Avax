@@ -3,12 +3,16 @@ import {Track} from "@/types/types";
 
 interface TrackState {
   currentTrack: Track | null;
+  previousIndexTrack: number;
+  nextIndexTrack: number;
   isLoading: boolean;
 }
 
 
 const initialState = {
   currentTrack: null,
+  previousIndexTrack: 0,
+  nextIndexTrack: 0,
   isLoading: true,
 } as TrackState;
 

@@ -19,9 +19,9 @@ export default function PlayTrackButton({
                                         }: Props) {
   const dispatch = useAppDispatch();
   const {currentTrack} = useAppSelector(state => state.track);
-  const {isPlaying} = usePlayer();
+  const {isPlaying, togglePlay} = usePlayer();
 
-  const isPlayingButton =  currentTrack?.slug === track?.slug
+  const isPlayingButton = currentTrack?.slug === track?.slug
 
 
   const simpleButtonStyle = "flex items-center col-span-1 text-white";
@@ -37,6 +37,7 @@ export default function PlayTrackButton({
         e.preventDefault();
         if (track) {
           dispatch(setCurrentTrack(track));
+          togglePlay();
         }
       }}
       disabled={track === null}
