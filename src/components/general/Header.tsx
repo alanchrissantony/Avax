@@ -1,31 +1,37 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, LogOut, User2 } from "lucide-react";
+import {ChevronLeft, ChevronRight, LogOut, User2} from "lucide-react";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
 // import CollectionTabs from "./CollectionTabs";
 // import SearchInput from "./SearchInput";
 
 export default function Header() {
+  const router = useRouter();
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between w-full p-2 pr-5 pl-5 bg-[#0f0f0f] bg-opacity-90 backdrop-blur-md">
+    <header
+      className="sticky top-0 z-50 flex items-center justify-between w-full p-2 pr-5 pl-5 bg-[#0f0f0f] bg-opacity-90 backdrop-blur-md">
       <div className="flex items-center gap-10 w-[32rem]">
         <div className="flex items-center gap-3">
-          <button
-            className="flex items-center p-1 pr-1.5 rounded-full bg-black hover:bg-[#242424] focus:outline-none"
-            // onClick={() => router.back()}
+          <Button
+            size="icon"
+            variant="outline"
+            className="p-1 size-8 pr-1.5 rounded-full bg-black hover:bg-[#242424] focus:outline-none border-none"
+            onClick={() => router.back()}
           >
-            <ChevronLeft className="text-2xl text-gray" />
-          </button>
+            <ChevronLeft className="text-2xl text-gray"/>
+          </Button>
 
-          <button
-            className="flex items-center p-1 pl-1.5 rounded-full bg-black hover:bg-[#242424] focus:outline-none"
-            // onClick={() => router.forward()}
+          <Button
+            size="icon"
+            variant="outline"
+            className="p-1 pl-1.5 size-8 rounded-full bg-black hover:bg-[#242424] focus:outline-none border-none"
+            onClick={() => router.forward()}
           >
-            <ChevronRight className="text-2xl text-gray" />
-          </button>
+            <ChevronRight className="text-2xl text-gray"/>
+          </Button>
         </div>
 
         {/*{pathname.includes("/search") && <SearchInput />}*/}
@@ -53,14 +59,14 @@ export default function Header() {
         </div>
 
         <div className="space-x-2">
-        <Button variant="ghost" className="rounded-full font-semibold"
-        size="lg">
-          Sign up
-        </Button>
-        <Button className="text-black bg-white rounded-full font-semibold"
-        size="lg">
-          Log in
-        </Button>
+          <Button variant="ghost" className="rounded-full font-semibold"
+                  size="lg">
+            Sign up
+          </Button>
+          <Button className="text-black bg-white rounded-full font-semibold"
+                  size="lg">
+            Log in
+          </Button>
         </div>
 
         {/*<button*/}

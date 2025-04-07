@@ -74,6 +74,7 @@ export interface Track extends BaseApi {
   duration: string;
   file: string;
   image: string;
+  plays_count: number;
   color: string;
   artist: {
     id: number;

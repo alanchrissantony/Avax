@@ -11,16 +11,16 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
     retrieveArtist: builder.query<Artist, string>({
       query: (slug) => `/artists/${slug}/`,
     }),
-    listAlbum: builder.query<Albums, void>({
-      query: () =>
-        `/albums/`,
+    listAlbum: builder.query<Albums, any | void>({
+      query: ({page = 1, artistSlug = ''}) =>
+        `/albums/?page=${page}&artist__slug=${artistSlug}`,
     }),
     retrieveAlbum: builder.query<Album, string>({
       query: (slug) => `/albums/${slug}/`,
     }),
-    listTrack: builder.query<Tracks, void>({
-      query: () =>
-        `/tracks/`,
+    listTrack: builder.query<Tracks, any | void>({
+      query: ({page = 1, artistSlug = ''}) =>
+        `/tracks/?page=${page}&artist__slug=${artistSlug}`,
     }),
     retrieveTrack: builder.query<Track, string>({
       query: (slug) => `/tracks/${slug}/`,
