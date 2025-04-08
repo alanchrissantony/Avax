@@ -20,7 +20,7 @@ export default function AlbumCards({albums}: Props) {
           subheading={album.artist.display_name}
           altTitle={album.title}
           image={album.image}
-          track_file={album.track_file}
+          track_slug={album.track_slug}
           type="albums"
         />
       ))}

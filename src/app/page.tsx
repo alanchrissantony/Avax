@@ -28,7 +28,7 @@ export default function Home() {
 
   const load = isLoading || isFetching || isLoadingAlbums || isFetchingAlbums || isLoadingTrack || isFetchingTrack || isLoadingPlaylist || isFetchingPlaylist;
 
-  const {currentTrack} = useAppSelector(state => state.track)
+  const {activeTrack} = useAppSelector(state => state.track)
 
 
   let loader = null;
@@ -60,7 +60,7 @@ export default function Home() {
     )
   }
 
-  console.log(currentTrack?.color)
+  console.log(activeTrack?.color)
 
   return (
     <>
@@ -115,7 +115,7 @@ export default function Home() {
 
         </div>
       </div>
-      {currentTrack ? <PreviewPlayer/> : <FooterLogin/>}
+      {activeTrack ? <PreviewPlayer/> : <FooterLogin/>}
     </>
   )
 }

@@ -13,15 +13,15 @@ interface Props {
 }
 
 export default function TrackCardsLittle({tracks}: Props) {
-  const {currentTrack} = useAppSelector(state => state.track);
+  const {activeTrack} = useAppSelector(state => state.track);
 
   return (
     <div className="grid w-full grid-cols-12 gap-4 p-4">
-      {tracks?.map((track) => (
+      {tracks?.map((track, index) => (
         <Link
           href={`/tracks/${track.slug}`}
           key={track.id}
-          className={`flex items-center justify-between col-span-4 pr-4 truncate rounded-md group/item ${currentTrack?.slug === track.slug ? "bg-[#505050]" : "bg-[#303030]"} duration-300 bg-opacity-50 hover:bg-[#353535]`}
+          className={`flex items-center justify-between col-span-4 pr-4 truncate rounded-md group/item ${activeTrack?.slug === track.slug ? "bg-[#505050]" : "bg-[#303030]"} duration-300 bg-opacity-50 hover:bg-[#353535]`}
         >
           <div className="flex items-center gap-4">
             {track.album.image.length > 0 ? (
@@ -41,8 +41,10 @@ export default function TrackCardsLittle({tracks}: Props) {
 
           <PlayTrackButton
             track={track}
+            tracks={tracks}
+            index={index}
             variant="filled"
-            className={`${currentTrack?.slug === track.slug ? "visible" : "invisible"} w-12 h-12 text-3xl group/btn group-hover/item:visible`}
+            className={`${activeTrack?.slug === track.slug ? "visible" : "invisible"} w-12 h-12 text-3xl group/btn group-hover/item:visible`}
           />
         </Link>
       ))}

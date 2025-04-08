@@ -1,7 +1,6 @@
 import {Music} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {MdPlayArrow} from "react-icons/md";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import {useRetrieveTrackQuery} from "@/lib/features/other/publicApiSlice";
 

@@ -1,28 +1,31 @@
 "use client";
 
 import {MdPause, MdPlayArrow} from "react-icons/md";
-import {setCurrentTrack} from "@/lib/features/tracks/trackSlice";
+import {setActiveTrack} from "@/lib/features/tracks/trackSlice";
 import {useAppDispatch, useAppSelector} from "@/lib/hooks";
 import {Track} from "@/types/types";
 import {usePlayer} from "@/providers/TrackPlayerProvider";
 
 interface Props {
   variant?: "simple" | "filled";
-  track?: Track | undefined;
+  track?: Track | null;
+  tracks?: Track[] | null;
+  index?: number | null;
   className?: string;
 }
 
 export default function PlayTrackButton({
                                           variant = "simple",
-                                          track,
+                                          track = null,
+                                          tracks = null,
+                                          index = 0,
                                           className,
                                         }: Props) {
   const dispatch = useAppDispatch();
-  const {currentTrack} = useAppSelector(state => state.track);
+  const {activeTrack} = useAppSelector((state) => state.track);
   const {isPlaying, togglePlay} = usePlayer();
 
-  const isPlayingButton = currentTrack?.slug === track?.slug
-
+  const isPlayingButton = activeTrack?.slug === track?.slug;
 
   const simpleButtonStyle = "flex items-center col-span-1 text-white";
   const filledButtonStyle =
@@ -35,10 +38,8 @@ export default function PlayTrackButton({
       } ${className} ${!track && "cursor-not-allowed"}`}
       onClick={(e) => {
         e.preventDefault();
-        if (track) {
-          dispatch(setCurrentTrack(track));
-          togglePlay();
-        }
+        dispatch(setActiveTrack({track, tracks, i: index}));
+        togglePlay();
       }}
       disabled={track === null}
     >

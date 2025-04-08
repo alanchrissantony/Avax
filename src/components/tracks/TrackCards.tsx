@@ -11,10 +11,11 @@ export default function TrackCards({tracks}: Props) {
 
   return (
     <CardItemGrid>
-      {tracks?.map((track) => (
+      {tracks?.map((track, index) => (
         <CardItem
           key={track.id}
           id={track.id}
+          index={index}
           slug={track.slug}
           heading={track.title}
           subheading={track.artist.display_name}

@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import {useAppSelector} from "@/lib/hooks";
+import React, {useEffect, useState, createContext, useContext, Dispatch, SetStateAction} from "react";
+import {useAppSelector, useAppDispatch} from "@/lib/hooks";
+import {nextSong as nextSongAction, prevSong as prevSongAction} from "@/lib/features/tracks/trackSlice";
+import {Track} from "@/types/types";
 
 interface TrackProviderState {
   currentTrackAudio: HTMLAudioElement | null;
@@ -24,33 +19,44 @@ interface TrackProviderState {
   setDrag: Dispatch<SetStateAction<number>>;
   volume: number;
   setVolume: Dispatch<SetStateAction<number>>;
+  loop: boolean;
+  setLoop: Dispatch<SetStateAction<boolean>>;
+  isMuted: boolean;
+  toggleMute: () => void;
+  setMute: (mute: boolean) => void;
+  nextTrack: () => void;
+  prevTrack: () => void;
+  currentIndex: number;
+  tracks: Track[];
 }
 
-const PlayerContext = createContext<TrackProviderState>({} as any);
+const PlayerContext = createContext<TrackProviderState>({} as TrackProviderState);
 
 interface Props {
   children: React.ReactNode;
 }
 
 export default function TrackPlayerProvider({children}: Props) {
-  const {currentTrack} = useAppSelector(state => state.track);
+  const {activeTrack, currentIndex, currentTracks} = useAppSelector((state) => state.track);
+  const dispatch = useAppDispatch();
 
-  const [currentTrackAudio, setCurrentTrackAudio] =
-    useState<HTMLAudioElement | null>(null);
+  const [currentTrackAudio, setCurrentTrackAudio] = useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [slider, setSlider] = useState(1);
   const [drag, setDrag] = useState(0);
   const [volume, setVolume] = useState(0.33);
+  const [loop, setLoop] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
-    if (!currentTrack) return;
+    if (!activeTrack) return;
     if (isPlaying) {
       pause();
       setCurrentTrackAudio(null);
     }
-    const tempAudio = new Audio(currentTrack.file);
+    const tempAudio = new Audio(activeTrack.file);
 
     const setAudioData = () => {
       setDuration(tempAudio.duration);
@@ -60,25 +66,29 @@ export default function TrackPlayerProvider({children}: Props) {
     const setAudioTime = () => {
       const currTime = tempAudio.currentTime;
       setCurrentTime(currTime);
-      setSlider(
-        currTime
-          ? Number(((currTime * 100) / tempAudio.duration).toFixed(1))
-          : 0
-      );
+      setSlider(currTime ? Number(((currTime * 100) / tempAudio.duration).toFixed(1)) : 0);
+    };
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+      nextTrack();
     };
 
     tempAudio.addEventListener("loadeddata", setAudioData);
     tempAudio.addEventListener("timeupdate", setAudioTime);
+    tempAudio.addEventListener("ended", handleEnded);
     tempAudio.preload = "none";
     tempAudio.volume = volume;
+    tempAudio.loop = loop;
 
     setCurrentTrackAudio(tempAudio);
 
     return () => {
+      tempAudio.removeEventListener("ended", handleEnded);
       pause();
       setCurrentTrackAudio(null);
     };
-  }, [currentTrack]);
+  }, [activeTrack, loop]);
 
   useEffect(() => {
     const handlePlay = async () => {
@@ -106,9 +116,7 @@ export default function TrackPlayerProvider({children}: Props) {
 
   useEffect(() => {
     if (currentTrackAudio && drag) {
-      currentTrackAudio.currentTime = Math.round(
-        (drag * currentTrackAudio.duration) / 100
-      );
+      currentTrackAudio.currentTime = Math.round((drag * currentTrackAudio.duration) / 100);
     }
   }, [drag]);
 
@@ -118,27 +126,58 @@ export default function TrackPlayerProvider({children}: Props) {
     }
   }, [volume]);
 
-  return (
-    <PlayerContext.Provider
-      value={{
-        currentTrackAudio,
-        isPlaying,
-        play,
-        pause,
-        togglePlay,
-        duration,
-        currentTime,
-        slider,
-        setSlider,
-        drag,
-        setDrag,
-        volume,
-        setVolume,
-      }}
-    >
-      {children}
-    </PlayerContext.Provider>
-  );
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+    if (currentTrackAudio) {
+      currentTrackAudio.muted = !isMuted;
+    }
+  };
+
+  const setMute = (mute: boolean) => {
+    setIsMuted(mute);
+    if (currentTrackAudio) {
+      currentTrackAudio.muted = mute;
+    }
+  };
+
+  const nextTrack = () => {
+    if (currentTracks && currentIndex < currentTracks.length - 1) {
+      dispatch(nextSongAction(currentIndex + 1));
+    }
+  };
+
+  const prevTrack = () => {
+    if (currentTracks && currentIndex > 0) {
+      dispatch(prevSongAction(currentIndex - 1));
+    }
+  };
+
+  const value = {
+    currentTrackAudio,
+    isPlaying,
+    play,
+    pause,
+    togglePlay,
+    duration,
+    currentTime,
+    slider,
+    setSlider,
+    drag,
+    setDrag,
+    volume,
+    setVolume,
+    loop,
+    setLoop,
+    isMuted,
+    toggleMute,
+    setMute,
+    nextTrack,
+    prevTrack,
+    currentIndex,
+    tracks: currentTracks || [],
+  };
+
+  return <PlayerContext.Provider value={value}>{children}</PlayerContext.Provider>;
 }
 
 export const usePlayer = () => useContext(PlayerContext);
