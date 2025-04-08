@@ -1,8 +1,8 @@
-import { usePlayer } from "@/providers/TrackPlayerProvider";
-import { fmtMSS } from "@/utils/clientUtils";
-import { Repeat2, Shuffle, SkipBack, SkipForward } from "lucide-react";
-import { MdPause, MdPlayArrow } from "react-icons/md";
-import { Slider } from "@/components/ui/slider";
+import {usePlayer} from "@/providers/TrackPlayerProvider";
+import {fmtMSS} from "@/utils/clientUtils";
+import {Repeat2, Shuffle, SkipBack, SkipForward} from "lucide-react";
+import {MdPause, MdPlayArrow} from "react-icons/md";
+import {Slider} from "@/components/ui/slider";
 
 export default function MainControllers() {
   const {
@@ -32,28 +32,30 @@ export default function MainControllers() {
     <div className="flex flex-col items-center justify-center col-span-6 gap-3">
       <div className="flex items-center gap-5">
         <button>
-          <Shuffle size={17} className={`text-white/60 hover:text-gray-100`} />
+          <Shuffle size={17} className={`text-white/60 hover:text-gray-100`}/>
         </button>
         <button onClick={prevTrack} disabled={!hasPrevTrack}>
-          <SkipBack size={20} className={`text-xl ${hasPrevTrack ? 'text-white/60 hover:text-gray-100' : 'text-white/20 cursor-not-allowed'}`} />
+          <SkipBack size={20}
+                    className={`text-xl ${hasPrevTrack ? 'text-white/60 hover:text-gray-100' : 'text-white/20 cursor-not-allowed'}`}/>
         </button>
         <button
           onClick={togglePlay}
           className="flex items-center justify-center w-8 h-8 p-0 text-black bg-white rounded-full hover:scale-105 duration-150"
         >
           {isPlaying ? (
-            <MdPause className="text-2xl text-paper-700" />
+            <MdPause className="text-2xl text-paper-700"/>
           ) : (
-            <MdPlayArrow className="text-2xl text-paper-700" />
+            <MdPlayArrow className="text-2xl text-paper-700"/>
           )}
         </button>
         <button onClick={nextTrack} disabled={!hasNextTrack}>
-          <SkipForward size={20} className={`text-xl ${hasNextTrack ? 'text-white/60 hover:text-gray-100' : 'text-white/20 cursor-not-allowed'}`} />
+          <SkipForward size={20}
+                       className={`text-xl ${hasNextTrack ? 'text-white/60 hover:text-gray-100' : 'text-white/20 cursor-not-allowed'}`}/>
         </button>
         <button onClick={toggleLoop}>
           <Repeat2
             size={20}
-            className={`text-white/60 hover:text-gray-100 ${loop ? "text-green-400" : ""}`}
+            className={`text-white/60 hover:text-gray-100 ${loop ? "text-green-500 hover:text-green-300" : ""}`}
           />
         </button>
       </div>

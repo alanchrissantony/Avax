@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import {useRetrieveTrackQuery} from "@/lib/features/other/publicApiSlice";
+import {Track} from "@/types/types";
 
 
 interface Props {
@@ -13,7 +14,9 @@ interface Props {
   heading: string;
   subheading?: string;
   imageRounded?: boolean;
-  track_slug?: string;
+  track_slug: string;
+  tracks?: Track[] | undefined;
+  index?: number;
   type: string;
 }
 
@@ -26,9 +29,11 @@ export default function CardItem({
                                    subheading,
                                    imageRounded = false,
                                    track_slug,
+                                   tracks,
+                                   index,
                                    type,
                                  }: Props) {
-  const {data: track} = useRetrieveTrackQuery(track_slug || "");
+  const {data: track} = useRetrieveTrackQuery(track_slug);
 
   return (
     <Link href={`/${type}/${slug}`}>
@@ -53,6 +58,8 @@ export default function CardItem({
           )}
           <PlayTrackButton
             track={track}
+            tracks={tracks}
+            index={index}
             variant="filled"
             className="absolute invisible w-12 h-12 text-3xl shadow-lg bottom-2 right-2 group/btn group-hover/item:visible"
           />

@@ -60,8 +60,6 @@ export default function Home() {
     )
   }
 
-  console.log(activeTrack?.color)
-
   return (
     <>
       <div className="grid grid-cols-10">

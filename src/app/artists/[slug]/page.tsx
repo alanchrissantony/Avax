@@ -36,7 +36,7 @@ export default function ArtistPage({params}: Props) {
 
   const load = isLoading || isFetching || isLoadingTracks || isFetchingTracks || isLoadingAlbums || isFetchingAlbums
 
-  const {currentTrack} = useAppSelector(state => state.track)
+  const {activeTrack} = useAppSelector(state => state.track)
 
   return (
     <>
@@ -55,7 +55,7 @@ export default function ArtistPage({params}: Props) {
                       alt={artist.display_name}
                       height={208}
                       width={208}
-                      className="object-cover rounded-full w-52 h-52"
+                      className="aspect-square object-cover rounded-full w-52 h-52"
                       priority
                     />
                   ) : (
@@ -76,7 +76,7 @@ export default function ArtistPage({params}: Props) {
                     </div>
                     <span className="text-sm">
                 {/*{artist.followers.total.toLocaleString()} followers*/}
-                      {"<LISENERS COUNT>"}
+                      {artist.artist_listeners.toLocaleString()} listeners
               </span>
                     <div className="flex items-center gap-5 text-sm">
                       {/*{artist.genres.map((genre: string) => (*/}
@@ -94,7 +94,7 @@ export default function ArtistPage({params}: Props) {
             </div>
 
             <div className="flex items-center space-x-6 py-4">
-              <PlayTrackButton track={currentTrack || undefined} variant="filled" className="w-14 h-14 text-4xl"/>
+              <PlayTrackButton track={activeTrack || undefined} variant="filled" className="w-14 h-14 text-4xl"/>
               <Button variant="ghost"
                       className="rounded-full border border-white/30 h-8 w-19 hover:bg-inherit hover:border-white font-semibold hover:scale-105 duration-150">
                 Follow
@@ -140,7 +140,7 @@ export default function ArtistPage({params}: Props) {
           </div>
         </div>
       </div>
-      {currentTrack ? <PreviewPlayer/> : <FooterLogin/>}
+      {activeTrack ? <PreviewPlayer/> : <FooterLogin/>}
     </>
   );
 }

@@ -15,13 +15,14 @@ export default function TrackCards({tracks}: Props) {
         <CardItem
           key={track.id}
           id={track.id}
-          index={index}
           slug={track.slug}
           heading={track.title}
           subheading={track.artist.display_name}
           altTitle={track.title}
           image={track.image}
           track_slug={track.slug}
+          tracks={tracks}
+          index={index}
           type="albums"
         />
       ))}

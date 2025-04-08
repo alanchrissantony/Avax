@@ -1,13 +1,12 @@
 "use client";
 
 import {Track} from "@/types/types";
-import {fmtMSS} from "@/utils/clientUtils";
 import {Clock3, Music} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {useState} from "react";
 import PlayTrackButton from "./PlayTrackButton";
-import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {useAppSelector} from "@/lib/hooks";
 
 interface Props {
   tracks: Track[] | undefined;
@@ -42,6 +41,7 @@ export default function TracksTable({
                                       showPlaysCount = false,
                                     }: Props) {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+  const {activeTrack} = useAppSelector(state => state.track)
 
   return (
     <div className="mt-8">
@@ -97,9 +97,11 @@ export default function TracksTable({
             onMouseLeave={() => setHoveredRow(null)}
           >
             {hoveredRow === index ? (
-              <PlayTrackButton track={track} className="text-xl"/>
+              <PlayTrackButton track={track} tracks={tracks} index={index} className="text-xl"/>
             ) : (
-              <span className="flex items-center col-span-1 text-sm text-white/60">
+              <span
+                className={`flex items-center col-span-1 text-sm text-white/60 ${
+                  activeTrack?.slug === track.slug && "text-green-500"}`}>
                 {index + 1}
               </span>
             )}
@@ -131,7 +133,8 @@ export default function TracksTable({
                 <div className="w-full pr-3 truncate">
                   <Link
                     href={`/tracks/${track.slug}`}
-                    className="w-10/12 text-sm font-medium truncate cursor-pointer hover:underline"
+                    className={`w-10/12 text-sm font-medium truncate cursor-pointer hover:underline ${
+                      activeTrack?.slug === track.slug && "text-green-500"}`}
                   >
                     {track.title}
                   </Link>
@@ -157,7 +160,7 @@ export default function TracksTable({
             {showAlbum && (
               <div className="flex items-center w-10/12 col-span-4 text-sm text-white/60">
                 <Link
-                  href={`/albums/${track.album.id}`}
+                  href={`/albums/${track.album.slug}`}
                   className="truncate hover:text-white hover:underline"
                 >
                   {track.album.title}
@@ -180,30 +183,5 @@ export default function TracksTable({
         ))}
       </div>
     </div>
-
-    // <div className="mt-8">
-    //   <Table>
-    //     <TableCaption>A list of your recent invoices.</TableCaption>
-    //     <TableHeader>
-    //       <TableRow>
-    //         <TableHead className="w-[10px]">#</TableHead>
-    //         <TableHead>Title</TableHead>
-    //         <TableHead>Album</TableHead>
-    //         <TableHead className="flex justify-center pt-3"><Clock3 size={20}/></TableHead>
-    //       </TableRow>
-    //     </TableHeader>
-    //     <TableBody>
-    //       {tracks?.map((track, index) => (
-    //         <TableRow>
-    //           <TableCell className="text-white/60">1</TableCell>
-    //           <TableCell>Paid</TableCell>
-    //           <TableCell>Credit Card</TableCell>
-    //           <TableCell className="text-right">$250.00</TableCell>
-    //         </TableRow>
-    //       ))}
-    //     </TableBody>
-    //   </Table>
-    // </div>
-
   );
 }

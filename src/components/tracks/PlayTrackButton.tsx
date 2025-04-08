@@ -8,16 +8,16 @@ import {usePlayer} from "@/providers/TrackPlayerProvider";
 
 interface Props {
   variant?: "simple" | "filled";
-  track?: Track | null;
-  tracks?: Track[] | null;
+  track?: Track | undefined;
+  tracks?: Track[] | undefined;
   index?: number | null;
   className?: string;
 }
 
 export default function PlayTrackButton({
                                           variant = "simple",
-                                          track = null,
-                                          tracks = null,
+                                          track = undefined,
+                                          tracks = undefined,
                                           index = 0,
                                           className,
                                         }: Props) {
@@ -41,10 +41,10 @@ export default function PlayTrackButton({
         dispatch(setActiveTrack({track, tracks, i: index}));
         togglePlay();
       }}
-      disabled={track === null}
+      disabled={!track}
     >
       {isPlayingButton && isPlaying ? (
-        <MdPause className="text-black"/>
+        <MdPause className={`${variant === "simple" ? "text-white" : "text-black"}`}/>
       ) : (
         <MdPlayArrow
           className={

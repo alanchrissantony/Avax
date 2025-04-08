@@ -40,6 +40,7 @@ export interface Artist extends BaseApi {
   image: string;
   color: string;
   track_slug: string;
+  artist_listeners: number;
   is_verify: boolean;
 }
 
