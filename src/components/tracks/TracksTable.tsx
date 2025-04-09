@@ -1,7 +1,7 @@
 "use client";
 
 import {Track} from "@/types/types";
-import {Clock3, Music} from "lucide-react";
+import {CircleCheck, CirclePlus, Clock3, Music} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {useState} from "react";
@@ -66,7 +66,7 @@ export default function TracksTable({
           </header>
 
           {/* Divider */}
-          <div className="col-span-12 border-b border-paper-600"></div>
+          <div className="col-span-12 border-b border-[#404040]/80"></div>
         </>
       )}
 
@@ -147,13 +147,16 @@ export default function TracksTable({
             </div>
 
             {showAlbum && (
-              <div className="flex items-center w-10/12 col-span-4 text-sm text-white/60">
+              <div className="flex items-center justify-between w-full col-span-4 text-sm text-white/60">
                 <Link
                   href={`/albums/${track.album.slug}`}
                   className="truncate hover:text-white hover:underline"
                 >
                   {track.album.title}
                 </Link>
+                <CirclePlus size={18}
+                            className="opacity-0 group-hover/item:opacity-100 hover:text-white transition duration-150 ease-in-out transform hover:scale-105"/>
+                {/*<CircleCheck size={18} className="text-primary"/>*/}
               </div>
             )}
 

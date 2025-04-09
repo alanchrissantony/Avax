@@ -14,7 +14,7 @@ export default function PlayerTrackInfo({activeTrack}: IProps) {
     <div className="flex items-center col-span-3 gap-3">
       {activeTrack?.album ? (
         <Image
-          src={activeTrack.image}
+          src={activeTrack.album.image}
           alt={activeTrack.title}
           height={56}
           width={56}

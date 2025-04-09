@@ -34,7 +34,7 @@ export default function Home() {
 
   useEffect(() => {
     if (activeTrack) {
-      setBackgroundColor(activeTrack.color || "#202020");
+      setBackgroundColor(activeTrack.album.color || "#202020");
     }
   }, [activeTrack]);
 

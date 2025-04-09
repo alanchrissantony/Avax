@@ -1,30 +1,21 @@
 "use client";
 
-import {BadgeCheck, CirclePlus, Dot, Music} from "lucide-react";
+import {CirclePlus, Dot, Music} from "lucide-react";
 import Image from "next/image";
 import {
-  useListAlbumQuery,
-  useListArtistQuery,
   useListTrackQuery,
-  useRetrieveArtistQuery, useRetrievePlaylistQuery
+  useRetrievePlaylistQuery
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import {useAppSelector} from "@/lib/hooks";
-import {Button} from "@/components/ui/button";
-import AlbumCards from "@/components/albums/AlbumCards";
-import {Sidebar} from "@/components/general/Siderbar";
 import Header from "@/components/general/Header";
 import PreviewPlayer from "@/components/tracks/PreviewPlayer";
 import FooterLogin from "@/components/general/FooterLogin";
 import Footer from "@/components/general/Footer";
-import TrackCards from "@/components/tracks/TrackCards";
 import Link from "next/link";
-import ArtistCards from "@/components/artists/ArtistCards";
-import PlaylistsLayout from "@/app/playlists/layout";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {formatDuration} from "@/utils/clientUtils";
-import {darken, lighten, readableColor} from "polished";
 
 interface Props {
   params: {
@@ -34,27 +25,17 @@ interface Props {
 
 export default function PlaylistPage({params}: Props) {
   const {data: playlist, isLoading, isFetching} = useRetrievePlaylistQuery(params.slug)
-  // const {
-  //   data: artistTracks,
-  //   isLoading: isLoadingTracks,
-  //   isFetching: isFetchingTracks
-  // } = useListTrackQuery({artistSlug: params.slug})
-  // const {
-  //   data: artistAlbums,
-  //   isLoading: isLoadingAlbums,
-  //   isFetching: isFetchingAlbums
-  // } = useListAlbumQuery({artistSlug: params.slug})
-  // const {
-  //   data: relatedArtists,
-  //   isLoading: isLoadingArtists,
-  //   isFetching: isFetchingArtists
-  // } = useListArtistQuery()
+  const {
+    data: recommendations,
+    isLoading: isLoadingRec,
+    isFetching: isFetchingRec,
+  } = useListTrackQuery({genreSlug: playlist?.genre?.slug || ''})
 
-  // const load = isLoading || isFetching || isLoadingTracks || isFetchingTracks || isLoadingAlbums || isFetchingAlbums || isLoadingArtists || isFetchingArtists
+  const load = isLoading || isFetching || isLoadingRec || isFetchingRec
 
-  const {activeTrack} = useAppSelector(state => state.track)
+  const {activeTrack, currentIndex} = useAppSelector(state => state.track)
 
-  const darkenBgColor = darken(0.05, playlist?.color || "#202020");
+  const darkenBgColor = playlist?.color || "#202020";
 
   return (
     <>
@@ -135,7 +116,13 @@ export default function PlaylistPage({params}: Props) {
 
         <div className="mx-6 my-6">
           <div className="flex items-center space-x-6">
-            <PlayTrackButton track={activeTrack || undefined} variant="filled" className="w-14 h-14 text-4xl"/>
+            <PlayTrackButton
+              track={playlist?.tracks?.[currentIndex] || (activeTrack || undefined)}
+              tracks={playlist?.tracks}
+              index={currentIndex}
+              variant="filled"
+              className="w-14 h-14 text-4xl"
+            />
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -158,6 +145,19 @@ export default function PlaylistPage({params}: Props) {
               showSubtitle
             />
           </div>
+
+          {(recommendations?.count || 0) > 0 &&
+            <div className="my-8">
+              <h1 className="font-bold text-2xl pb-1">Recommended</h1>
+              <p className="text-sm text-white/60">Based on what`s in this playlist</p>
+              <TracksTable
+                tracks={recommendations?.results.slice(0, 10)}
+                showAlbum
+                showCover
+                showSubtitle
+              />
+            </div>
+          }
 
           <Footer/>
         </div>

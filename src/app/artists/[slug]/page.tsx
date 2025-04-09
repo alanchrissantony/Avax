@@ -1,7 +1,6 @@
 "use client";
 
-import {BadgeCheck, Music} from "lucide-react";
-import Image from "next/image";
+import {BadgeCheck} from "lucide-react";
 import {
   useListAlbumQuery,
   useListArtistQuery,
@@ -13,7 +12,6 @@ import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import {useAppSelector} from "@/lib/hooks";
 import {Button} from "@/components/ui/button";
 import AlbumCards from "@/components/albums/AlbumCards";
-import {Sidebar} from "@/components/general/Siderbar";
 import Header from "@/components/general/Header";
 import PreviewPlayer from "@/components/tracks/PreviewPlayer";
 import FooterLogin from "@/components/general/FooterLogin";
@@ -21,7 +19,6 @@ import Footer from "@/components/general/Footer";
 import TrackCards from "@/components/tracks/TrackCards";
 import Link from "next/link";
 import ArtistCards from "@/components/artists/ArtistCards";
-import {darken} from "polished";
 
 interface Props {
   params: {
@@ -49,16 +46,16 @@ export default function ArtistPage({params}: Props) {
 
   const load = isLoading || isFetching || isLoadingTracks || isFetchingTracks || isLoadingAlbums || isFetchingAlbums || isLoadingArtists || isFetchingArtists
 
-  const {activeTrack} = useAppSelector(state => state.track)
+  const {activeTrack, currentIndex} = useAppSelector(state => state.track)
 
-  const darkenBgColor = darken(0, artist?.color || "#202020");
+  const darkenBgColor = artist?.color || "#202020";
 
   return (
     <>
       <div
         className="h-full rounded-lg"
         style={{
-          backgroundImage: `linear-gradient(to bottom, ${darkenBgColor} 0%,  rgba(19, 19, 19, 0.9) 25%, #131313 100%)`,
+          backgroundImage: `linear-gradient(to bottom, ${darkenBgColor} 0%,  rgba(19, 19, 19, 0.9) 30%, #131313 100%)`,
         }}
       >
         <Header/>
@@ -90,7 +87,9 @@ export default function ArtistPage({params}: Props) {
 
         <div className=" mx-6 my-6">
           <div className="flex items-center space-x-6">
-            <PlayTrackButton track={activeTrack || undefined} variant="filled" className="w-14 h-14 text-4xl"/>
+            <PlayTrackButton track={artistTracks?.results?.[currentIndex] || (activeTrack || undefined)}
+                             tracks={artistTracks?.results} index={currentIndex} variant="filled"
+                             className="w-14 h-14 text-4xl"/>
             <Button variant="ghost"
                     className="rounded-full border border-white/30 h-8 w-19 hover:bg-inherit hover:border-white font-semibold hover:scale-105 duration-150">
               Follow
@@ -139,20 +138,6 @@ export default function ArtistPage({params}: Props) {
               <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
             </div>
           )}
-
-          {/*{artistCompilation?.items.length > 0 && (*/}
-          {/*  <div className="mt-12">*/}
-          {/*    <h1>Compilation</h1>*/}
-          {/*    <AlbumCards albums={artistCompilation.items} />*/}
-          {/*  </div>*/}
-          {/*)}*/}
-
-          {/*{relatedArtists?.artists.length > 0 && (*/}
-          {/*  <div className="mt-12">*/}
-          {/*    <h1>Fans also like</h1>*/}
-          {/*    <ArtistCards artists={relatedArtists.artists} />*/}
-          {/*  </div>*/}
-          {/*)}*/}
 
           <Footer/>
         </div>

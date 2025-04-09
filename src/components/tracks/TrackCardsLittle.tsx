@@ -1,5 +1,3 @@
-import CardItemGrid from "@/components/general/CardItemGrid";
-import CardItem from "@/components/general/CardItem";
 import {Track} from "@/types/types";
 import Link from "next/link";
 import Image from "next/image";
@@ -21,12 +19,12 @@ export default function TrackCardsLittle({tracks}: Props) {
         <Link
           href={`/tracks/${track.slug}`}
           key={track.id}
-          className={`flex items-center justify-between col-span-4 pr-4 truncate rounded-md group/item ${activeTrack?.slug === track.slug ? "bg-[#505050]" : "bg-[#303030]"} duration-300 bg-opacity-50 hover:bg-[#353535]`}
+          className={`flex items-center justify-between col-span-4 pr-4 truncate rounded-md shadow-lg group/item ${activeTrack?.slug === track.slug ? "bg-[#858585]" : "bg-[#606060]"} duration-300 bg-opacity-30 hover:bg-[#707070]/50`}
         >
           <div className="flex items-center gap-4">
             {track.album.image.length > 0 ? (
               <Image
-                src={track.image}
+                src={track.album.image}
                 alt={track.title}
                 width={72}
                 height={72}
@@ -36,7 +34,7 @@ export default function TrackCardsLittle({tracks}: Props) {
               <Album size={20}/>
             )}
             <h4
-              className="font-semibold text-base truncate">{`${track.title.substring(0, 20)}${(track.title.length > 20) && "..."}`}</h4>
+              className="font-semibold text-base truncate">{`${track.title.substring(0, 20)}${(track.title.length > 20) ? "..." : ""}`}</h4>
           </div>
 
           <PlayTrackButton
@@ -44,7 +42,7 @@ export default function TrackCardsLittle({tracks}: Props) {
             tracks={tracks}
             index={index}
             variant="filled"
-            className={`${activeTrack?.slug === track.slug ? "visible" : "invisible"} w-12 h-12 shadow-lg text-3xl group/btn group-hover/item:visible`}
+            className={`${activeTrack?.slug === track.slug ? "visible" : "invisible"} w-12 h-12 shadow-md text-3xl group/btn group-hover/item:visible`}
           />
         </Link>
       ))}

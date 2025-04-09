@@ -19,7 +19,7 @@ export default function TrackCards({tracks}: Props) {
           heading={track.title}
           subheading={track.artist.display_name}
           altTitle={track.title}
-          image={track.image}
+          image={track.album.image}
           track_slug={track.slug}
           tracks={tracks}
           index={index}
