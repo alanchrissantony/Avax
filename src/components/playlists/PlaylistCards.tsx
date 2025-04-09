@@ -21,7 +21,7 @@ export default function PlaylistCards({playlists}: Props) {
           altTitle={playlist.title}
           image={playlist.image}
           track_slug={playlist.track_slug}
-          type="playlist"
+          type="playlists"
         />
       ))}
     </CardItemGrid>

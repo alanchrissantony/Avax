@@ -44,7 +44,7 @@ export default function TrackCardsLittle({tracks}: Props) {
             tracks={tracks}
             index={index}
             variant="filled"
-            className={`${activeTrack?.slug === track.slug ? "visible" : "invisible"} w-12 h-12 text-3xl group/btn group-hover/item:visible`}
+            className={`${activeTrack?.slug === track.slug ? "visible" : "invisible"} w-12 h-12 shadow-lg text-3xl group/btn group-hover/item:visible`}
           />
         </Link>
       ))}

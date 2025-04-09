@@ -4,7 +4,7 @@ import Link from "next/link";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import {useRetrieveTrackQuery} from "@/lib/features/other/publicApiSlice";
 import {Track} from "@/types/types";
-
+import {useAppSelector} from "@/lib/hooks";
 
 interface Props {
   image: any;
@@ -34,6 +34,7 @@ export default function CardItem({
                                    type,
                                  }: Props) {
   const {data: track} = useRetrieveTrackQuery(track_slug);
+  const {activeTrack} = useAppSelector((state) => state.track);
 
   return (
     <Link href={`/${type}/${slug}`}>
@@ -56,13 +57,16 @@ export default function CardItem({
               <Music className="w-full h-full bg-paper "/>
             </div>
           )}
-          <PlayTrackButton
-            track={track}
-            tracks={tracks}
-            index={index}
-            variant="filled"
-            className="absolute invisible w-12 h-12 text-3xl shadow-lg bottom-2 right-2 group/btn group-hover/item:visible"
-          />
+          {track &&
+            <PlayTrackButton
+              track={track}
+              tracks={tracks}
+              index={index}
+              variant="filled"
+              className={`absolute w-12 h-12 text-3xl shadow-lg bottom-2 right-2 
+            ${activeTrack?.slug === track?.slug ? "slide-down" : "slide-up"} group-hover/item:slide-down`}
+            />
+          }
         </div>
 
         <h3 className="mt-2 font-bold text-base truncate">{heading}</h3>

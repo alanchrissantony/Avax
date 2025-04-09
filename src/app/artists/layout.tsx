@@ -11,6 +11,6 @@ export default function ArtistsLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <section>{children}</section>
+    <>{children}</>
   );
 }

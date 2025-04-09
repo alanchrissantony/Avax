@@ -7,6 +7,7 @@ import Link from "next/link";
 import {useState} from "react";
 import PlayTrackButton from "./PlayTrackButton";
 import {useAppSelector} from "@/lib/hooks";
+import {formatTime} from "@/utils/clientUtils";
 
 interface Props {
   tracks: Track[] | undefined;
@@ -15,21 +16,6 @@ interface Props {
   showAlbum?: boolean;
   showPlaysCount?: boolean;
   showSubtitle?: boolean;
-}
-
-function formatTime(time: string) {
-  // Split the time string into its components
-  const parts = time.split(':');
-  let hours = parseInt(parts[0], 10);
-  const minutes = parseInt(parts[1], 10);
-  const seconds = Math.floor(parseFloat(parts[2])); // Remove milliseconds
-
-  // Format the time string to "H:MM"
-  if (hours === 0) {
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  } else {
-    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
-  }
 }
 
 export default function TracksTable({
@@ -97,12 +83,15 @@ export default function TracksTable({
             onMouseLeave={() => setHoveredRow(null)}
           >
             {hoveredRow === index ? (
-              <PlayTrackButton track={track} tracks={tracks} index={index} className="text-xl"/>
+              <PlayTrackButton track={track} tracks={tracks} index={index} lines={true} className="text-xl w-1/2"/>
             ) : (
               <span
-                className={`flex items-center col-span-1 text-sm text-white/60 ${
-                  activeTrack?.slug === track.slug && "text-green-500"}`}>
-                {index + 1}
+                className="flex items-center col-span-1 text-sm text-white/60">
+                {activeTrack?.slug === track.slug ? (
+                  <PlayTrackButton track={track} tracks={tracks} index={index} lines={true} className="text-xl w-1/2"/>
+                ) : (
+                  index + 1
+                )}
               </span>
             )}
 

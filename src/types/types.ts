@@ -32,6 +32,7 @@ export interface Artist extends BaseApi {
     displayName: string;
     type_profile: string;
     image: string;
+    followers_count: number;
     is_premium: boolean;
   };
   first_name: string;
@@ -117,6 +118,7 @@ export interface Playlist extends BaseApi {
     display_name: string;
     type_profile: string;
     image: string;
+    followers_count: number;
     is_premium: boolean;
   };
   genre: {
@@ -127,6 +129,14 @@ export interface Playlist extends BaseApi {
     color: string;
   };
   is_private: boolean;
+}
+
+export interface DetailPlaylist extends Playlist {
+  tracks: Track[];
+  description: string;
+  release_date: string;
+  favorite_count: number
+  duration: string;
 }
 
 export interface Playlists extends ListBaseApi {

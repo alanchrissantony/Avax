@@ -8,14 +8,28 @@ import {usePlayer} from "@/providers/TrackPlayerProvider";
 
 interface Props {
   variant?: "simple" | "filled";
+  lines?: boolean;
   track?: Track | undefined;
   tracks?: Track[] | undefined;
   index?: number | null;
   className?: string;
 }
 
+export function AudioLines({className}: { className?: string }) {
+  return (
+    <div className={`audio-lines ${className}`}>
+      <div className="line h-2"></div>
+      <div className="line h-2"></div>
+      <div className="line h-2"></div>
+      <div className="line h-2"></div>
+      <div className="line h-2"></div>
+    </div>
+  );
+}
+
 export default function PlayTrackButton({
                                           variant = "simple",
+                                          lines = false,
                                           track = undefined,
                                           tracks = undefined,
                                           index = 0,
@@ -33,7 +47,7 @@ export default function PlayTrackButton({
 
   return (
     <button
-      className={`hover:scale-105 duration-100 drop-shadow-sm hover:drop-shadow-2xl ${
+      className={`${variant === "filled" && "hover:scale-105"} duration-100 drop-shadow-sm hover:drop-shadow-2xl ${
         variant === "filled" ? filledButtonStyle : simpleButtonStyle
       } ${className} ${!track && "cursor-not-allowed"}`}
       onClick={(e) => {
@@ -44,7 +58,12 @@ export default function PlayTrackButton({
       disabled={!track}
     >
       {isPlayingButton && isPlaying ? (
-        <MdPause className={`${variant === "simple" ? "text-white" : "text-black"}`}/>
+        lines ? (
+          <AudioLines className="flex items-center"/>
+        ) : (
+          <MdPause
+            className={`${variant === "simple" ? "flex items-center text-white" : "flex items-center text-black"}`}/>
+        )
       ) : (
         <MdPlayArrow
           className={
