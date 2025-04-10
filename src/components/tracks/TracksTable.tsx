@@ -119,18 +119,19 @@ export default function TracksTable({
                     />
                   ))}
 
-                <div className="w-full pr-3 truncate">
-                  <Link
-                    href={`/tracks/${track.slug}`}
-                    className={`w-10/12 text-sm font-medium truncate cursor-pointer hover:underline ${
-                      activeTrack?.slug === track.slug && "text-green-500"}`}
-                  >
-                    {track.title}
-                  </Link>
+                <div className="w-full pr-3 truncate flex items-center justify-between">
+                  <div>
+                    <Link
+                      href={`/tracks/${track.slug}`}
+                      className={`w-10/12 text-sm font-medium truncate cursor-pointer hover:underline ${
+                        activeTrack?.slug === track.slug && "text-green-500"}`}
+                    >
+                      {track.title}
+                    </Link>
 
-                  {showSubtitle && (
-                    <div
-                      className="flex flex-wrap items-center w-full gap-1 pr-3 text-sm text-white/60 group-hover/item:text-white">
+                    {showSubtitle && (
+                      <div
+                        className="flex flex-wrap items-center w-full gap-1 pr-3 text-sm text-white/60 group-hover/item:text-white">
                       <span className="truncate">
                           <Link
                             key={track.artist.id + track.id}
@@ -140,8 +141,14 @@ export default function TracksTable({
                             {track.artist.display_name}
                           </Link>
                       </span>
-                    </div>
-                  )}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <CirclePlus size={18}
+                                className="opacity-0 group-hover/item:opacity-100 hover:text-white transition duration-150 ease-in-out transform hover:scale-105"/>
+                    {/*<CircleCheck size={18} className="text-primary"/>*/}
+                  </div>
                 </div>
               </div>
             </div>

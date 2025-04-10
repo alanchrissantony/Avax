@@ -9,7 +9,6 @@ interface IProps {
 }
 
 export default function PlayerTrackInfo({activeTrack}: IProps) {
-  console.log(activeTrack);
   return (
     <div className="flex items-center col-span-3 gap-3">
       {activeTrack?.album ? (

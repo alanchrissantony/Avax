@@ -64,6 +64,13 @@ export interface Album extends BaseApi {
   color: string;
   track_slug: string;
   is_private: boolean;
+  release_date: string;
+}
+
+export interface DetailAlbum extends Album {
+  tracks: Track[];
+  description: string;
+  duration: string;
 }
 
 export interface Albums extends ListBaseApi {

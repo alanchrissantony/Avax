@@ -71,10 +71,10 @@ export default function ArtistPage({params}: Props) {
             {artist && (
               <div className="flex flex-col items-start gap-3 self-end">
                 {artist.is_verify && (
-                  <p className="flex justify-between items-center space-x-2">
+                  <div className="flex justify-between items-center space-x-2">
                     <BadgeCheck className="text-blue-400" size={25}/>
                     <h1 className="text-white text-sm font-medium">Verified Artist</h1>
-                  </p>
+                  </div>
                 )}
                 <h2 className="text-7xl font-bold">{artist.display_name}</h2>
                 <span className="text-base font-medium">

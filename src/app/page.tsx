@@ -77,7 +77,7 @@ export default function Home() {
       >
         <Header/>
 
-        <section className="flex flex-col items-start text-xl font-bold space-y-4 mx-6 my-6">
+        <section className="flex flex-col items-start text-2xl font-bold space-y-4 mx-6 my-6">
 
           <div className="flex items-center">
             <Link href={"/tracks"} className="mt-4 ml-4">Top tracks</Link>
