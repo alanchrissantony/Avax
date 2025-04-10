@@ -3,7 +3,7 @@
 import {BadgeCheck} from "lucide-react";
 import {
   useListAlbumQuery,
-  useListArtistQuery,
+  useListArtistQuery, useListPlaylistQuery,
   useListTrackQuery,
   useRetrieveArtistQuery
 } from "@/lib/features/other/publicApiSlice";
@@ -19,6 +19,7 @@ import Footer from "@/components/general/Footer";
 import TrackCards from "@/components/tracks/TrackCards";
 import Link from "next/link";
 import ArtistCards from "@/components/artists/ArtistCards";
+import PlaylistCards from "@/components/playlists/PlaylistCards";
 
 interface Props {
   params: {
@@ -39,12 +40,21 @@ export default function ArtistPage({params}: Props) {
     isFetching: isFetchingAlbums
   } = useListAlbumQuery({artistSlug: params.slug})
   const {
+    data: artistPlaylists,
+    isLoading: isLoadingPlaylists,
+    isFetching: isFetchingPlaylists
+  } = useListPlaylistQuery({userId: artist?.user.id})
+  const {
     data: relatedArtists,
     isLoading: isLoadingArtists,
     isFetching: isFetchingArtists
-  } = useListArtistQuery()
+  } = useListArtistQuery({})
 
-  const load = isLoading || isFetching || isLoadingTracks || isFetchingTracks || isLoadingAlbums || isFetchingAlbums || isLoadingArtists || isFetchingArtists
+  const load = (
+    isLoading || isFetching || isLoadingTracks || isFetchingTracks ||
+    isLoadingAlbums || isFetchingAlbums || isLoadingArtists || isFetchingArtists ||
+    isLoadingPlaylists || isFetchingPlaylists
+  )
 
   const {activeTrack, currentIndex} = useAppSelector(state => state.track)
 
@@ -60,24 +70,25 @@ export default function ArtistPage({params}: Props) {
       >
         <Header/>
         <div
-          className="h-64"
+          className="h-64 relative"
           style={{
             backgroundImage: `url(${artist?.image || ''})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30"></div>
           <div className="flex items-end gap-6 p-4 pb-6 h-full">
             {artist && (
               <div className="flex flex-col items-start gap-3 self-end">
                 {artist.is_verify && (
-                  <div className="flex justify-between items-center space-x-2">
+                  <div className="flex justify-between items-center space-x-2 drop-shadow-md">
                     <BadgeCheck className="text-blue-400" size={25}/>
                     <h1 className="text-white text-sm font-medium">Verified Artist</h1>
                   </div>
                 )}
-                <h2 className="text-7xl font-bold">{artist.display_name}</h2>
-                <span className="text-base font-medium">
+                <h2 className="text-7xl font-bold drop-shadow-md text-white">{artist.display_name}</h2>
+                <span className="text-base font-medium drop-shadow-md">
           {artist.artist_listeners.toLocaleString()} listeners
         </span>
               </div>
@@ -115,13 +126,25 @@ export default function ArtistPage({params}: Props) {
             </div>
           )}
 
+          {(artistPlaylists?.count || 0) > 0 && (
+            <div className="mt-12">
+              <div className="flex items-center justify-between w-full mb-2">
+                <Link href={`/artists/${artist?.slug}/playlists`}
+                      className="mt-3 font-semibold text-2xl hover:underline ml-2">Artist Playlists</Link>
+                <Link href={`/artists/${artist?.slug}/playlists`}
+                      className="text-sm mt-4 text-white/60 font-normal hover:underline">Show all</Link>
+              </div>
+              <PlaylistCards playlists={artistPlaylists?.results.slice(0, 5)}/>
+            </div>
+          )}
+
           {(artistTracks?.count || 0) > 0 && (
             <div className="mt-12">
               <div className="flex items-center justify-between w-full mb-2">
                 <Link href={`/artists/${artist?.slug}/tracks`}
-                      className="mt-3 font-semibold text-2xl hover:text-white/60 ml-2">Popular releases</Link>
+                      className="mt-3 font-semibold text-2xl hover:underline ml-2">Popular releases</Link>
                 <Link href={`/artists/${artist?.slug}/tracks`}
-                      className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
+                      className="text-sm mt-4 text-white/60 font-normal hover:underline">Show all</Link>
               </div>
               <TrackCards tracks={artistTracks?.results.slice(0, 5)}/>
             </div>
@@ -131,9 +154,9 @@ export default function ArtistPage({params}: Props) {
             <div className="mt-12">
               <div className="flex items-center justify-between w-full mb-2">
                 <Link href={`/artists`}
-                      className="mt-3 font-semibold text-2xl hover:text-white/60 ml-2">Fans also like</Link>
+                      className="mt-3 font-semibold text-2xl hover:underline ml-2">Fans also like</Link>
                 <Link href={`/artists`}
-                      className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
+                      className="text-sm mt-4 text-white/60 font-normal hover:underline">Show all</Link>
               </div>
               <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
             </div>

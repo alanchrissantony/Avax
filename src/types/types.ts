@@ -22,7 +22,18 @@ export interface ListBaseApi {
 }
 
 export interface User extends BaseApi {
-
+  display_name: string;
+  type_profile: string,
+  artist_slug: string;
+  email: string;
+  gender: string;
+  country: string;
+  image: string;
+  color: string;
+  is_premium: boolean;
+  followers_count: number;
+  following_count: number;
+  playlists_count: number;
 }
 
 export interface Artist extends BaseApi {
@@ -31,6 +42,7 @@ export interface Artist extends BaseApi {
     id: number;
     displayName: string;
     type_profile: string;
+    artist_slug: string;
     image: string;
     followers_count: number;
     is_premium: boolean;
@@ -144,6 +156,7 @@ export interface Playlist extends BaseApi {
     id: number;
     display_name: string;
     type_profile: string;
+    artist_slug: string;
     image: string;
     followers_count: number;
     is_premium: boolean;

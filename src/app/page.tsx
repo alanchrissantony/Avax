@@ -21,10 +21,10 @@ import {useEffect, useState} from "react";
 
 
 export default function Home() {
-  const {data: topArtists, isLoading, isFetching} = useListArtistQuery()
+  const {data: topArtists, isLoading, isFetching} = useListArtistQuery({})
   const {data: topAlbums, isLoading: isLoadingAlbums, isFetching: isFetchingAlbums} = useListAlbumQuery({})
   const {data: topTracks, isLoading: isLoadingTrack, isFetching: isFetchingTrack} = useListTrackQuery({})
-  const {data: topPlaylists, isLoading: isLoadingPlaylist, isFetching: isFetchingPlaylist} = useListPlaylistQuery()
+  const {data: topPlaylists, isLoading: isLoadingPlaylist, isFetching: isFetchingPlaylist} = useListPlaylistQuery({})
 
   const load = isLoading || isFetching || isLoadingAlbums || isFetchingAlbums || isLoadingTrack || isFetchingTrack || isLoadingPlaylist || isFetchingPlaylist;
 

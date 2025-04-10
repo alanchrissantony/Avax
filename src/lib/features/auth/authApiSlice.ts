@@ -1,16 +1,6 @@
 import {apiSlice} from "@/lib/services/apiSlice";
 import {finishInitialLoadUser, setUser} from "@/lib/features/auth/authSlice";
-import {BaseApi} from "@/types/types";
-
-export interface User extends BaseApi {
-  first_name: string;
-  last_name: string;
-  type_profile: string,
-  email: string;
-  image: string;
-  is_online: boolean;
-  is_spam_email: boolean;
-}
+import {User} from "@/types/types";
 
 interface SocialAuthArgs {
   provider: string;

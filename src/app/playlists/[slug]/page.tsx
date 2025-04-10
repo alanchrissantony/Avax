@@ -84,8 +84,14 @@ export default function PlaylistPage({params}: Props) {
                       className="aspect-square object-cover rounded-full mr-1 h-6 w-6"
                       priority
                     />
-                    <Link href={`/user/${playlist.user.id}`}
-                          className="font-semibold hover:underline">{playlist.user.display_name}</Link>
+                    {playlist.user?.artist_slug ? (
+                      <Link href={`/artists/${playlist.user.artist_slug}`}
+                            className="font-semibold hover:underline">{playlist.user.display_name}</Link>
+                    ) : (
+                      <Link href={`/user/${playlist.user.id}`}
+                            className="font-semibold hover:underline">{playlist.user.display_name}</Link>
+                    )}
+
                     {playlist.favorite_count > 0 && (
                       <>
                         <Dot/>

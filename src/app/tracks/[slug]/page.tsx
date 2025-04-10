@@ -47,7 +47,7 @@ export default function TracksPage({params}: Props) {
     data: relatedArtists,
     isLoading: isLoadingArtists,
     isFetching: isFetchingArtists
-  } = useListArtistQuery()
+  } = useListArtistQuery({})
   const {
     data: trackAlbum,
     isLoading: isLoadingAlbums,
