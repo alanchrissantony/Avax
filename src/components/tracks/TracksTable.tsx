@@ -145,9 +145,11 @@ export default function TracksTable({
                     )}
                   </div>
                   <div>
-                    <CirclePlus size={18}
-                                className="opacity-0 group-hover/item:opacity-100 hover:text-white transition duration-150 ease-in-out transform hover:scale-105"/>
-                    {/*<CircleCheck size={18} className="text-primary"/>*/}
+                    {(showSubtitle && !showAlbum) && (
+                      <CirclePlus size={18}
+                                  className="opacity-0 group-hover/item:opacity-100 hover:text-white transition duration-150 ease-in-out transform hover:scale-105"/>
+                      // <CircleCheck size={18} className="text-primary"/>
+                    )}
                   </div>
                 </div>
               </div>

@@ -110,6 +110,26 @@ export interface Track extends BaseApi {
   };
 }
 
+export interface DetailTrack extends Track {
+  release_date: string;
+  license: {
+    id: number;
+    name: string;
+    text: string;
+    artist: {
+      id: number;
+      slug: string;
+      display_name: string;
+      image: string;
+      color: string;
+      is_verify: boolean;
+    };
+    download_count: number;
+    likes_count: number;
+    user_of_likes: number[];
+  }
+}
+
 export interface Tracks extends ListBaseApi {
   results: Track[];
 }

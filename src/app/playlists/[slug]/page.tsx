@@ -56,7 +56,7 @@ export default function PlaylistPage({params}: Props) {
                     alt={playlist.title}
                     height={170}
                     width={170}
-                    className="aspect-square object-cover shadow-2xl rounded-sm"
+                    className="aspect-square object-cover shadow-2xl rounded-sm h-44 w-44"
                     priority
                   />
                 ) : (
@@ -81,7 +81,7 @@ export default function PlaylistPage({params}: Props) {
                       alt={playlist.user.display_name}
                       height={24}
                       width={24}
-                      className="aspect-square object-cover rounded-full mr-1"
+                      className="aspect-square object-cover rounded-full mr-1 h-6 w-6"
                       priority
                     />
                     <Link href={`/user/${playlist.user.id}`}

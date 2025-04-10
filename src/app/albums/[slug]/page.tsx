@@ -3,9 +3,7 @@
 import {CirclePlus, Dot, Music} from "lucide-react";
 import Image from "next/image";
 import {
-  useListAlbumQuery,
-  useListTrackQuery, useRetrieveAlbumQuery,
-  useRetrievePlaylistQuery
+  useListAlbumQuery, useRetrieveAlbumQuery,
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
@@ -17,7 +15,6 @@ import Footer from "@/components/general/Footer";
 import Link from "next/link";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {formatDuration} from "@/utils/clientUtils";
-import AlbumsLayout from "@/app/albums/layout";
 import AlbumCards from "@/components/albums/AlbumCards";
 import {format} from "date-fns";
 
@@ -41,8 +38,6 @@ export default function AlbumsPage({params}: Props) {
 
   const AlbumBgColor = album?.color || "#202020";
 
-  console.log(album?.release_date)
-
   return (
     <>
       <div
@@ -62,7 +57,7 @@ export default function AlbumsPage({params}: Props) {
                     alt={album.title}
                     height={170}
                     width={170}
-                    className="aspect-square object-cover shadow-2xl rounded-sm"
+                    className="aspect-square object-cover shadow-2xl rounded-sm h-44 w-44"
                     priority
                   />
                 ) : (
@@ -87,7 +82,7 @@ export default function AlbumsPage({params}: Props) {
                       alt={album.artist.display_name}
                       height={24}
                       width={24}
-                      className="aspect-square object-cover rounded-full mr-1"
+                      className="aspect-square object-cover rounded-full mr-1 w-6 h-6"
                       priority
                     />
                     <Link href={`/artists/${album.artist.slug}`}

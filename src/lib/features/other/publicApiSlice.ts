@@ -1,5 +1,14 @@
 import {apiPublicSlice} from "@/lib/services/apiPublicSlice";
-import {Album, Albums, Artist, Artists, DetailAlbum, DetailPlaylist, Playlists, Track, Tracks} from "@/types/types";
+import {
+  Albums,
+  Artist,
+  Artists,
+  DetailAlbum,
+  DetailPlaylist,
+  DetailTrack,
+  Playlists,
+  Tracks
+} from "@/types/types";
 
 
 const publicApiSlice = apiPublicSlice.injectEndpoints({
@@ -22,7 +31,7 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
       query: ({page = 1, artistSlug = '', genreSlug = '', albumSlug = ''}) =>
         `/tracks/?page=${page}&artist__slug=${artistSlug}&genre__slug=${genreSlug}&album__slug=${albumSlug}`,
     }),
-    retrieveTrack: builder.query<Track, string>({
+    retrieveTrack: builder.query<DetailTrack, string>({
       query: (slug) => `/tracks/${slug}/`,
     }),
     listPlaylist: builder.query<Playlists, void>({
