@@ -12,6 +12,7 @@ import {formatTime} from "@/utils/clientUtils";
 interface Props {
   tracks: Track[] | undefined;
   showHeader?: boolean;
+  showCardHeader?: boolean;
   showCover?: boolean;
   showAlbum?: boolean;
   showPlaysCount?: boolean;
@@ -23,6 +24,7 @@ export default function TracksTable({
                                       showSubtitle = false,
                                       showCover = false,
                                       showHeader = false,
+                                      showCardHeader = false,
                                       showAlbum = false,
                                       showPlaysCount = false,
                                     }: Props) {
@@ -35,15 +37,13 @@ export default function TracksTable({
 
       {showHeader && (
         <>
-          <header className="grid grid-cols-12 gap-2 p-4 pb-1 text-white/60">
-            <div className="col-span-1 tracking-wider text-left uppercase">
+          <header className="grid grid-cols-12 gap-2 p-4 pb-1 mb-2 text-white/60">
+            <div className="text-left uppercase" style={{width: '30px'}}>
               #
             </div>
 
             <div
-              className={`${
-                (showAlbum || showPlaysCount) ? "col-span-6" : "col-span-10"
-              } text-sm text-left`}
+              className={`${(showAlbum || showPlaysCount) ? "col-span-6" : "col-span-10"} text-sm text-left`}
             >
               Title
             </div>
@@ -70,9 +70,38 @@ export default function TracksTable({
         </>
       )}
 
+      {showCardHeader && (
+        <header className="bg-white/10 hover:bg-white/20 w-full h-20 mb-0.5 shadow-lg rounded-t-lg overflow-hidden">
+          <Link href={`/albums/${tracks?.[0]?.album?.slug}`} className="">
+            <div className="flex justify-start items-center space-x-4">
+              {tracks?.[0]?.album ? (
+                <Image
+                  src={tracks[0].album?.image}
+                  alt={tracks[0].album?.title}
+                  height={80}
+                  width={80}
+                  className="aspect-square object-cover h-20 w-20"
+                  priority
+                />
+              ) : (
+                <div>
+                  <Music size={80}/>
+                </div>
+              )}
+              <div>
+                <h5 className="text-xs font-normal text-white">From the album</h5>
+                <h2 className="text-white text-lg font-semibold hover:underline">
+                  {tracks?.[0]?.album?.title}
+                </h2>
+              </div>
+            </div>
+          </Link>
+        </header>
+      )}
+
       {/* Table Rows */}
 
-      <div className="w-full col-span-12 mt-2">
+      <div className="w-full col-span-12">
         {tracks?.map((track, index) => (
           <div
             className={`grid py-2 px-4 rounded-md grid-cols-12 group/item ${
@@ -144,13 +173,6 @@ export default function TracksTable({
                       </div>
                     )}
                   </div>
-                  <div>
-                    {(showSubtitle && !showAlbum) && (
-                      <CirclePlus size={18}
-                                  className="opacity-0 group-hover/item:opacity-100 hover:text-white transition duration-150 ease-in-out transform hover:scale-105"/>
-                      // <CircleCheck size={18} className="text-primary"/>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
@@ -163,9 +185,6 @@ export default function TracksTable({
                 >
                   {track.album.title}
                 </Link>
-                <CirclePlus size={18}
-                            className="opacity-0 group-hover/item:opacity-100 hover:text-white transition duration-150 ease-in-out transform hover:scale-105"/>
-                {/*<CircleCheck size={18} className="text-primary"/>*/}
               </div>
             )}
 
@@ -178,7 +197,12 @@ export default function TracksTable({
             )}
 
             <small className="flex items-center justify-center col-span-1 text-sm font-medium text-white/60 ">
-              {formatTime(track.duration)}
+              <div className="flex items-center w-full gap-3">
+                <CirclePlus size={18}
+                            className="opacity-0 group-hover/item:opacity-100 hover:text-white transition duration-150 ease-in-out transform hover:scale-105"/>
+                {/*<CircleCheck size={18} className="text-primary"/>*/}
+              </div>
+              <span className="mr-3 lg:6 xl:mr-7">{formatTime(track.duration)}</span>
             </small>
           </div>
         ))}

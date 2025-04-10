@@ -4,7 +4,7 @@ import {CirclePlus, Dot, Music} from "lucide-react";
 import Image from "next/image";
 import {
   useListAlbumQuery, useListArtistQuery,
-  useListTrackQuery, useRetrieveTrackQuery
+  useListTrackQuery, useRetrieveAlbumQuery, useRetrieveTrackQuery
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
@@ -48,11 +48,16 @@ export default function TracksPage({params}: Props) {
     isLoading: isLoadingArtists,
     isFetching: isFetchingArtists
   } = useListArtistQuery()
+  const {
+    data: trackAlbum,
+    isLoading: isLoadingAlbums,
+    isFetching: isFetchingAlbums
+  } = useRetrieveAlbumQuery(track?.album?.slug || 'null')
 
   const load = (
     isLoading || isFetching || isLoadingRec || isFetchingRec ||
     isLoadingArtistTracks || isFetchingArtistTracks || isLoadingA || isFetchingA ||
-    isLoadingArtists || isFetchingArtists
+    isLoadingArtists || isFetchingArtists || isLoadingAlbums || isFetchingAlbums
   )
 
   const {activeTrack} = useAppSelector(state => state.track)
@@ -64,7 +69,7 @@ export default function TracksPage({params}: Props) {
       <div
         className="h-full rounded-lg"
         style={{
-          backgroundImage: `linear-gradient(to bottom, ${TrackAlbumBgColor}, #131313, #131313)`,
+          backgroundImage: `linear-gradient(to bottom, ${TrackAlbumBgColor} 0%, #131313 30%, #131313 100%)`,
         }}
       >
         <Header/>
@@ -82,8 +87,8 @@ export default function TracksPage({params}: Props) {
                     priority
                   />
                 ) : (
-                  <div className="">
-                    <Music size={160} className=" bg-paper "/>
+                  <div>
+                    <Music size={160}/>
                   </div>
                 )}
 
@@ -126,7 +131,7 @@ export default function TracksPage({params}: Props) {
                         <span>{formatTime(track.duration)}</span>
                       </>
                     )}
-                    {track.plays_count && (
+                    {(track.plays_count >= 0) && (
                       <>
                         <Dot/>
                         <span>{track.plays_count.toLocaleString()}</span>
@@ -164,9 +169,9 @@ export default function TracksPage({params}: Props) {
               <p className="text-sm text-white/60">Based on what`s in this playlist</p>
               <TracksTable
                 tracks={recommendations?.results.slice(0, 5)}
-                showAlbum
                 showCover
                 showSubtitle
+                showPlaysCount
               />
             </div>
           }
@@ -177,7 +182,7 @@ export default function TracksPage({params}: Props) {
               <h1 className="font-bold text-2xl">{track?.artist?.display_name}</h1>
               <TracksTable
                 tracks={artistTracks?.results.slice(0, 5)}
-                showAlbum
+                showPlaysCount
                 showCover
               />
             </div>
@@ -209,6 +214,14 @@ export default function TracksPage({params}: Props) {
               </div>
               <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
             </div>
+          )}
+
+          {trackAlbum && (
+            <TracksTable
+              tracks={trackAlbum.tracks}
+              showCardHeader
+              showSubtitle
+            />
           )}
 
           {track?.release_date && (

@@ -23,7 +23,7 @@ export default function TrackCards({tracks}: Props) {
           track_slug={track.slug}
           tracks={tracks}
           index={index}
-          type="albums"
+          type="tracks"
         />
       ))}
     </CardItemGrid>
