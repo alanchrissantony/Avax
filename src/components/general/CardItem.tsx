@@ -9,12 +9,13 @@ import {useAppSelector} from "@/lib/hooks";
 interface Props {
   image: any;
   id: number;
-  slug: string;
+  slug?: string;
+  artist_slug?: string;
   altTitle: string;
   heading: string;
   subheading?: string;
   imageRounded?: boolean;
-  track_slug: string;
+  track_slug?: string;
   tracks?: Track[] | undefined;
   index?: number;
   type: string;
@@ -29,18 +30,19 @@ export default function CardItem({
                                    subheading,
                                    imageRounded = false,
                                    track_slug,
+                                   artist_slug,
                                    tracks,
                                    index,
                                    type,
                                  }: Props) {
-  const {data: track} = useRetrieveTrackQuery(track_slug);
+  const {data: track} = useRetrieveTrackQuery(track_slug || "null");
   const {activeTrack} = useAppSelector((state) => state.track);
 
   return (
-    <Link href={`/${type}/${slug}`}>
+    <Link href={`/${type}/${artist_slug || slug || id}`}>
       <div
         className={`h-full p-4 transition duration-300 rounded-md cursor-pointer group/item
-        ${type === "artists" ? "hover:bg-gradient-to-t hover:from-[#303030]/50" : "hover:bg-[#353535]/50"}`}>
+        ${type === "artists" || "users" ? "hover:bg-gradient-to-t hover:from-[#303030]/50" : "hover:bg-[#353535]/50"}`}>
         <div className="relative">
           {image.length > 0 ? (
             <Image

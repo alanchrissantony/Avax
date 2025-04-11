@@ -14,9 +14,7 @@ import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TrackCardsLittle from "@/components/tracks/TrackCardsLittle";
 import Footer from "@/components/general/Footer";
 import Header from "@/components/general/Header";
-import PreviewPlayer from "@/components/tracks/PreviewPlayer";
 import {useAppSelector} from "@/lib/hooks";
-import FooterLogin from "@/components/general/FooterLogin";
 import {useEffect, useState} from "react";
 
 
@@ -68,59 +66,56 @@ export default function Home() {
   }
 
   return (
-    <>
-      <div
-        className="h-full rounded-lg"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, ${backgroundColor} 0%, rgba(19, 19, 19, 0.9) 25%, #131313 100%)`,
-        }}
-      >
-        <Header/>
+    <div
+      className="h-full rounded-lg"
+      style={{
+        backgroundImage: `linear-gradient(to bottom, ${backgroundColor} 0%, rgba(19, 19, 19, 0.9) 25%, #131313 100%)`,
+      }}
+    >
+      <Header/>
 
-        <section className="flex flex-col items-start text-2xl font-bold space-y-4 mx-6 my-6">
+      <section className="flex flex-col items-start text-2xl font-bold space-y-4 mx-6 my-6">
 
-          <div className="flex items-center">
-            <Link href={"/tracks"} className="mt-4 ml-4">Top tracks</Link>
+        <div className="flex items-center">
+          <Link href={"/tracks"} className="mt-4 ml-4">Top tracks</Link>
+        </div>
+        <TrackCardsLittle tracks={topTracks?.results.slice(0, 6)}/>
+
+        <div>
+          <div className="flex items-center justify-between w-full mb-2">
+            <Link href={"/artists"} className="mt-3 hover:text-white/60 ml-4">Popular artists</Link>
+            <Link href={"/artists"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
           </div>
-          <TrackCardsLittle tracks={topTracks?.results.slice(0, 6)}/>
+          <ArtistCards artists={topArtists?.results.slice(0, 5)}/>
+        </div>
 
-          <div>
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={"/artists"} className="mt-3 hover:text-white/60 ml-4">Popular artists</Link>
-              <Link href={"/artists"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
-            </div>
-            <ArtistCards artists={topArtists?.results.slice(0, 5)}/>
+        <div>
+          <div className="flex items-center justify-between w-full mb-2">
+            <Link href={"/albums"} className="mt-3 hover:text-white/60 ml-4">Popular albums</Link>
+            <Link href={"/albums"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
           </div>
+          <AlbumCards albums={topAlbums?.results.slice(0, 5)}/>
+        </div>
 
-          <div>
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={"/albums"} className="mt-3 hover:text-white/60 ml-4">Popular albums</Link>
-              <Link href={"/albums"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
-            </div>
-            <AlbumCards albums={topAlbums?.results.slice(0, 5)}/>
+        <div>
+          <div className="flex items-center justify-between w-full mb-2">
+            <Link href={"/playlists"} className="mt-3 hover:text-white/60 ml-4">Popular playlists</Link>
+            <Link href={"/playlists"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
           </div>
+          <PlaylistCards playlists={topPlaylists?.results.slice(0, 5)}/>
+        </div>
 
-          <div>
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={"/playlists"} className="mt-3 hover:text-white/60 ml-4">Popular playlists</Link>
-              <Link href={"/playlists"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
-            </div>
-            <PlaylistCards playlists={topPlaylists?.results.slice(0, 5)}/>
+        <div>
+          <div className="flex items-center justify-between w-full mb-2">
+            <Link href={"/tracks"} className="mt-3 hover:text-white/60 ml-4">Popular tracks</Link>
+            <Link href={"/tracks"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
           </div>
-
-          <div>
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={"/tracks"} className="mt-3 hover:text-white/60 ml-4">Popular tracks</Link>
-              <Link href={"/tracks"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
-            </div>
-            <TrackCards tracks={topTracks?.results.slice(0, 5)}/>
-          </div>
+          <TrackCards tracks={topTracks?.results.slice(0, 5)}/>
+        </div>
 
 
-          <Footer/>
-        </section>
-      </div>
-      {activeTrack ? <PreviewPlayer/> : <FooterLogin/>}
-    </>
+        <Footer/>
+      </section>
+    </div>
   )
 }

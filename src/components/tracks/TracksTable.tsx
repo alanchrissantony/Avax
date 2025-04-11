@@ -32,7 +32,7 @@ export default function TracksTable({
   const {activeTrack} = useAppSelector(state => state.track)
 
   return (
-    <div className="mt-8">
+    <div className="mt-4">
       {/* Table Header */}
 
       {showHeader && (
