@@ -48,9 +48,9 @@ export default function CardItem({
             <Image
               src={image}
               alt={altTitle}
-              height={160}
-              width={160}
-              className={`aspect-square object-cover w-full ${
+              height={200}
+              width={200}
+              className={`aspect-square object-cover ${
                 imageRounded ? "rounded-full" : "rounded-md"
               }`}
             />

@@ -16,6 +16,7 @@ import {formatTime} from "@/utils/clientUtils";
 import AlbumCards from "@/components/albums/AlbumCards";
 import {format} from "date-fns";
 import ArtistCards from "@/components/artists/ArtistCards";
+import TitleShowAll from "@/components/ui/title-show-all";
 
 interface Props {
   params: {
@@ -138,7 +139,7 @@ export default function TracksPage({params}: Props) {
         </div>
       </div>
 
-      <div className="mx-6 my-6">
+      <div className="mx-6 my-6 space-y-8">
         <div className="flex items-center space-x-6">
           <PlayTrackButton
             track={track}
@@ -158,56 +159,53 @@ export default function TracksPage({params}: Props) {
         </div>
 
         {(recommendations?.count || 0) > 0 &&
-          <div className="my-8">
-            <h1 className="font-bold text-2xl pb-1">Recommended</h1>
-            <p className="text-sm text-white/60">Based on what`s in this playlist</p>
+          <TitleShowAll
+            title="Recomended"
+            titlePB="Based on what`s in this track"
+            isShowAll={false}
+          >
             <TracksTable
               tracks={recommendations?.results.slice(0, 5)}
               showCover
               showSubtitle
               showPlaysCount
             />
-          </div>
+          </TitleShowAll>
         }
 
         {(artistTracks?.count || 0) > 0 && (
-          <div className="my-8">
-            <p className="text-sm text-white/60 pb-1">Popular Tracks by</p>
-            <h1 className="font-bold text-2xl">{track?.artist?.display_name}</h1>
+          <TitleShowAll
+            titlePT="Popular Tracks by"
+            title={`${track?.artist?.display_name}`}
+            isShowAll={false}
+          >
             <TracksTable
               tracks={artistTracks?.results.slice(0, 5)}
               showPlaysCount
               showCover
             />
-          </div>
+          </TitleShowAll>
         )}
 
         {(artistAlbums?.count || 0) > 0 &&
-          <div className="my-8 mt-16">
-            <div className="flex items-center justify-between w-full mb-3">
-              <Link href={`/artist/${track?.artist?.slug}/discography/album`}
-                    className="mt-3 hover:underline font-bold text-2xl">
-                Popular Albums by {track?.artist?.display_name}
-              </Link>
-              <Link href={`/artist/${track?.artist?.slug}/discography/album`}
-                    className="text-sm mt-4 font-bold text-white/50 hover:underline">
-                Show all
-              </Link>
-            </div>
+          <TitleShowAll
+            title={`Popular Albums by ${track?.artist?.display_name}`}
+            href={`/artists/${track?.artist?.slug}/discography/album`}
+            className="mt-10"
+            isShowAll={(artistAlbums?.count || 0) > 5}
+          >
             <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
-          </div>
+          </TitleShowAll>
         }
 
         {(relatedArtists?.count || 0) > 0 && (
-          <div className="mt-12">
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={`/artists`}
-                    className="mt-3 font-bold text-2xl hover:underline ml-2">Fans also like</Link>
-              <Link href={`/artists`}
-                    className="text-sm mt-4 text-white/50 font-bold hover:underline">Show all</Link>
-            </div>
+          <TitleShowAll
+            title="Fans also like"
+            href="/artists"
+            isShowAll={(relatedArtists?.count || 0) > 5}
+          >
             <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
-          </div>
+          </TitleShowAll>
         )}
 
         {trackAlbum && (

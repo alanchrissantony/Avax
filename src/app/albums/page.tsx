@@ -1,23 +1,18 @@
 "use client";
 
-import {useListUserFollowersQuery} from "@/lib/features/other/publicApiSlice";
+import {useListAlbumQuery} from "@/lib/features/other/publicApiSlice";
 import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
-import UserCards from "@/components/users/UserCards";
-import {usePathname} from "next/navigation";
+import AlbumCards from "@/components/albums/AlbumCards";
 import TitleShowAll from "@/components/ui/title-show-all";
 
 
-export default function UserFollowersPage() {
-  const pathname = usePathname();
-  const parts = pathname.split('/');
-  const userId = parts[2];
-
+export default function Page() {
   const {
-    data: userFollowers,
+    data: albums,
     isLoading: isLoading,
     isFetching: isFetching,
-  } = useListUserFollowersQuery({userId})
+  } = useListAlbumQuery({})
 
   const load = isLoading || isFetching
 
@@ -31,14 +26,11 @@ export default function UserFollowersPage() {
     >
       <Header/>
       <div className="mx-6 my-6 space-y-6">
-        {(userFollowers?.length || 0) > 0 && (
+
+        {(albums?.count || 0) > 0 && (
           <div className="mt-20">
-            <TitleShowAll
-              title="Followers"
-              isShowAll={false}
-              className="text-4xl"
-            >
-              <UserCards users={userFollowers}/>
+            <TitleShowAll title="Popular Albums" className="text-3xl">
+              <AlbumCards albums={albums?.results}/>
             </TitleShowAll>
           </div>
         )}

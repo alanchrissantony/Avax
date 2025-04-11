@@ -16,6 +16,7 @@ import Footer from "@/components/general/Footer";
 import Header from "@/components/general/Header";
 import {useAppSelector} from "@/lib/hooks";
 import {useEffect, useState} from "react";
+import TitleShowAll from "@/components/ui/title-show-all";
 
 
 export default function Home() {
@@ -74,45 +75,28 @@ export default function Home() {
     >
       <Header/>
 
-      <section className="flex flex-col items-start text-2xl font-bold space-y-4 mx-6 my-6">
+      <section className="flex flex-col items-start text-2xl font-bold space-y-8 mx-6 my-6">
 
         <div className="flex items-center">
           <Link href={"/tracks"} className="mt-4 ml-4">Top tracks</Link>
         </div>
         <TrackCardsLittle tracks={topTracks?.results.slice(0, 6)}/>
 
-        <div>
-          <div className="flex items-center justify-between w-full mb-2">
-            <Link href={"/artists"} className="mt-3 hover:text-white/60 ml-4">Popular artists</Link>
-            <Link href={"/artists"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
-          </div>
+        <TitleShowAll title="Popular artists" href="/artists">
           <ArtistCards artists={topArtists?.results.slice(0, 5)}/>
-        </div>
+        </TitleShowAll>
 
-        <div>
-          <div className="flex items-center justify-between w-full mb-2">
-            <Link href={"/albums"} className="mt-3 hover:text-white/60 ml-4">Popular albums</Link>
-            <Link href={"/albums"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
-          </div>
+        <TitleShowAll title="Popular albums" href="/albums">
           <AlbumCards albums={topAlbums?.results.slice(0, 5)}/>
-        </div>
+        </TitleShowAll>
 
-        <div>
-          <div className="flex items-center justify-between w-full mb-2">
-            <Link href={"/playlists"} className="mt-3 hover:text-white/60 ml-4">Popular playlists</Link>
-            <Link href={"/playlists"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
-          </div>
+        <TitleShowAll title="Popular playlists" href="/playlists">
           <PlaylistCards playlists={topPlaylists?.results.slice(0, 5)}/>
-        </div>
+        </TitleShowAll>
 
-        <div>
-          <div className="flex items-center justify-between w-full mb-2">
-            <Link href={"/tracks"} className="mt-3 hover:text-white/60 ml-4">Popular tracks</Link>
-            <Link href={"/tracks"} className="text-sm mt-4 text-white/30 hover:text-white/80">Show all</Link>
-          </div>
+        <TitleShowAll title="Popular tracks" href="/tracks">
           <TrackCards tracks={topTracks?.results.slice(0, 5)}/>
-        </div>
-
+        </TitleShowAll>
 
         <Footer/>
       </section>

@@ -15,9 +15,9 @@ import AlbumCards from "@/components/albums/AlbumCards";
 import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import TrackCards from "@/components/tracks/TrackCards";
-import Link from "next/link";
 import ArtistCards from "@/components/artists/ArtistCards";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
+import TitleShowAll from "@/components/ui/title-show-all";
 
 interface Props {
   params: {
@@ -93,7 +93,7 @@ export default function ArtistPage({params}: Props) {
         </div>
       </div>
 
-      <div className=" mx-6 my-6">
+      <div className=" mx-6 my-6 space-y-8">
         <div className="flex items-center space-x-6">
           <PlayTrackButton track={artistTracks?.results?.[currentIndex] || (activeTrack || undefined)}
                            tracks={artistTracks?.results} index={currentIndex} variant="filled"
@@ -106,57 +106,50 @@ export default function ArtistPage({params}: Props) {
 
         {(artistTracks?.count || 0) > 0 && (
           <div className="mt-6">
-            <h1 className="font-semibold text-2xl ml-2">Popular</h1>
-            <TracksTable tracks={artistTracks?.results.slice(0, 5)} showCover showPlaysCount/>
+            <TitleShowAll title="Popular" isShowAll={false}>
+              <TracksTable tracks={artistTracks?.results.slice(0, 5)} showCover showPlaysCount/>
+            </TitleShowAll>
           </div>
         )}
 
         {(artistAlbums?.count || 0) > 0 && (
-          <div className="mt-12">
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={`/artists/${artist?.slug}/albums`}
-                    className="mt-3 font-semibold text-2xl hover:underline ml-2">Albums</Link>
-              <Link href={`/artists/${artist?.slug}/albums`}
-                    className="text-sm mt-4 text-white/60 font-normal hover:underline">Show all</Link>
-            </div>
+          <TitleShowAll
+            title="Albums"
+            href={`/artists/${artist?.slug}/discography/album`}
+            isShowAll={(artistAlbums?.count || 0) > 5}
+          >
             <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
-          </div>
+          </TitleShowAll>
         )}
 
         {(artistPlaylists?.count || 0) > 0 && (
-          <div className="mt-12">
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={`/artists/${artist?.slug}/playlists`}
-                    className="mt-3 font-semibold text-2xl hover:underline ml-2">Artist Playlists</Link>
-              <Link href={`/artists/${artist?.slug}/playlists`}
-                    className="text-sm mt-4 text-white/60 font-normal hover:underline">Show all</Link>
-            </div>
+          <TitleShowAll
+            title="Artist Playlists"
+            href={`/artists/${artist?.slug}/playlists?id=${artist?.user?.id}&name=${artist?.display_name}`}
+            isShowAll={(artistAlbums?.count || 0) > 5}
+          >
             <PlaylistCards playlists={artistPlaylists?.results.slice(0, 5)}/>
-          </div>
+          </TitleShowAll>
         )}
 
         {(artistTracks?.count || 0) > 0 && (
-          <div className="mt-12">
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={`/artists/${artist?.slug}/tracks`}
-                    className="mt-3 font-semibold text-2xl hover:underline ml-2">Popular releases</Link>
-              <Link href={`/artists/${artist?.slug}/tracks`}
-                    className="text-sm mt-4 text-white/60 font-normal hover:underline">Show all</Link>
-            </div>
+          <TitleShowAll
+            title="Popular releases"
+            href={`/artists/${artist?.slug}/tracks`}
+            isShowAll={(artistTracks?.count || 0) > 5}
+          >
             <TrackCards tracks={artistTracks?.results.slice(0, 5)}/>
-          </div>
+          </TitleShowAll>
         )}
 
         {(relatedArtists?.count || 0) > 0 && (
-          <div className="mt-12">
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={`/artists`}
-                    className="mt-3 font-semibold text-2xl hover:underline ml-2">Fans also like</Link>
-              <Link href={`/artists`}
-                    className="text-sm mt-4 text-white/60 font-normal hover:underline">Show all</Link>
-            </div>
+          <TitleShowAll
+            title="Fans also like"
+            href={`/artists`}
+            isShowAll={(relatedArtists?.count || 0) > 5}
+          >
             <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
-          </div>
+          </TitleShowAll>
         )}
 
         <Footer/>

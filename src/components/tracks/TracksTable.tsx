@@ -13,6 +13,7 @@ interface Props {
   tracks: Track[] | undefined;
   showHeader?: boolean;
   showCardHeader?: boolean;
+  showArtistCardHeader?: boolean;
   showCover?: boolean;
   showAlbum?: boolean;
   showPlaysCount?: boolean;
@@ -25,6 +26,7 @@ export default function TracksTable({
                                       showCover = false,
                                       showHeader = false,
                                       showCardHeader = false,
+                                      showArtistCardHeader = false,
                                       showAlbum = false,
                                       showPlaysCount = false,
                                     }: Props) {
@@ -34,6 +36,64 @@ export default function TracksTable({
   return (
     <div className="mt-4">
       {/* Table Header */}
+
+      {showCardHeader && (
+        <header className="bg-white/10 hover:bg-white/20 w-full h-20 mb-0.5 shadow-lg rounded-t-lg overflow-hidden">
+          <Link href={`/albums/${tracks?.[0]?.album?.slug}`} className="">
+            <div className="flex justify-start items-center space-x-4">
+              {tracks?.[0]?.album ? (
+                <Image
+                  src={tracks[0].album?.image}
+                  alt={tracks[0].album?.title}
+                  height={80}
+                  width={80}
+                  className="aspect-square object-cover h-20 w-20"
+                  priority
+                />
+              ) : (
+                <div>
+                  <Music size={80}/>
+                </div>
+              )}
+              <div>
+                <h5 className="text-xs font-normal text-white">From the album</h5>
+                <h2 className="text-white text-lg font-semibold hover:underline">
+                  {tracks?.[0]?.album?.title}
+                </h2>
+              </div>
+            </div>
+          </Link>
+        </header>
+      )}
+
+      {showArtistCardHeader && (
+        <header className="bg-white/10 hover:bg-white/20 w-full h-20 mb-0.5 shadow-lg rounded-t-lg overflow-hidden">
+          <Link href={`/artists/${tracks?.[0]?.artist?.slug}`}>
+            <div className="flex justify-start items-center space-x-4">
+              {tracks?.[0]?.artist ? (
+                <Image
+                  src={tracks[0].artist?.image}
+                  alt={tracks[0].artist?.display_name}
+                  height={80}
+                  width={80}
+                  className="aspect-square object-cover h-20 w-20"
+                  priority
+                />
+              ) : (
+                <div>
+                  <Music size={80}/>
+                </div>
+              )}
+              <div>
+                <h5 className="text-xs font-normal text-white">From the all albums</h5>
+                <h2 className="text-white text-lg font-semibold hover:underline">
+                  {tracks?.[0]?.artist?.display_name}
+                </h2>
+              </div>
+            </div>
+          </Link>
+        </header>
+      )}
 
       {showHeader && (
         <>
@@ -68,35 +128,6 @@ export default function TracksTable({
           {/* Divider */}
           <div className="col-span-12 border-b border-[#404040]/80"></div>
         </>
-      )}
-
-      {showCardHeader && (
-        <header className="bg-white/10 hover:bg-white/20 w-full h-20 mb-0.5 shadow-lg rounded-t-lg overflow-hidden">
-          <Link href={`/albums/${tracks?.[0]?.album?.slug}`} className="">
-            <div className="flex justify-start items-center space-x-4">
-              {tracks?.[0]?.album ? (
-                <Image
-                  src={tracks[0].album?.image}
-                  alt={tracks[0].album?.title}
-                  height={80}
-                  width={80}
-                  className="aspect-square object-cover h-20 w-20"
-                  priority
-                />
-              ) : (
-                <div>
-                  <Music size={80}/>
-                </div>
-              )}
-              <div>
-                <h5 className="text-xs font-normal text-white">From the album</h5>
-                <h2 className="text-white text-lg font-semibold hover:underline">
-                  {tracks?.[0]?.album?.title}
-                </h2>
-              </div>
-            </div>
-          </Link>
-        </header>
       )}
 
       {/* Table Rows */}

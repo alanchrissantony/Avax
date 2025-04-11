@@ -5,6 +5,7 @@ import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import UserCards from "@/components/users/UserCards";
 import {usePathname} from "next/navigation";
+import TitleShowAll from "@/components/ui/title-show-all";
 
 
 export default function UserFollowingPage() {
@@ -31,12 +32,13 @@ export default function UserFollowingPage() {
       <div className="mx-6 my-6 space-y-6">
         {(userFollowing?.length || 0) > 0 && (
           <div className="mt-20">
-            <div className="flex items-center justify-between w-full mb-3">
-              <h2 className="mt-3 text-4xl font-bold ml-2">
-                Following
-              </h2>
-            </div>
-            <UserCards users={userFollowing}/>
+            <TitleShowAll
+              title="Following"
+              isShowAll={false}
+              className="text-4xl"
+            >
+              <UserCards users={userFollowing}/>
+            </TitleShowAll>
           </div>
         )}
 

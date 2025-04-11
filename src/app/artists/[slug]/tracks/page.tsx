@@ -1,23 +1,23 @@
 "use client";
 
-import {useListUserFollowersQuery} from "@/lib/features/other/publicApiSlice";
+import {useListTrackQuery} from "@/lib/features/other/publicApiSlice";
 import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
-import UserCards from "@/components/users/UserCards";
 import {usePathname} from "next/navigation";
 import TitleShowAll from "@/components/ui/title-show-all";
+import TracksTable from "@/components/tracks/TracksTable";
 
 
-export default function UserFollowersPage() {
+export default function Page() {
   const pathname = usePathname();
   const parts = pathname.split('/');
-  const userId = parts[2];
+  const artistSlug = parts[2];
 
   const {
-    data: userFollowers,
+    data: artistTracks,
     isLoading: isLoading,
     isFetching: isFetching,
-  } = useListUserFollowersQuery({userId})
+  } = useListTrackQuery({artistSlug})
 
   const load = isLoading || isFetching
 
@@ -31,14 +31,20 @@ export default function UserFollowersPage() {
     >
       <Header/>
       <div className="mx-6 my-6 space-y-6">
-        {(userFollowers?.length || 0) > 0 && (
+
+        {(artistTracks?.count || 0) > 0 && (
           <div className="mt-20">
             <TitleShowAll
-              title="Followers"
+              title={`Popular releases by ${artistTracks?.results?.[0]?.artist?.display_name}`}
               isShowAll={false}
-              className="text-4xl"
+              className="text-3xl"
             >
-              <UserCards users={userFollowers}/>
+              <TracksTable
+                tracks={artistTracks?.results}
+                showArtistCardHeader
+                showCover
+                showPlaysCount
+              />
             </TitleShowAll>
           </div>
         )}

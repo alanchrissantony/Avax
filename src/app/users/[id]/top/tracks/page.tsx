@@ -5,6 +5,7 @@ import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import {usePathname} from "next/navigation";
 import TracksTable from "@/components/tracks/TracksTable";
+import TitleShowAll from "@/components/ui/title-show-all";
 
 
 export default function Page() {
@@ -31,17 +32,18 @@ export default function Page() {
       <div className="mx-6 my-6 space-y-6">
         {(recentlyTracks?.count || 0) > 0 && (
           <div className="mt-20">
-            <div className="flex items-center justify-between w-full mb-3">
-              <h2 className="mt-3 text-3xl font-bold ml-2">
-                Top tracks this month
-              </h2>
-            </div>
-            <TracksTable
-              tracks={recentlyTracks?.results}
-              showCover
-              showSubtitle
-              showAlbum
-            />
+            <TitleShowAll
+              title="Top tracks this month"
+              isShowAll={false}
+              className="text-3xl"
+            >
+              <TracksTable
+                tracks={recentlyTracks?.results}
+                showCover
+                showSubtitle
+                showAlbum
+              />
+            </TitleShowAll>
           </div>
         )}
 

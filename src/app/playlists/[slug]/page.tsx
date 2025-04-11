@@ -14,6 +14,7 @@ import Footer from "@/components/general/Footer";
 import Link from "next/link";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {formatDuration} from "@/utils/clientUtils";
+import TitleShowAll from "@/components/ui/title-show-all";
 
 interface Props {
   params: {
@@ -117,7 +118,7 @@ export default function PlaylistPage({params}: Props) {
         </div>
       </div>
 
-      <div className="mx-6 my-6">
+      <div className="mx-6 my-6 space-y-8">
         <div className="flex items-center space-x-6">
           <PlayTrackButton
             track={playlist?.tracks?.[currentIndex] || (activeTrack || undefined)}
@@ -150,16 +151,18 @@ export default function PlaylistPage({params}: Props) {
         </div>
 
         {(recommendations?.count || 0) > 0 &&
-          <div className="my-8">
-            <h1 className="font-bold text-2xl pb-1">Recommended</h1>
-            <p className="text-sm text-white/60">Based on what`s in this playlist</p>
+          <TitleShowAll
+            title="Recomended"
+            titleP="Based on what`s in this playlist"
+            isShowAll={false}
+          >
             <TracksTable
               tracks={recommendations?.results.slice(0, 10)}
               showAlbum
               showCover
               showSubtitle
             />
-          </div>
+          </TitleShowAll>
         }
 
         <Footer/>

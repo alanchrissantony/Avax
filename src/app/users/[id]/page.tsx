@@ -14,6 +14,7 @@ import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TracksTable from "@/components/tracks/TracksTable";
 import UserCards from "@/components/users/UserCards";
 import {Button} from "@/components/ui/button";
+import TitleShowAll from "@/components/ui/title-show-all";
 
 interface Props {
   params: {
@@ -114,8 +115,8 @@ export default function UserPage({params}: Props) {
         </div>
       </div>
 
-      <div className="mx-6 my-6 space-y-6">
-        <div className="flex items-center py-2">
+      <div className="mx-6 my-6 space-y-8">
+        <div className="flex items-center py-1 ml-3">
           <Button variant="ghost"
                   className="rounded-full border border-white/30 h-8 w-19 hover:bg-inherit hover:border-white font-semibold hover:scale-105 duration-150">
             Following
@@ -123,68 +124,49 @@ export default function UserPage({params}: Props) {
         </div>
 
         {(recentlyTracks?.count || 0) > 0 && (
-          <div className="">
-            <div className="flex items-center justify-between w-full">
-              <div className="mt-3 ml-2">
-                <Link href={`/users/${user?.id}/top/tracks`}
-                      className="font-bold text-2xl hover:underline">Top tracks this month</Link>
-                {/*<p className="font-semibold text-sm text-white/60">Only visible to you</p>*/}
-              </div>
-              <Link href={`/user/${user?.id}/top/tracks`}
-                    className="text-sm mt-4 text-white/60 font-normal hover:underline">Show all</Link>
-            </div>
+          <TitleShowAll
+            title="Top tracks this month"
+            titlePB="Only visible to you"
+            href={`/users/${user?.id}/top/tracks`}
+            isShowAll={(recentlyTracks?.count || 0) > 4}
+          >
             <TracksTable
               tracks={recentlyTracks?.results.slice(0, 4)}
               showCover
               showSubtitle
               showAlbum
             />
-          </div>
+          </TitleShowAll>
         )}
 
         {(userPlaylists?.count || 0) > 0 && (
-          <div>
-            <div className="flex items-center justify-between w-full mb-3">
-              <Link href={`/users/${user?.id}/playlists`} className="mt-3 hover:underline text-2xl font-bold ml-4">
-                Public Playlists
-              </Link>
-              <Link href={`/users/${user?.id}/playlists`}
-                    className="text-sm mt-4 text-white/60 font-normal hover:underline">
-                Show all
-              </Link>
-            </div>
+          <TitleShowAll
+            title="Public Playlists"
+            href={`/users/${user?.id}/playlists`}
+            isShowAll={(userPlaylists?.count || 0) > 5}
+          >
             <PlaylistCards playlists={userPlaylists?.results.slice(0, 5)}/>
-          </div>
+          </TitleShowAll>
         )}
 
         {(userFollowers?.length || 0) > 0 && (
-          <div>
-            <div className="flex items-center justify-between w-full mb-3">
-              <Link href={`/users/${user?.id}/followers`} className="mt-3 hover:underline text-2xl font-bold ml-4">
-                Followers
-              </Link>
-              <Link href={`/users/${user?.id}/followers`}
-                    className="text-sm mt-4 text-white/60 font-normal hover:underline">
-                Show all
-              </Link>
-            </div>
+          <TitleShowAll
+            title="Followers"
+            href={`/users/${user?.id}/followers`}
+            isShowAll={(userFollowers?.length || 0) > 5}
+          >
             <UserCards users={userFollowers?.slice(0, 5)}/>
-          </div>
+          </TitleShowAll>
         )}
 
         {(userFollowers?.length || 0) > 0 && (
-          <div>
-            <div className="flex items-center justify-between w-full mb-3">
-              <Link href={`/users/${user?.id}/following`} className="mt-3 hover:underline text-2xl font-bold ml-4">
-                Following
-              </Link>
-              <Link href={`/users/${user?.id}/following`}
-                    className="text-sm mt-4 text-white/60 font-normal hover:underline">
-                Show all
-              </Link>
-            </div>
+          <TitleShowAll
+            title="Following"
+            href={`/users/${user?.id}/following`}
+            isShowAll={(userFollowing?.length || 0) > 5}
+          >
             <UserCards users={userFollowing?.slice(0, 5)}/>
-          </div>
+          </TitleShowAll>
         )}
 
         <Footer/>

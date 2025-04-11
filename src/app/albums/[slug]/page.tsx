@@ -15,6 +15,7 @@ import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/compon
 import {formatDuration} from "@/utils/clientUtils";
 import AlbumCards from "@/components/albums/AlbumCards";
 import {format} from "date-fns";
+import TitleShowAll from "@/components/ui/title-show-all";
 
 interface Props {
   params: {
@@ -154,15 +155,13 @@ export default function AlbumsPage({params}: Props) {
 
         {(artistAlbums?.count || 0) > 0 &&
           <div className="my-8 mt-16">
-            <div className="flex items-center justify-between w-full mb-2">
-              <Link href={`/albums`} className="mt-3 hover:underline font-bold text-2xl">
-                More by {album?.artist.display_name}
-              </Link>
-              <Link href={`/albums`} className="text-sm mt-4 font-bold text-white/50 hover:underline">
-                See discography
-              </Link>
-            </div>
-            <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
+            <TitleShowAll
+              title={`More by ${album?.artist.display_name}`}
+              showAll="See discography"
+              href={`/artists/${album?.artist?.slug}/discography/album`}
+            >
+              <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
+            </TitleShowAll>
           </div>
         }
 
