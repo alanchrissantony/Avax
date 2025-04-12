@@ -4,16 +4,17 @@ import {ChevronLeft, ChevronRight, LogOut, User2} from "lucide-react";
 import Image from "next/image";
 import {usePathname, useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
-// import CollectionTabs from "./CollectionTabs";
-// import SearchInput from "./SearchInput";
+import SearchInput from "@/components/ui/SearchInput";
+
 
 export default function Header() {
+  const pathname = usePathname();
   const router = useRouter();
 
   return (
     <header
       className="sticky top-0 z-50 flex items-center justify-between w-full p-2 pr-5 pl-5 bg-[#0f0f0f] bg-opacity-90 backdrop-blur-md">
-      <div className="flex items-center gap-10 w-[32rem]">
+      <div className="flex items-center gap-3 w-[32rem]">
         <div className="flex items-center gap-3">
           <Button
             size="icon"
@@ -34,7 +35,7 @@ export default function Header() {
           </Button>
         </div>
 
-        {/*{pathname.includes("/search") && <SearchInput />}*/}
+        {pathname.includes("/search") && <SearchInput/>}
 
         {/*{pathname.includes("/collection") &&*/}
         {/*  pathname !== "/collection/tracks" && <CollectionTabs />}*/}
@@ -58,7 +59,7 @@ export default function Header() {
           {/*</span>*/}
         </div>
 
-        <div className="space-x-2">
+        <div className="felx items-center justify-between space-x-2">
           <Button variant="ghost" className="rounded-full font-semibold"
                   size="lg">
             Sign up

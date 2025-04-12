@@ -3,6 +3,7 @@ import {apiSlice} from "@/lib/services/apiSlice";
 import {apiPublicSlice} from "@/lib/services/apiPublicSlice";
 import authReducer from "@/lib/features/auth/authSlice";
 import trackReducer from "@/lib/features/tracks/trackSlice";
+import otherReducer from "@/lib/features/other/otherSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
       [apiPublicSlice.reducerPath]: apiPublicSlice.reducer,
       auth: authReducer,
       track: trackReducer,
+      other: otherReducer,
     },
     middleware: getDefaultMiddleware =>
       getDefaultMiddleware().concat(

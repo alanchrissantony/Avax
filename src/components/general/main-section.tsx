@@ -8,7 +8,12 @@ interface Props {
   bgGradient?: string;
 }
 
-export default function MainSection({children, bgColor = "#202020", className, bgGradient=''}: Props) {
+export default function MainSection({
+                                      children,
+                                      bgColor = "#202020",
+                                      className,
+                                      bgGradient = '',
+                                    }: Props) {
   return (
     <div
       className={`h-full rounded-lg ${className}`}

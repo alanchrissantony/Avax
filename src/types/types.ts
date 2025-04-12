@@ -45,6 +45,10 @@ export interface ShortUser extends BaseApi {
   is_premium: boolean;
 }
 
+export interface ShortUsers extends ListBaseApi {
+  results: ShortUser[];
+}
+
 export interface Artist extends BaseApi {
   slug: string;
   user: {
