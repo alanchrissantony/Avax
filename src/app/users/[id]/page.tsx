@@ -7,14 +7,14 @@ import {
   useListUserFollowersQuery, useListUserFollowingQuery,
   useRetrieveUserQuery
 } from "@/lib/features/other/publicApiSlice";
-import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import Link from "next/link";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TracksTable from "@/components/tracks/TracksTable";
 import UserCards from "@/components/users/UserCards";
-import {Button} from "@/components/ui/button";
 import TitleShowAll from "@/components/ui/title-show-all";
+import PlayButtonAndOther from "@/components/ui/play-button-and-other";
+import MainSection from "@/components/general/main-section";
 
 interface Props {
   params: {
@@ -51,16 +51,10 @@ export default function UserPage({params}: Props) {
     isLoadingFollowing || isFetchingFollowing
   )
 
-  const UserBgColor = user?.color || "#202020";
+  const userBgColor = user?.color || "#202020";
 
   return (
-    <div
-      className="h-full rounded-lg"
-      style={{
-        backgroundImage: `linear-gradient(to bottom, ${UserBgColor}, #131313, #131313)`,
-      }}
-    >
-      <Header/>
+    <MainSection bgColor={userBgColor}>
       <div className="h-60 bg-opacity-30 bg-black">
         <div className="flex items-end gap-6 p-4 pt-10">
           {user && (
@@ -116,12 +110,11 @@ export default function UserPage({params}: Props) {
       </div>
 
       <div className="mx-6 my-6 space-y-8">
-        <div className="flex items-center py-1 ml-3">
-          <Button variant="ghost"
-                  className="rounded-full border border-white/30 h-8 w-19 hover:bg-inherit hover:border-white font-semibold hover:scale-105 duration-150">
-            Following
-          </Button>
-        </div>
+
+        <PlayButtonAndOther
+          isPlayButton={false}
+          isFollow
+        />
 
         {(recentlyTracks?.count || 0) > 0 && (
           <TitleShowAll
@@ -171,6 +164,6 @@ export default function UserPage({params}: Props) {
 
         <Footer/>
       </div>
-    </div>
+    </MainSection>
   );
 }

@@ -1,20 +1,19 @@
 "use client";
 
-import {CirclePlus, Dot, Music} from "lucide-react";
+import {Dot, Music} from "lucide-react";
 import Image from "next/image";
 import {
   useListTrackQuery,
   useRetrievePlaylistQuery
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
-import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import {useAppSelector} from "@/lib/hooks";
-import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import Link from "next/link";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {formatDuration} from "@/utils/clientUtils";
 import TitleShowAll from "@/components/ui/title-show-all";
+import PlayButtonAndOther from "@/components/ui/play-button-and-other";
+import MainSection from "@/components/general/main-section";
 
 interface Props {
   params: {
@@ -34,16 +33,10 @@ export default function PlaylistPage({params}: Props) {
 
   const {activeTrack, currentIndex} = useAppSelector(state => state.track)
 
-  const PlaylistBgColor = playlist?.color || "#202020";
+  const playlistBgColor = playlist?.color || "#202020";
 
   return (
-    <div
-      className="h-full rounded-lg"
-      style={{
-        backgroundImage: `linear-gradient(to bottom, ${PlaylistBgColor}, #131313, #131313)`,
-      }}
-    >
-      <Header/>
+    <MainSection bgColor={playlistBgColor}>
       <div className="h-60 bg-opacity-30 bg-black">
         <div className="flex items-end gap-6 p-4 pt-10">
           {playlist && (
@@ -119,26 +112,13 @@ export default function PlaylistPage({params}: Props) {
       </div>
 
       <div className="mx-6 my-6 space-y-8">
-        <div className="flex items-center space-x-6">
-          <PlayTrackButton
-            track={playlist?.tracks?.[currentIndex] || (activeTrack || undefined)}
-            tracks={playlist?.tracks}
-            index={currentIndex}
-            variant="filled"
-            className="w-14 h-14 text-4xl"
-          />
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <CirclePlus size={33} className="text-[#808080] hover:scale-105 duration-150 hover:text-gray-100"/>
-              </TooltipTrigger>
-              <TooltipContent className="text-white bg-[#202020]">
-                <p>Save to Your library</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
 
-        </div>
+        <PlayButtonAndOther
+          track={playlist?.tracks?.[currentIndex] || (activeTrack || undefined)}
+          tracks={playlist?.tracks}
+          index={currentIndex}
+          isFavorite
+        />
 
         <div>
           <TracksTable
@@ -153,7 +133,7 @@ export default function PlaylistPage({params}: Props) {
         {(recommendations?.count || 0) > 0 &&
           <TitleShowAll
             title="Recomended"
-            titleP="Based on what`s in this playlist"
+            titlePB="Based on what`s in this playlist"
             isShowAll={false}
           >
             <TracksTable
@@ -167,6 +147,6 @@ export default function PlaylistPage({params}: Props) {
 
         <Footer/>
       </div>
-    </div>
+    </MainSection>
   );
 }

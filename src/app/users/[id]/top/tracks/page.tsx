@@ -1,11 +1,11 @@
 "use client";
 
 import {useListRecentlyListenTracksQuery} from "@/lib/features/other/publicApiSlice";
-import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import {usePathname} from "next/navigation";
 import TracksTable from "@/components/tracks/TracksTable";
 import TitleShowAll from "@/components/ui/title-show-all";
+import MainSection from "@/components/general/main-section";
 
 
 export default function Page() {
@@ -22,13 +22,7 @@ export default function Page() {
   const load = isLoading || isFetching
 
   return (
-    <div
-      className="h-full rounded-lg"
-      style={{
-        backgroundImage: `linear-gradient(to bottom, #202020, #131313, #131313)`,
-      }}
-    >
-      <Header/>
+    <MainSection>
       <div className="mx-6 my-6 space-y-6">
         {(recentlyTracks?.count || 0) > 0 && (
           <div className="mt-20">
@@ -49,6 +43,6 @@ export default function Page() {
 
         <Footer/>
       </div>
-    </div>
+    </MainSection>
   );
 }

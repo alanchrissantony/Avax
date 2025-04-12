@@ -13,10 +13,10 @@ import TrackCards from "@/components/tracks/TrackCards";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TrackCardsLittle from "@/components/tracks/TrackCardsLittle";
 import Footer from "@/components/general/Footer";
-import Header from "@/components/general/Header";
 import {useAppSelector} from "@/lib/hooks";
 import {useEffect, useState} from "react";
 import TitleShowAll from "@/components/ui/title-show-all";
+import MainSection from "@/components/general/main-section";
 
 
 export default function Home() {
@@ -67,20 +67,16 @@ export default function Home() {
   }
 
   return (
-    <div
-      className="h-full rounded-lg"
-      style={{
-        backgroundImage: `linear-gradient(to bottom, ${backgroundColor} 0%, rgba(19, 19, 19, 0.9) 25%, #131313 100%)`,
-      }}
-    >
-      <Header/>
+    <MainSection bgColor={backgroundColor} bgGradient="25%">
 
       <section className="flex flex-col items-start text-2xl font-bold space-y-8 mx-6 my-6">
 
-        <div className="flex items-center">
-          <Link href={"/tracks"} className="mt-4 ml-4">Top tracks</Link>
+        <div>
+          <div className="flex items-center">
+            <Link href={"/tracks"} className="mt-4 ml-4">Top tracks</Link>
+          </div>
+          <TrackCardsLittle tracks={topTracks?.results.slice(0, 6)}/>
         </div>
-        <TrackCardsLittle tracks={topTracks?.results.slice(0, 6)}/>
 
         <TitleShowAll title="Popular artists" href="/artists">
           <ArtistCards artists={topArtists?.results.slice(0, 5)}/>
@@ -100,6 +96,6 @@ export default function Home() {
 
         <Footer/>
       </section>
-    </div>
+    </MainSection>
   )
 }

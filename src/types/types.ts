@@ -196,3 +196,14 @@ export interface Playlists extends ListBaseApi {
 export interface RecentlyListenTracks extends ListBaseApi {
   results: Track[];
 }
+
+export interface Genre extends BaseApi {
+  slug: string;
+  name: string;
+  image: string;
+  color: string;
+}
+
+export interface Genres extends ListBaseApi {
+  results: Genre[];
+}

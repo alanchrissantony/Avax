@@ -1,21 +1,20 @@
 "use client";
 
-import {CirclePlus, Dot, Music} from "lucide-react";
+import {Dot, Music} from "lucide-react";
 import Image from "next/image";
 import {
   useListAlbumQuery, useRetrieveAlbumQuery,
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
-import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import {useAppSelector} from "@/lib/hooks";
-import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import Link from "next/link";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {formatDuration} from "@/utils/clientUtils";
 import AlbumCards from "@/components/albums/AlbumCards";
 import {format} from "date-fns";
 import TitleShowAll from "@/components/ui/title-show-all";
+import PlayButtonAndOther from "@/components/ui/play-button-and-other";
+import MainSection from "@/components/general/main-section";
 
 interface Props {
   params: {
@@ -38,13 +37,7 @@ export default function AlbumsPage({params}: Props) {
   const AlbumBgColor = album?.color || "#202020";
 
   return (
-    <div
-      className="h-full rounded-lg"
-      style={{
-        backgroundImage: `linear-gradient(to bottom, ${AlbumBgColor}, #131313, #131313)`,
-      }}
-    >
-      <Header/>
+      <MainSection bgColor={AlbumBgColor}>
       <div className="h-60 bg-opacity-30 bg-black">
         <div className="flex items-end gap-6 p-4 pt-10">
           {album && (
@@ -88,9 +81,7 @@ export default function AlbumsPage({params}: Props) {
                   {album.release_date && (
                     <>
                       <Dot/>
-                      <span>
-                          {format(new Date(album.release_date), 'yyyy')}
-                        </span>
+                      <span>{format(new Date(album.release_date), 'yyyy')}</span>
                     </>
                   )}
                   {album.tracks.length > 0 && (
@@ -113,25 +104,13 @@ export default function AlbumsPage({params}: Props) {
       </div>
 
       <div className="mx-6 my-6">
-        <div className="flex items-center space-x-6">
-          <PlayTrackButton
-            track={album?.tracks?.[currentIndex] || (activeTrack || undefined)}
-            tracks={album?.tracks}
-            index={currentIndex}
-            variant="filled"
-            className="w-14 h-14 text-4xl"
-          />
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <CirclePlus size={33} className="text-[#909090] hover:scale-105 duration-150 hover:text-gray-100"/>
-              </TooltipTrigger>
-              <TooltipContent className="text-white bg-[#202020]">
-                <p>Save to Your library</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+
+        <PlayButtonAndOther
+          track={album?.tracks?.[currentIndex] || (activeTrack || undefined)}
+          tracks={album?.tracks}
+          index={currentIndex}
+          isFavorite
+        />
 
         <div>
           <TracksTable
@@ -167,6 +146,6 @@ export default function AlbumsPage({params}: Props) {
 
         <Footer/>
       </div>
-    </div>
+      </MainSection>
   );
 }

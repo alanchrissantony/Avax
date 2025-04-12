@@ -1,11 +1,11 @@
 "use client";
 
 import {useListUserFollowingQuery} from "@/lib/features/other/publicApiSlice";
-import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import UserCards from "@/components/users/UserCards";
 import {usePathname} from "next/navigation";
 import TitleShowAll from "@/components/ui/title-show-all";
+import MainSection from "@/components/general/main-section";
 
 
 export default function UserFollowingPage() {
@@ -22,13 +22,7 @@ export default function UserFollowingPage() {
   const load = isLoading || isFetching
 
   return (
-    <div
-      className="h-full rounded-lg"
-      style={{
-        backgroundImage: `linear-gradient(to bottom, #202020, #131313, #131313)`,
-      }}
-    >
-      <Header/>
+    <MainSection>
       <div className="mx-6 my-6 space-y-6">
         {(userFollowing?.length || 0) > 0 && (
           <div className="mt-20">
@@ -44,6 +38,6 @@ export default function UserFollowingPage() {
 
         <Footer/>
       </div>
-    </div>
+    </MainSection>
   );
 }

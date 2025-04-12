@@ -5,7 +5,7 @@ import {
   Artists,
   DetailAlbum,
   DetailPlaylist,
-  DetailTrack,
+  DetailTrack, Genre, Genres,
   Playlists, RecentlyListenTracks, ShortUser,
   Tracks, User
 } from "@/types/types";
@@ -42,8 +42,8 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
       query: (slug) => `/tracks/${slug}/`,
     }),
     listPlaylist: builder.query<Playlists, any | void>({
-      query: ({page = 1, userId = ''}) =>
-        `/playlists/?page=${page}&user__id=${userId}`,
+      query: ({page = 1, userId = '', genreSlug= ''}) =>
+        `/playlists/?page=${page}&user__id=${userId}&genre__slug=${genreSlug}`,
     }),
     retrievePlaylist: builder.query<DetailPlaylist, string>({
       query: (slug) => `/playlists/${slug}/`,
@@ -59,6 +59,13 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
     listUserFollowing: builder.query<ShortUser[], any | void>({
       query: ({userId}) =>
         `/auth/users/${userId}/following/`,
+    }),
+    listGenres: builder.query<Genres, any | void>({
+      query: ({page = 1}) =>
+        `/others/genres/?page=${page}`,
+    }),
+    retrieveGenre: builder.query<Genre, string>({
+      query: (slug) => `/others/genres/${slug}/`,
     }),
   })
 })
@@ -78,4 +85,6 @@ export const {
   useListPlaylistQuery,
   useRetrievePlaylistQuery,
   useListRecentlyListenTracksQuery,
+  useListGenresQuery,
+  useRetrieveGenreQuery,
 } = publicApiSlice

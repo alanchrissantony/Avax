@@ -11,27 +11,27 @@ import MainSection from "@/components/general/main-section";
 export default function UserPlaylistsPage() {
   const pathname = usePathname();
   const parts = pathname.split('/');
-  const userId = parts[2];
+  const genreSlug = parts[2];
 
   const {
-    data: userPlaylists,
+    data: genrePlaylists,
     isLoading: isLoading,
     isFetching: isFetching,
-  } = useListPlaylistQuery({userId})
+  } = useListPlaylistQuery({genreSlug})
 
   const load = isLoading || isFetching
 
   return (
     <MainSection>
       <div className="mx-6 my-6 space-y-6">
-        {(userPlaylists?.count || 0) > 0 && (
+        {(genrePlaylists?.count || 0) > 0 && (
           <div className="mt-20">
             <TitleShowAll
-              title="Public Playlists"
+              title={`Popular ${genrePlaylists?.results?.[0].genre.name} playlists`}
               isShowAll={false}
               className="text-3xl"
             >
-              <PlaylistCards playlists={userPlaylists?.results}/>
+              <PlaylistCards playlists={genrePlaylists?.results}/>
             </TitleShowAll>
           </div>
         )}

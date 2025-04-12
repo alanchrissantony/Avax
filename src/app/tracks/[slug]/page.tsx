@@ -1,22 +1,21 @@
 "use client";
 
-import {CirclePlus, Dot, Music} from "lucide-react";
+import {Dot, Music} from "lucide-react";
 import Image from "next/image";
 import {
   useListAlbumQuery, useListArtistQuery,
   useListTrackQuery, useRetrieveAlbumQuery, useRetrieveTrackQuery
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
-import PlayTrackButton from "@/components/tracks/PlayTrackButton";
-import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import Link from "next/link";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {formatTime} from "@/utils/clientUtils";
 import AlbumCards from "@/components/albums/AlbumCards";
 import {format} from "date-fns";
 import ArtistCards from "@/components/artists/ArtistCards";
 import TitleShowAll from "@/components/ui/title-show-all";
+import PlayButtonAndOther from "@/components/ui/play-button-and-other";
+import MainSection from "@/components/general/main-section";
 
 interface Props {
   params: {
@@ -58,16 +57,10 @@ export default function TracksPage({params}: Props) {
     isLoadingArtists || isFetchingArtists || isLoadingAlbums || isFetchingAlbums
   )
 
-  const TrackAlbumBgColor = track?.album?.color || "#202020";
+  const trackAlbumBgColor = track?.album?.color || "#202020";
 
   return (
-    <div
-      className="h-full rounded-lg"
-      style={{
-        backgroundImage: `linear-gradient(to bottom, ${TrackAlbumBgColor} 0%, #131313 30%, #131313 100%)`,
-      }}
-    >
-      <Header/>
+    <MainSection bgColor={trackAlbumBgColor} bgGradient="30%">
       <div className="h-72 bg-opacity-30 bg-black">
         <div className="flex items-end gap-6 p-4 pt-20">
           {track && (
@@ -140,23 +133,11 @@ export default function TracksPage({params}: Props) {
       </div>
 
       <div className="mx-6 my-6 space-y-8">
-        <div className="flex items-center space-x-6">
-          <PlayTrackButton
-            track={track}
-            variant="filled"
-            className="w-14 h-14 text-4xl"
-          />
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <CirclePlus size={33} className="text-[#909090] hover:scale-105 duration-150 hover:text-gray-100"/>
-              </TooltipTrigger>
-              <TooltipContent className="text-white bg-[#202020]">
-                <p>Save to Your library</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+
+        <PlayButtonAndOther
+          track={track}
+          isFavorite
+        />
 
         {(recommendations?.count || 0) > 0 &&
           <TitleShowAll
@@ -230,6 +211,6 @@ export default function TracksPage({params}: Props) {
 
         <Footer/>
       </div>
-    </div>
+    </MainSection>
   );
 }

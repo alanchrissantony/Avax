@@ -8,16 +8,15 @@ import {
   useRetrieveArtistQuery
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
-import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import {useAppSelector} from "@/lib/hooks";
-import {Button} from "@/components/ui/button";
 import AlbumCards from "@/components/albums/AlbumCards";
-import Header from "@/components/general/Header";
 import Footer from "@/components/general/Footer";
 import TrackCards from "@/components/tracks/TrackCards";
 import ArtistCards from "@/components/artists/ArtistCards";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TitleShowAll from "@/components/ui/title-show-all";
+import PlayButtonAndOther from "@/components/ui/play-button-and-other";
+import MainSection from "@/components/general/main-section";
 
 interface Props {
   params: {
@@ -59,13 +58,7 @@ export default function ArtistPage({params}: Props) {
   const darkenBgColor = artist?.color || "#202020";
 
   return (
-    <div
-      className="h-full rounded-lg"
-      style={{
-        backgroundImage: `linear-gradient(to bottom, ${darkenBgColor} 0%,  rgba(19, 19, 19, 0.9) 30%, #131313 100%)`,
-      }}
-    >
-      <Header/>
+    <MainSection bgColor={darkenBgColor} bgGradient="30%">
       <div
         className="h-64 relative"
         style={{
@@ -86,23 +79,21 @@ export default function ArtistPage({params}: Props) {
               )}
               <h2 className="text-7xl font-bold drop-shadow-md text-white">{artist.display_name}</h2>
               <span className="text-base font-medium drop-shadow-md">
-          {artist.artist_listeners.toLocaleString()} listeners
-        </span>
+                {artist.artist_listeners.toLocaleString()} listeners
+              </span>
             </div>
           )}
         </div>
       </div>
 
       <div className=" mx-6 my-6 space-y-8">
-        <div className="flex items-center space-x-6">
-          <PlayTrackButton track={artistTracks?.results?.[currentIndex] || (activeTrack || undefined)}
-                           tracks={artistTracks?.results} index={currentIndex} variant="filled"
-                           className="w-14 h-14 text-4xl"/>
-          <Button variant="ghost"
-                  className="rounded-full border border-white/30 h-8 w-19 hover:bg-inherit hover:border-white font-semibold hover:scale-105 duration-150">
-            Follow
-          </Button>
-        </div>
+
+        <PlayButtonAndOther
+          track={artistTracks?.results?.[currentIndex] || (activeTrack || undefined)}
+          tracks={artistTracks?.results}
+          index={currentIndex}
+          isFollow
+        />
 
         {(artistTracks?.count || 0) > 0 && (
           <div className="mt-6">
@@ -154,6 +145,6 @@ export default function ArtistPage({params}: Props) {
 
         <Footer/>
       </div>
-    </div>
+    </MainSection>
   );
 }

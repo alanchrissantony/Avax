@@ -19,7 +19,7 @@ export default function TrackCardsLittle({tracks}: Props) {
         <Link
           href={`/tracks/${track.slug}`}
           key={track.id}
-          className={`flex items-center justify-between col-span-4 pr-4 truncate rounded-md shadow-lg group/item ${activeTrack?.slug === track.slug ? "bg-[#858585]" : "bg-[#606060]"} duration-300 bg-opacity-30 hover:bg-[#707070]/50`}
+          className={`flex items-center justify-between col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-3 pr-4 truncate rounded-sm shadow-lg group/item ${activeTrack?.slug === track.slug ? "bg-[#858585]" : "bg-[#606060]"} duration-300 bg-opacity-30 hover:bg-[#707070]/50`}
         >
           <div className="flex items-center gap-4">
             {track.album.image.length > 0 ? (
@@ -34,16 +34,18 @@ export default function TrackCardsLittle({tracks}: Props) {
               <Album size={20}/>
             )}
             <h4
-              className="font-semibold text-base truncate">{`${track.title.substring(0, 20)}${(track.title.length > 20) ? "..." : ""}`}</h4>
+              className="font-semibold text-base truncate whitespace-normal line-clamp-2">{`${track.title}`}</h4>
           </div>
 
-          <PlayTrackButton
-            track={track}
-            tracks={tracks}
-            index={index}
-            variant="filled"
-            className={`${activeTrack?.slug === track.slug ? "visible" : "invisible"} w-12 h-12 shadow-md text-3xl group/btn group-hover/item:visible`}
-          />
+          <div>
+            <PlayTrackButton
+              track={track}
+              tracks={tracks}
+              index={index}
+              variant="filled"
+              className={`${activeTrack?.slug === track.slug ? "visible" : "invisible"} w-12 h-12 shadow-md text-3xl group/btn group-hover/item:visible`}
+            />
+          </div>
         </Link>
       ))}
     </div>

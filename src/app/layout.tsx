@@ -43,12 +43,12 @@ export default function RootLayout({
 
           <div className="grid grid-cols-10">
             <Sidebar/>
-            <div
-              className={`flex flex-col h-[86vh] col-span-8 overflow-auto rounded-lg mt-2 mr-2`}>
+            <div className="flex flex-col h-[calc(95vh-4rem)] w-auto overflow-auto col-span-8 rounded-lg mt-2 mr-2">
               <main>{children}</main>
-              <PreviewPlayer/>
             </div>
+            <PreviewPlayer/>
           </div>
+
 
         </TrackPlayerProvider>
       </ReduxStoreProvider>
