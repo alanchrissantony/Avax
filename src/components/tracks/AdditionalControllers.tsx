@@ -3,7 +3,12 @@ import {Slider} from "@/components/ui/slider";
 import {usePlayer} from "@/providers/TrackPlayerProvider";
 
 export default function AdditionalControllers() {
-  const {volume, setVolume, isMuted, toggleMute} = usePlayer();
+  const {
+    volume,
+    setVolume,
+    isMuted,
+    toggleMute,
+  } = usePlayer();
 
   let volumeIcon = <Volume2 size={20} className="text-white/60 hover:text-gray-100"/>;
 

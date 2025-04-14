@@ -1,6 +1,6 @@
 import {usePlayer} from "@/providers/TrackPlayerProvider";
 import {fmtMSS} from "@/utils/clientUtils";
-import {Repeat2, Shuffle, SkipBack, SkipForward} from "lucide-react";
+import {Dot, Repeat2, Shuffle, SkipBack, SkipForward} from "lucide-react";
 import {MdPause, MdPlayArrow} from "react-icons/md";
 import {Slider} from "@/components/ui/slider";
 
@@ -14,16 +14,14 @@ export default function MainControllers() {
     currentTime,
     slider,
     loop,
-    setLoop,
+    toggleLoop,
+    shuffle,
+    toggleShuffle,
     nextTrack,
     prevTrack,
     currentIndex,
     tracks,
   } = usePlayer();
-
-  const toggleLoop = () => {
-    setLoop(!loop);
-  };
 
   const hasPrevTrack = currentIndex > 0;
   const hasNextTrack = currentIndex < tracks.length - 1;
@@ -31,9 +29,28 @@ export default function MainControllers() {
   return (
     <div className="flex flex-col items-center justify-center col-span-6 gap-3">
       <div className="flex items-center gap-5">
-        <button>
-          <Shuffle size={17} className={`text-white/60 hover:text-gray-100`}/>
+
+        <button onClick={toggleShuffle} className="flex items-center w-9 disabled:cursor-not-allowed"
+                disabled={tracks.length <= 1}>
+          {!shuffle ? (
+            <>
+              <Dot size={15} className={`invisible text-green-500`}/>
+              <Shuffle
+                size={17}
+                className={`${tracks.length > 1 ? "text-white/60 hover:text-gray-100" : "text-white/20"}`}
+              />
+            </>
+          ) : (
+            <>
+              <Dot size={15} className={`text-green-500`}/>
+              <Shuffle
+                size={17}
+                className={`text-green-500 hover:text-green-300`}
+              />
+            </>
+          )}
         </button>
+
         <button onClick={prevTrack} disabled={!hasPrevTrack}>
           <SkipBack size={20}
                     className={`text-xl ${hasPrevTrack ? 'text-white/60 hover:text-gray-100' : 'text-white/20 cursor-not-allowed'}`}/>
@@ -52,11 +69,24 @@ export default function MainControllers() {
           <SkipForward size={20}
                        className={`text-xl ${hasNextTrack ? 'text-white/60 hover:text-gray-100' : 'text-white/20 cursor-not-allowed'}`}/>
         </button>
-        <button onClick={toggleLoop}>
-          <Repeat2
-            size={20}
-            className={`text-white/60 hover:text-gray-100 ${loop ? "text-green-500 hover:text-green-300" : ""}`}
-          />
+        <button onClick={toggleLoop} className="flex items-center">
+          {!loop ? (
+            <>
+              <Repeat2
+                size={20}
+                className={`text-white/60 hover:text-gray-100`}
+              />
+              <Dot size={15} className={`invisible text-green-500`}/>
+            </>
+          ) : (
+            <>
+              <Repeat2
+                size={20}
+                className={`text-green-500 hover:text-green-300`}
+              />
+              <Dot size={15} className={`text-green-500`}/>
+            </>
+          )}
         </button>
       </div>
 

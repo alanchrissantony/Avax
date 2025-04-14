@@ -71,6 +71,9 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
     retrieveGenre: builder.query<Genre, string>({
       query: (slug) => `/others/genres/${slug}/`,
     }),
+    downloadTrack: builder.query<any, string>({
+      query: (slug) => `/tracks/${slug}/download/`,
+    }),
   })
 })
 
@@ -92,4 +95,5 @@ export const {
   useListRecentlyListenTracksQuery,
   useListGenresQuery,
   useRetrieveGenreQuery,
+  useDownloadTrackQuery,
 } = publicApiSlice

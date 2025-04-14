@@ -26,6 +26,9 @@ interface TrackProviderState {
   setMute: (mute: boolean) => void;
   nextTrack: () => void;
   prevTrack: () => void;
+  shuffle: boolean;
+  toggleShuffle: () => void;
+  toggleLoop: () => void;
   currentIndex: number;
   tracks: Track[];
 }
@@ -49,6 +52,7 @@ export default function TrackPlayerProvider({children}: Props) {
   const [volume, setVolume] = useState(0.33);
   const [loop, setLoop] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
 
   useEffect(() => {
     if (!activeTrack) return;
@@ -140,16 +144,43 @@ export default function TrackPlayerProvider({children}: Props) {
     }
   };
 
+  const shuffleArray = (array: Track[]) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+  };
+
   const nextTrack = () => {
-    if (currentTracks && currentIndex < currentTracks.length - 1) {
-      dispatch(nextSongAction(currentIndex + 1));
+    if (currentTracks) {
+      if (shuffle) {
+        const shuffledTracks = shuffleArray(currentTracks);
+        dispatch(nextSongAction(shuffledTracks.findIndex((track) => track.id === activeTrack?.id) + 1));
+      } else if (currentIndex < currentTracks.length - 1) {
+        dispatch(nextSongAction(currentIndex + 1));
+      }
     }
   };
 
   const prevTrack = () => {
-    if (currentTracks && currentIndex > 0) {
-      dispatch(prevSongAction(currentIndex - 1));
+    if (currentTracks) {
+      if (shuffle) {
+        const shuffledTracks = shuffleArray(currentTracks);
+        dispatch(prevSongAction(shuffledTracks.findIndex((track) => track.id === activeTrack?.id) - 1));
+      } else if (currentIndex > 0) {
+        dispatch(prevSongAction(currentIndex - 1));
+      }
     }
+  };
+
+  const toggleShuffle = () => {
+    setShuffle(!shuffle);
+  };
+
+  const toggleLoop = () => {
+    setLoop(!loop);
   };
 
   const value = {
@@ -173,6 +204,9 @@ export default function TrackPlayerProvider({children}: Props) {
     setMute,
     nextTrack,
     prevTrack,
+    shuffle,
+    toggleShuffle,
+    toggleLoop,
     currentIndex,
     tracks: currentTracks || [],
   };
