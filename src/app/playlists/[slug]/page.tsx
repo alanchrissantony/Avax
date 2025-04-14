@@ -141,6 +141,8 @@ export default function PlaylistPage({params}: Props) {
               showAlbum
               showCover
               showSubtitle
+              showHeader
+              showIndex={false}
             />
           </TitleShowAll>
         }

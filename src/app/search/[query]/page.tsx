@@ -83,6 +83,7 @@ export default function SearchResults({params}: Props) {
                   tracks={searchTracks?.results?.slice(0, 6)}
                   showCover
                   showSubtitle
+                  showIndex={false}
                 />
               </TitleShowAll>
             </div>

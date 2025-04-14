@@ -150,6 +150,7 @@ export default function TracksPage({params}: Props) {
               showCover
               showSubtitle
               showPlaysCount
+              showIndex={false}
             />
           </TitleShowAll>
         }

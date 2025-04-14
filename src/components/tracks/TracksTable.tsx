@@ -18,6 +18,7 @@ interface Props {
   showAlbum?: boolean;
   showPlaysCount?: boolean;
   showSubtitle?: boolean;
+  showIndex?: boolean;
 }
 
 export default function TracksTable({
@@ -29,6 +30,7 @@ export default function TracksTable({
                                       showArtistCardHeader = false,
                                       showAlbum = false,
                                       showPlaysCount = false,
+                                      showIndex = true,
                                     }: Props) {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const {activeTrack} = useAppSelector(state => state.track)
@@ -97,13 +99,14 @@ export default function TracksTable({
 
       {showHeader && (
         <>
-          <header className="grid grid-cols-12 gap-2 p-4 pb-1 mb-2 text-white/60">
-            <div className="text-left uppercase" style={{width: '30px'}}>
-              #
-            </div>
-
+          <header className="grid grid-cols-12 p-4 pb-1 mb-2 text-white/60">
+            {showIndex && (
+              <div className="text-left ml-1 uppercase">
+                #
+              </div>
+            )}
             <div
-              className={`${(showAlbum || showPlaysCount) ? "col-span-6" : "col-span-10"} text-sm text-left`}
+              className={`${(showAlbum || showPlaysCount) ? (showIndex ? "col-span-6" : "col-span-7") : (showIndex ? "col-span-10" : "col-span-11")} text-sm text-left`}
             >
               Title
             </div>
@@ -120,7 +123,7 @@ export default function TracksTable({
               </div>
             )}
 
-            <div className="col-span-1 flex justify-center">
+            <div className="col-span-1 ml-2 flex justify-center">
               <Clock3 size={16}/>
             </div>
           </header>
@@ -142,28 +145,23 @@ export default function TracksTable({
             onMouseEnter={() => setHoveredRow(index)}
             onMouseLeave={() => setHoveredRow(null)}
           >
-            {hoveredRow === index ? (
-              <PlayTrackButton track={track} tracks={tracks} index={index} lines={true} className="text-xl w-1/2"/>
-            ) : (
-              <span
-                className="flex items-center col-span-1 text-sm text-white/60">
-                {activeTrack?.slug === track.slug ? (
+            {showIndex && (
+              <span className="flex items-center col-span-1 text-sm text-white/60">
+                {hoveredRow === index || activeTrack?.slug === track.slug ? (
                   <PlayTrackButton track={track} tracks={tracks} index={index} lines={true} className="text-xl w-1/2"/>
                 ) : (
-                  index + 1
+                  <span className="ml-1">{index + 1}</span>
                 )}
               </span>
             )}
 
             <div
-              className={`${
-                showAlbum || showPlaysCount ? "col-span-6" : "col-span-10"
-              } flex items-center w-full`}
+              className={`${showAlbum || showPlaysCount ? (showIndex ? "col-span-6" : "col-span-7") : (showIndex ? "col-span-10" : "col-span-11")} flex items-center w-full`}
             >
               <div className="flex items-center w-full gap-3">
-                {showCover &&
-                  (track.album.image && track.album.image.length > 0 ? (
-                    <div className="flex-shrink-0 w-10 h-10">
+                {showCover && (
+                  <div className="relative flex-shrink-0 w-10 h-10">
+                    {track.album.image && track.album.image.length > 0 ? (
                       <Image
                         src={track.album.image}
                         alt={track.title}
@@ -171,13 +169,19 @@ export default function TracksTable({
                         width={40}
                         className="object-contain w-10 h-10 rounded"
                       />
-                    </div>
-                  ) : (
-                    <Music
-                      size={16}
-                      className="w-10 h-10 p-2 rounded bg-paper-secondary"
-                    />
-                  ))}
+                    ) : (
+                      <Music
+                        size={16}
+                        className="w-10 h-10 p-2 rounded bg-paper-secondary"
+                      />
+                    )}
+                    {!showIndex && hoveredRow === index && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
+                        <PlayTrackButton track={track} tracks={tracks} index={index} lines={true} className="text-xl"/>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <div className="w-full pr-3 truncate flex items-center justify-between">
                   <div>

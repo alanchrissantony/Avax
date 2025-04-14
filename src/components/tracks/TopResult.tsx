@@ -1,5 +1,3 @@
-import CardItemGrid from "@/components/general/CardItemGrid";
-import CardItem from "@/components/general/CardItem";
 import {Track} from "@/types/types";
 import Image from "next/image";
 import {Dot, Music} from "lucide-react";
@@ -27,7 +25,7 @@ export default function TopResult({track, type}: Props) {
               alt={track?.title}
               height={200}
               width={200}
-              className={`aspect-square object-cover shadow-2xl rounded-md h-20 w-20`}
+              className={`aspect-square object-cover shadow-2xl rounded-md h-24 w-24`}
             />
           ) : (
             <div className="w-full h-40">
@@ -36,7 +34,7 @@ export default function TopResult({track, type}: Props) {
           )}
         </div>
 
-        <h3 className="mt-2 font-bold text-2xl truncate w-3/4">{track?.title}</h3>
+        <h3 className="mt-2 font-bold text-3xl truncate w-3/4">{track?.title}</h3>
         <div className="flex text-xs">
           <h6 className="mt-1 font-medium text-white/70">
             {type}
