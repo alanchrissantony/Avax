@@ -6,6 +6,7 @@ import UserCards from "@/components/users/UserCards";
 import {usePathname} from "next/navigation";
 import TitleShowAll from "@/components/ui/title-show-all";
 import MainSection from "@/components/general/main-section";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 
 export default function UserFollowersPage() {
@@ -24,17 +25,19 @@ export default function UserFollowersPage() {
 
   return (
     <MainSection>
-      <div className="mx-6 my-6 space-y-6">
-        {(userFollowers?.length || 0) > 0 && (
-          <div className="mt-20">
-            <TitleShowAll
-              title="Followers"
-              isShowAll={false}
-              className="text-4xl"
-            >
-              <UserCards users={userFollowers}/>
-            </TitleShowAll>
-          </div>
+      <div className="mx-6 my-6 space-y-8">
+        {load ? <FullScreenSpinner/> : (
+          (userFollowers?.length || 0) > 0 && (
+            <div className="mt-20">
+              <TitleShowAll
+                title="Followers"
+                isShowAll={false}
+                className="text-4xl"
+              >
+                <UserCards users={userFollowers}/>
+              </TitleShowAll>
+            </div>
+          )
         )}
 
         <Footer/>

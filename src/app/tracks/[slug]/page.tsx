@@ -16,6 +16,7 @@ import ArtistCards from "@/components/artists/ArtistCards";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 interface Props {
   params: {
@@ -25,21 +26,24 @@ interface Props {
 
 export default function TracksPage({params}: Props) {
   const {data: track, isLoading, isFetching} = useRetrieveTrackQuery(params.slug)
+  const genreSlug = track?.genre?.slug || null
+  const artistSlug = track?.artist?.slug || null
+  const albumSlug = track?.album?.slug || null
   const {
     data: recommendations,
     isLoading: isLoadingRec,
     isFetching: isFetchingRec,
-  } = useListTrackQuery({genreSlug: track?.genre?.slug || ''})
+  } = useListTrackQuery({genreSlug}, {skip: !genreSlug})
   const {
     data: artistTracks,
     isLoading: isLoadingArtistTracks,
     isFetching: isFetchingArtistTracks,
-  } = useListTrackQuery({artistSlug: track?.artist?.slug || 'null'})
+  } = useListTrackQuery({artistSlug}, {skip: !artistSlug})
   const {
     data: artistAlbums,
     isLoading: isLoadingA,
     isFetching: isFetchingA,
-  } = useListAlbumQuery({artistSlug: track?.artist?.slug || "null"})
+  } = useListAlbumQuery({artistSlug}, {skip: !artistSlug})
   const {
     data: relatedArtists,
     isLoading: isLoadingArtists,
@@ -49,7 +53,7 @@ export default function TracksPage({params}: Props) {
     data: trackAlbum,
     isLoading: isLoadingAlbums,
     isFetching: isFetchingAlbums
-  } = useRetrieveAlbumQuery(track?.album?.slug || 'null')
+  } = useRetrieveAlbumQuery(albumSlug, {skip: !albumSlug})
 
   const load = (
     isLoading || isFetching || isLoadingRec || isFetchingRec ||
@@ -133,81 +137,84 @@ export default function TracksPage({params}: Props) {
       </div>
 
       <div className="mx-6 my-6 space-y-8">
-
-        <PlayButtonAndOther
-          track={track}
-          isFavorite
-        />
-
-        {(recommendations?.count || 0) > 0 &&
-          <TitleShowAll
-            title="Recomended"
-            titlePB="Based on what`s in this track"
-            isShowAll={false}
-          >
-            <TracksTable
-              tracks={recommendations?.results.slice(0, 5)}
-              showCover
-              showSubtitle
-              showPlaysCount
-              showIndex={false}
+        {load ? <FullScreenSpinner/> : (
+          <>
+            <PlayButtonAndOther
+              track={track}
+              isFavorite
             />
-          </TitleShowAll>
-        }
 
-        {(artistTracks?.count || 0) > 0 && (
-          <TitleShowAll
-            titlePT="Popular Tracks by"
-            title={`${track?.artist?.display_name}`}
-            isShowAll={false}
-          >
-            <TracksTable
-              tracks={artistTracks?.results.slice(0, 5)}
-              showPlaysCount
-              showCover
-            />
-          </TitleShowAll>
-        )}
+            {(recommendations?.count || 0) > 0 &&
+              <TitleShowAll
+                title="Recomended"
+                titlePB="Based on what`s in this track"
+                isShowAll={false}
+              >
+                <TracksTable
+                  tracks={recommendations?.results.slice(0, 5)}
+                  showCover
+                  showSubtitle
+                  showPlaysCount
+                  showIndex={false}
+                />
+              </TitleShowAll>
+            }
 
-        {(artistAlbums?.count || 0) > 0 &&
-          <TitleShowAll
-            title={`Popular Albums by ${track?.artist?.display_name}`}
-            href={`/artists/${track?.artist?.slug}/discography/album`}
-            className="mt-10"
-            isShowAll={(artistAlbums?.count || 0) > 5}
-          >
-            <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
-          </TitleShowAll>
-        }
+            {(artistTracks?.count || 0) > 0 && (
+              <TitleShowAll
+                titlePT="Popular Tracks by"
+                title={`${track?.artist?.display_name}`}
+                isShowAll={false}
+              >
+                <TracksTable
+                  tracks={artistTracks?.results.slice(0, 5)}
+                  showPlaysCount
+                  showCover
+                />
+              </TitleShowAll>
+            )}
 
-        {(relatedArtists?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Fans also like"
-            href="/artists"
-            isShowAll={(relatedArtists?.count || 0) > 5}
-          >
-            <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
-          </TitleShowAll>
-        )}
+            {(artistAlbums?.count || 0) > 0 &&
+              <TitleShowAll
+                title={`Popular Albums by ${track?.artist?.display_name}`}
+                href={`/artists/${track?.artist?.slug}/discography/album`}
+                className="mt-10"
+                isShowAll={(artistAlbums?.count || 0) > 5}
+              >
+                <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
+              </TitleShowAll>
+            }
 
-        {trackAlbum && (
-          <TracksTable
-            tracks={trackAlbum.tracks}
-            showCardHeader
-            showSubtitle
-          />
-        )}
+            {(relatedArtists?.count || 0) > 0 && (
+              <TitleShowAll
+                title="Fans also like"
+                href="/artists"
+                isShowAll={(relatedArtists?.count || 0) > 5}
+              >
+                <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
+              </TitleShowAll>
+            )}
 
-        {track?.release_date && (
-          <div>
-            <p className="font-normal text-sm mt-10 text-white/60">
-              {format(new Date(track.release_date), 'MMMM dd, yyyy')}
-            </p>
-            <div className="font-normal text-xs text-white/50">
-              <p>© {format(new Date(track.release_date), 'yyyy')} {track?.artist?.display_name}</p>
-              <p>℗ {format(new Date(track.release_date), 'yyyy')} {track?.artist?.display_name}</p>
-            </div>
-          </div>
+            {trackAlbum && (
+              <TracksTable
+                tracks={trackAlbum.tracks}
+                showCardHeader
+                showSubtitle
+              />
+            )}
+
+            {track?.release_date && (
+              <div>
+                <p className="font-normal text-sm mt-10 text-white/60">
+                  {format(new Date(track.release_date), 'MMMM dd, yyyy')}
+                </p>
+                <div className="font-normal text-xs text-white/50">
+                  <p>© {format(new Date(track.release_date), 'yyyy')} {track?.artist?.display_name}</p>
+                  <p>℗ {format(new Date(track.release_date), 'yyyy')} {track?.artist?.display_name}</p>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         <Footer/>

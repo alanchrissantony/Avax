@@ -15,6 +15,7 @@ import {format} from "date-fns";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 interface Props {
   params: {
@@ -24,11 +25,12 @@ interface Props {
 
 export default function AlbumsPage({params}: Props) {
   const {data: album, isLoading, isFetching} = useRetrieveAlbumQuery(params.slug)
+  const artistSlug = album?.artist?.slug || null;
   const {
     data: artistAlbums,
     isLoading: isLoadingA,
     isFetching: isFetchingA,
-  } = useListAlbumQuery({artistSlug: album?.artist?.slug || "null"})
+  } = useListAlbumQuery({artistSlug}, {skip: !artistSlug})
 
   const load = isLoading || isFetching || isLoadingA || isFetchingA
 
@@ -37,7 +39,7 @@ export default function AlbumsPage({params}: Props) {
   const AlbumBgColor = album?.color || "#202020";
 
   return (
-      <MainSection bgColor={AlbumBgColor}>
+    <MainSection bgColor={AlbumBgColor}>
       <div className="h-60 bg-opacity-30 bg-black">
         <div className="flex items-end gap-6 p-4 pt-10">
           {album && (
@@ -104,48 +106,51 @@ export default function AlbumsPage({params}: Props) {
       </div>
 
       <div className="mx-6 my-6">
+        {load ? <FullScreenSpinner/> : (
+          <>
+            <PlayButtonAndOther
+              track={album?.tracks?.[currentIndex] || (activeTrack || undefined)}
+              tracks={album?.tracks}
+              index={currentIndex}
+              isFavorite
+            />
 
-        <PlayButtonAndOther
-          track={album?.tracks?.[currentIndex] || (activeTrack || undefined)}
-          tracks={album?.tracks}
-          index={currentIndex}
-          isFavorite
-        />
-
-        <div>
-          <TracksTable
-            tracks={album?.tracks}
-            showHeader
-            showSubtitle
-          />
-        </div>
-
-        {album?.release_date && (
-          <div>
-            <p className="font-normal text-sm mt-10 text-white/60">
-              {format(new Date(album.release_date), 'MMMM dd, yyyy')}
-            </p>
-            <div className="font-normal text-xs text-white/50">
-              <p>© {format(new Date(album.release_date), 'yyyy')} {album?.artist?.display_name}</p>
-              <p>℗ {format(new Date(album.release_date), 'yyyy')} {album?.artist?.display_name}</p>
+            <div>
+              <TracksTable
+                tracks={album?.tracks}
+                showHeader
+                showSubtitle
+              />
             </div>
-          </div>
-        )}
 
-        {(artistAlbums?.count || 0) > 0 &&
-          <div className="my-8 mt-16">
-            <TitleShowAll
-              title={`More by ${album?.artist.display_name}`}
-              showAll="See discography"
-              href={`/artists/${album?.artist?.slug}/discography/album`}
-            >
-              <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
-            </TitleShowAll>
-          </div>
-        }
+            {album?.release_date && (
+              <div>
+                <p className="font-normal text-sm mt-10 text-white/60">
+                  {format(new Date(album.release_date), 'MMMM dd, yyyy')}
+                </p>
+                <div className="font-normal text-xs text-white/50">
+                  <p>© {format(new Date(album.release_date), 'yyyy')} {album?.artist?.display_name}</p>
+                  <p>℗ {format(new Date(album.release_date), 'yyyy')} {album?.artist?.display_name}</p>
+                </div>
+              </div>
+            )}
+
+            {(artistAlbums?.count || 0) > 0 &&
+              <div className="my-8 mt-16">
+                <TitleShowAll
+                  title={`More by ${album?.artist.display_name}`}
+                  showAll="See discography"
+                  href={`/artists/${album?.artist?.slug}/discography/album`}
+                >
+                  <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
+                </TitleShowAll>
+              </div>
+            }
+          </>
+        )}
 
         <Footer/>
       </div>
-      </MainSection>
+    </MainSection>
   );
 }

@@ -15,6 +15,7 @@ import UserCards from "@/components/users/UserCards";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 interface Props {
   params: {
@@ -24,26 +25,27 @@ interface Props {
 
 export default function UserPage({params}: Props) {
   const {data: user, isLoading, isFetching} = useRetrieveUserQuery(params.id)
+  const userId = user?.id || null;
   const {
     data: userPlaylists,
     isLoading: isLoadingP,
     isFetching: isFetchingP,
-  } = useListPlaylistQuery({userId: user?.id || 0})
+  } = useListPlaylistQuery({userId}, {skip: !userId})
   const {
     data: recentlyTracks,
     isLoading: isLoadingReTracks,
     isFetching: isFetchingReTracks,
-  } = useListRecentlyListenTracksQuery({userId: user?.id || 0})
+  } = useListRecentlyListenTracksQuery({userId}, {skip: !userId})
   const {
     data: userFollowing,
     isLoading: isLoadingFollowing,
     isFetching: isFetchingFollowing,
-  } = useListUserFollowingQuery({userId: user?.id || 0})
+  } = useListUserFollowingQuery({userId}, {skip: !userId})
   const {
     data: userFollowers,
     isLoading: isLoadingFollowers,
     isFetching: isFetchingFollowers,
-  } = useListUserFollowersQuery({userId: user?.id || 0})
+  } = useListUserFollowersQuery({userId}, {skip: !userId})
 
   const load = (
     isLoading || isFetching || isLoadingP || isFetchingP ||
@@ -111,55 +113,59 @@ export default function UserPage({params}: Props) {
 
       <div className="mx-6 my-6 space-y-8">
 
-        <PlayButtonAndOther
-          isPlayButton={false}
-          isFollow
-        />
-
-        {(recentlyTracks?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Top tracks this month"
-            titlePB="Only visible to you"
-            href={`/users/${user?.id}/top/tracks`}
-            isShowAll={(recentlyTracks?.count || 0) > 4}
-          >
-            <TracksTable
-              tracks={recentlyTracks?.results.slice(0, 4)}
-              showCover
-              showSubtitle
-              showAlbum
+        {load ? <FullScreenSpinner/> : (
+          <>
+            <PlayButtonAndOther
+              isPlayButton={false}
+              isFollow
             />
-          </TitleShowAll>
-        )}
 
-        {(userPlaylists?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Public Playlists"
-            href={`/users/${user?.id}/playlists`}
-            isShowAll={(userPlaylists?.count || 0) > 5}
-          >
-            <PlaylistCards playlists={userPlaylists?.results.slice(0, 5)}/>
-          </TitleShowAll>
-        )}
+            {(recentlyTracks?.count || 0) > 0 && (
+              <TitleShowAll
+                title="Top tracks this month"
+                titlePB="Only visible to you"
+                href={`/users/${user?.id}/top/tracks`}
+                isShowAll={(recentlyTracks?.count || 0) > 4}
+              >
+                <TracksTable
+                  tracks={recentlyTracks?.results.slice(0, 4)}
+                  showCover
+                  showSubtitle
+                  showAlbum
+                />
+              </TitleShowAll>
+            )}
 
-        {(userFollowers?.length || 0) > 0 && (
-          <TitleShowAll
-            title="Followers"
-            href={`/users/${user?.id}/followers`}
-            isShowAll={(userFollowers?.length || 0) > 5}
-          >
-            <UserCards users={userFollowers?.slice(0, 5)}/>
-          </TitleShowAll>
-        )}
+            {(userPlaylists?.count || 0) > 0 && (
+              <TitleShowAll
+                title="Public Playlists"
+                href={`/users/${user?.id}/playlists`}
+                isShowAll={(userPlaylists?.count || 0) > 5}
+              >
+                <PlaylistCards playlists={userPlaylists?.results.slice(0, 5)}/>
+              </TitleShowAll>
+            )}
 
-        {(userFollowers?.length || 0) > 0 && (
-          <TitleShowAll
-            title="Following"
-            href={`/users/${user?.id}/following`}
-            isShowAll={(userFollowing?.length || 0) > 5}
-          >
-            <UserCards users={userFollowing?.slice(0, 5)}/>
-          </TitleShowAll>
+            {(userFollowers?.length || 0) > 0 && (
+              <TitleShowAll
+                title="Followers"
+                href={`/users/${user?.id}/followers`}
+                isShowAll={(userFollowers?.length || 0) > 5}
+              >
+                <UserCards users={userFollowers?.slice(0, 5)}/>
+              </TitleShowAll>
+            )}
+
+            {(userFollowers?.length || 0) > 0 && (
+              <TitleShowAll
+                title="Following"
+                href={`/users/${user?.id}/following`}
+                isShowAll={(userFollowing?.length || 0) > 5}
+              >
+                <UserCards users={userFollowing?.slice(0, 5)}/>
+              </TitleShowAll>
+            )}
+          </>
         )}
 
         <Footer/>

@@ -25,8 +25,6 @@ interface Props {
 export default function SearchResults({params}: Props) {
   const search = decodeURI(params.query);
 
-  console.log(search)
-
   const {
     data: searchTracks,
     isLoading: isLoadingT,
@@ -83,7 +81,11 @@ export default function SearchResults({params}: Props) {
           </div>
 
           <div className="col-span-2">
-            <TitleShowAll title="Songs">
+            <TitleShowAll
+              title="Songs"
+              href={`/search/${search}/tracks`}
+              isShowAll={false}
+            >
               <TracksTable
                 tracks={searchTracks?.results?.slice(0, 6)}
                 showCover
@@ -99,7 +101,7 @@ export default function SearchResults({params}: Props) {
       {(searchArtists?.count || 0) > 0 && (
         <TitleShowAll
           title="Artists"
-          href="/artists"
+          href={`/search/${search}/artists`}
           isShowAll={false}
         >
           <ArtistCards artists={searchArtists?.results.slice(0, 5)}/>
@@ -109,7 +111,7 @@ export default function SearchResults({params}: Props) {
       {(searchAlbums?.count || 0) > 0 && (
         <TitleShowAll
           title="Albums"
-          href="/albums"
+          href={`/search/${search}/albums`}
           isShowAll={false}
         >
           <AlbumCards albums={searchAlbums?.results.slice(0, 5)}/>
@@ -119,7 +121,7 @@ export default function SearchResults({params}: Props) {
       {(searchPlaylists?.count || 0) > 0 && (
         <TitleShowAll
           title="Playlists"
-          href="/playlists"
+          href={`/search/${search}/playlists`}
           isShowAll={false}
         >
           <PlaylistCards playlists={searchPlaylists?.results.slice(0, 5)}/>
@@ -127,11 +129,7 @@ export default function SearchResults({params}: Props) {
       )}
 
       {(searchProfiles?.count || 0) > 0 && (
-        <TitleShowAll
-          title="Profiles"
-          href="/users"
-          isShowAll={false}
-        >
+        <TitleShowAll title="Profiles">
           <UserCards users={searchProfiles?.results.slice(0, 5)}/>
         </TitleShowAll>
       )}

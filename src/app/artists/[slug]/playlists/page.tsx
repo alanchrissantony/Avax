@@ -6,6 +6,7 @@ import {useSearchParams} from "next/navigation";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TitleShowAll from "@/components/ui/title-show-all";
 import MainSection from "@/components/general/main-section";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 
 export default function Page() {
@@ -17,7 +18,7 @@ export default function Page() {
     data: artistPlaylists,
     isLoading: isLoading,
     isFetching: isFetching,
-  } = useListPlaylistQuery({userId})
+  } = useListPlaylistQuery({userId}, {skip: !userId})
 
   const load = isLoading || isFetching
 
@@ -26,12 +27,14 @@ export default function Page() {
     <MainSection>
       <div className="mx-6 my-6 space-y-6">
 
-        {(artistPlaylists?.count || 0) > 0 && (
-          <div className="mt-20">
-            <TitleShowAll title={`Popular Playlists by ${display_name}`} isShowAll={false} className="text-3xl">
-              <PlaylistCards playlists={artistPlaylists?.results}/>
-            </TitleShowAll>
-          </div>
+        {load ? <FullScreenSpinner/> : (
+          (artistPlaylists?.count || 0) > 0 && (
+            <div className="mt-20">
+              <TitleShowAll title={`Popular Playlists by ${display_name}`} isShowAll={false} className="text-3xl">
+                <PlaylistCards playlists={artistPlaylists?.results}/>
+              </TitleShowAll>
+            </div>
+          )
         )}
 
         <Footer/>

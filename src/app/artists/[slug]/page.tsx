@@ -17,6 +17,7 @@ import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 interface Props {
   params: {
@@ -26,6 +27,7 @@ interface Props {
 
 export default function ArtistPage({params}: Props) {
   const {data: artist, isLoading, isFetching} = useRetrieveArtistQuery(params.slug)
+  const userId = artist?.user?.id || null;
   const {
     data: artistTracks,
     isLoading: isLoadingTracks,
@@ -40,7 +42,7 @@ export default function ArtistPage({params}: Props) {
     data: artistPlaylists,
     isLoading: isLoadingPlaylists,
     isFetching: isFetchingPlaylists
-  } = useListPlaylistQuery({userId: artist?.user.id})
+  } = useListPlaylistQuery({userId}, {skip: !userId})
   const {
     data: relatedArtists,
     isLoading: isLoadingArtists,
@@ -87,60 +89,63 @@ export default function ArtistPage({params}: Props) {
       </div>
 
       <div className=" mx-6 my-6 space-y-8">
+        {load ? <FullScreenSpinner/> : (
+          <>
+            <PlayButtonAndOther
+              track={artistTracks?.results?.[currentIndex] || (activeTrack || undefined)}
+              tracks={artistTracks?.results}
+              index={currentIndex}
+              isFollow
+            />
 
-        <PlayButtonAndOther
-          track={artistTracks?.results?.[currentIndex] || (activeTrack || undefined)}
-          tracks={artistTracks?.results}
-          index={currentIndex}
-          isFollow
-        />
+            {(artistTracks?.count || 0) > 0 && (
+              <div className="mt-6">
+                <TitleShowAll title="Popular" isShowAll={false}>
+                  <TracksTable tracks={artistTracks?.results.slice(0, 5)} showCover showPlaysCount/>
+                </TitleShowAll>
+              </div>
+            )}
 
-        {(artistTracks?.count || 0) > 0 && (
-          <div className="mt-6">
-            <TitleShowAll title="Popular" isShowAll={false}>
-              <TracksTable tracks={artistTracks?.results.slice(0, 5)} showCover showPlaysCount/>
-            </TitleShowAll>
-          </div>
-        )}
+            {(artistAlbums?.count || 0) > 0 && (
+              <TitleShowAll
+                title="Albums"
+                href={`/artists/${artist?.slug}/discography/album`}
+                isShowAll={(artistAlbums?.count || 0) > 5}
+              >
+                <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
+              </TitleShowAll>
+            )}
 
-        {(artistAlbums?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Albums"
-            href={`/artists/${artist?.slug}/discography/album`}
-            isShowAll={(artistAlbums?.count || 0) > 5}
-          >
-            <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
-          </TitleShowAll>
-        )}
+            {(artistPlaylists?.count || 0) > 0 && (
+              <TitleShowAll
+                title="Artist Playlists"
+                href={`/artists/${artist?.slug}/playlists?id=${artist?.user?.id}&name=${artist?.display_name}`}
+                isShowAll={(artistAlbums?.count || 0) > 5}
+              >
+                <PlaylistCards playlists={artistPlaylists?.results.slice(0, 5)}/>
+              </TitleShowAll>
+            )}
 
-        {(artistPlaylists?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Artist Playlists"
-            href={`/artists/${artist?.slug}/playlists?id=${artist?.user?.id}&name=${artist?.display_name}`}
-            isShowAll={(artistAlbums?.count || 0) > 5}
-          >
-            <PlaylistCards playlists={artistPlaylists?.results.slice(0, 5)}/>
-          </TitleShowAll>
-        )}
+            {(artistTracks?.count || 0) > 0 && (
+              <TitleShowAll
+                title="Popular releases"
+                href={`/artists/${artist?.slug}/tracks`}
+                isShowAll={(artistTracks?.count || 0) > 5}
+              >
+                <TrackCards tracks={artistTracks?.results.slice(0, 5)}/>
+              </TitleShowAll>
+            )}
 
-        {(artistTracks?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Popular releases"
-            href={`/artists/${artist?.slug}/tracks`}
-            isShowAll={(artistTracks?.count || 0) > 5}
-          >
-            <TrackCards tracks={artistTracks?.results.slice(0, 5)}/>
-          </TitleShowAll>
-        )}
-
-        {(relatedArtists?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Fans also like"
-            href={`/artists`}
-            isShowAll={(relatedArtists?.count || 0) > 5}
-          >
-            <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
-          </TitleShowAll>
+            {(relatedArtists?.count || 0) > 0 && (
+              <TitleShowAll
+                title="Fans also like"
+                href={`/artists`}
+                isShowAll={(relatedArtists?.count || 0) > 5}
+              >
+                <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
+              </TitleShowAll>
+            )}
+          </>
         )}
 
         <Footer/>

@@ -35,7 +35,7 @@ export default function CardItem({
                                    index,
                                    type,
                                  }: Props) {
-  const {data: track} = useRetrieveTrackQuery(track_slug || "null");
+  const {data: track} = useRetrieveTrackQuery(track_slug || null, {skip: !track_slug});
   const {activeTrack} = useAppSelector((state) => state.track);
 
   return (

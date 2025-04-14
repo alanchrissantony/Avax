@@ -6,7 +6,7 @@ import {cn} from "@/lib/utils"
 import {ThemeProvider} from "@/providers/ThemeProvider";
 import TrackPlayerProvider from "@/providers/TrackPlayerProvider";
 import {Sidebar} from "@/components/general/Siderbar";
-import PreviewPlayer from "@/components/tracks/PreviewPlayer";
+import PreviewPlayer from "@/components/tracks/player/PreviewPlayer";
 
 const fontSans = Inter({
   subsets: ["latin"],

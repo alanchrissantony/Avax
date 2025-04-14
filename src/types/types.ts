@@ -49,17 +49,17 @@ export interface ShortUsers extends ListBaseApi {
   results: ShortUser[];
 }
 
+export interface ShortArtist extends BaseApi {
+  slug: string;
+  display_name: string;
+  image: string;
+  color: string;
+  is_verify: boolean;
+}
+
 export interface Artist extends BaseApi {
   slug: string;
-  user: {
-    id: number;
-    displayName: string;
-    type_profile: string;
-    artist_slug: string;
-    image: string;
-    followers_count: number;
-    is_premium: boolean;
-  };
+  user: ShortUser;
   first_name: string;
   last_name: string;
   display_name: string;
@@ -77,14 +77,7 @@ export interface Artists extends ListBaseApi {
 export interface Album extends BaseApi {
   slug: string;
   title: string;
-  artist: {
-    id: number;
-    slug: string;
-    display_name: string;
-    image: string;
-    color: string;
-    is_verify: boolean;
-  };
+  artist: ShortArtist;
   image: string;
   color: string;
   track_slug: string;
@@ -110,21 +103,8 @@ export interface Track extends BaseApi {
   image: string;
   plays_count: number;
   color: string;
-  artist: {
-    id: number;
-    slug: string;
-    display_name: string;
-    image: string;
-    color: string;
-    is_verify: boolean;
-  };
-  genre: {
-    id: number;
-    slug: string;
-    name: string;
-    image: string;
-    color: string;
-  };
+  artist: ShortArtist;
+  genre: Genre;
   album: {
     id: number;
     slug: string;
@@ -141,14 +121,7 @@ export interface DetailTrack extends Track {
     id: number;
     name: string;
     text: string;
-    artist: {
-      id: number;
-      slug: string;
-      display_name: string;
-      image: string;
-      color: string;
-      is_verify: boolean;
-    };
+    artist: ShortArtist;
     download_count: number;
     likes_count: number;
     user_of_likes: number[];
@@ -165,22 +138,8 @@ export interface Playlist extends BaseApi {
   image: string;
   color: string;
   track_slug: string;
-  user: {
-    id: number;
-    display_name: string;
-    type_profile: string;
-    artist_slug: string;
-    image: string;
-    followers_count: number;
-    is_premium: boolean;
-  };
-  genre: {
-    id: number;
-    slug: string;
-    name: string;
-    image: string;
-    color: string;
-  };
+  user: ShortUser;
+  genre: Genre;
   is_private: boolean;
 }
 

@@ -14,6 +14,7 @@ import {formatDuration} from "@/utils/clientUtils";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 interface Props {
   params: {
@@ -22,12 +23,17 @@ interface Props {
 }
 
 export default function PlaylistPage({params}: Props) {
-  const {data: playlist, isLoading, isFetching} = useRetrievePlaylistQuery(params.slug)
+  const {
+    data: playlist,
+    isLoading,
+    isFetching,
+  } = useRetrievePlaylistQuery(params.slug)
+  const genreSlug = playlist?.genre?.slug || null
   const {
     data: recommendations,
     isLoading: isLoadingRec,
     isFetching: isFetchingRec,
-  } = useListTrackQuery({genreSlug: playlist?.genre?.slug || ''})
+  } = useListTrackQuery({genreSlug}, {skip: !genreSlug})
 
   const load = isLoading || isFetching || isLoadingRec || isFetchingRec
 
@@ -112,40 +118,43 @@ export default function PlaylistPage({params}: Props) {
       </div>
 
       <div className="mx-6 my-6 space-y-8">
-
-        <PlayButtonAndOther
-          track={playlist?.tracks?.[currentIndex] || (activeTrack || undefined)}
-          tracks={playlist?.tracks}
-          index={currentIndex}
-          isFavorite
-        />
-
-        <div>
-          <TracksTable
-            tracks={playlist?.tracks}
-            showAlbum
-            showCover
-            showHeader
-            showSubtitle
-          />
-        </div>
-
-        {(recommendations?.count || 0) > 0 &&
-          <TitleShowAll
-            title="Recomended"
-            titlePB="Based on what`s in this playlist"
-            isShowAll={false}
-          >
-            <TracksTable
-              tracks={recommendations?.results.slice(0, 10)}
-              showAlbum
-              showCover
-              showSubtitle
-              showHeader
-              showIndex={false}
+        {load ? <FullScreenSpinner/> : (
+          <>
+            <PlayButtonAndOther
+              track={playlist?.tracks?.[currentIndex] || (activeTrack || undefined)}
+              tracks={playlist?.tracks}
+              index={currentIndex}
+              isFavorite
             />
-          </TitleShowAll>
-        }
+
+            <div>
+              <TracksTable
+                tracks={playlist?.tracks}
+                showAlbum
+                showCover
+                showHeader
+                showSubtitle
+              />
+            </div>
+
+            {(recommendations?.count || 0) > 0 &&
+              <TitleShowAll
+                title="Recomended"
+                titlePB="Based on what`s in this playlist"
+                isShowAll={false}
+              >
+                <TracksTable
+                  tracks={recommendations?.results.slice(0, 10)}
+                  showAlbum
+                  showCover
+                  showSubtitle
+                  showHeader
+                  showIndex={false}
+                />
+              </TitleShowAll>
+            }
+          </>
+        )}
 
         <Footer/>
       </div>
