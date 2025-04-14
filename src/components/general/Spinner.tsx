@@ -10,11 +10,11 @@ const override: CSSProperties = {
   borderColor: "gray",
 };
 
-export default function Spinner({size = 100}) {
+export default function Spinner({size = 80}) {
   return (
     <div>
       <MoonLoader
-        color='#8298e3'
+        color='white'
         loading={true}
         cssOverride={override}
         size={size}

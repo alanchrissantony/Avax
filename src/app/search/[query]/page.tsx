@@ -4,7 +4,6 @@ import TracksTable from "@/components/tracks/TracksTable";
 import ArtistCards from "@/components/artists/ArtistCards";
 import AlbumCards from "@/components/albums/AlbumCards";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
-import MainSection from "@/components/general/main-section";
 import {
   useListAlbumQuery,
   useListArtistQuery,
@@ -12,10 +11,10 @@ import {
   useListTrackQuery, useListUsersProfileQuery
 } from "@/lib/features/other/publicApiSlice";
 import TitleShowAll from "@/components/ui/title-show-all";
-import SearchFilters from "@/components/ui/SearchFilters";
 import TopResult from "@/components/tracks/TopResult";
-import Footer from "@/components/general/Footer";
 import UserCards from "@/components/users/UserCards";
+import NotFoundSearch from "@/components/search/not-found-search";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 interface Props {
   params: {
@@ -55,84 +54,87 @@ export default function SearchResults({params}: Props) {
   } = useListUsersProfileQuery({search})
 
 
+  const isFoundBySearch = (
+    (searchTracks?.count || 0) +
+    (searchArtists?.count || 0) +
+    (searchPlaylists?.count || 0) +
+    (searchProfiles?.count || 0)) > 0
+
   const load = (
     isLoadingT || isFetchingT || isLoadingA || isFetchingA ||
     isLoadingAl || isFetchingAl || isLoadingP || isFetchingP ||
     isLoadingPr || isFetchingPr
   )
 
+  if (load) return <FullScreenSpinner/>
+  if (!isFoundBySearch) return <NotFoundSearch type="All" search={search}/>
+
   return (
-    <MainSection bgColor="#161616">
-      <div className="mx-6 my-6 mt-4 space-y-8">
-        <SearchFilters/>
-
-        {(searchTracks?.count || 0) > 0 && (
-          <div className="lg:grid lg:grid-cols-3 gap-2">
-            <div className="col-span-1">
-              <TitleShowAll title="Top result">
-                <TopResult
-                  track={searchTracks?.results?.[0]}
-                  type="Song"
-                />
-              </TitleShowAll>
-            </div>
-
-            <div className="col-span-2">
-              <TitleShowAll title="Songs">
-                <TracksTable
-                  tracks={searchTracks?.results?.slice(0, 6)}
-                  showCover
-                  showSubtitle
-                  showIndex={false}
-                />
-              </TitleShowAll>
-            </div>
+    <div>
+      {(searchTracks?.count || 0) > 0 && (
+        <div className="lg:grid lg:grid-cols-3 gap-2">
+          <div className="col-span-1">
+            <TitleShowAll title="Top result">
+              <TopResult
+                track={searchTracks?.results?.[0]}
+                type="Song"
+              />
+            </TitleShowAll>
           </div>
-        )}
+
+          <div className="col-span-2">
+            <TitleShowAll title="Songs">
+              <TracksTable
+                tracks={searchTracks?.results?.slice(0, 6)}
+                showCover
+                showSubtitle
+                showIndex={false}
+              />
+            </TitleShowAll>
+          </div>
+        </div>
+      )}
 
 
-        {(searchArtists?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Artists"
-            href="/artists"
-            isShowAll={false}
-          >
-            <ArtistCards artists={searchArtists?.results.slice(0, 5)}/>
-          </TitleShowAll>
-        )}
+      {(searchArtists?.count || 0) > 0 && (
+        <TitleShowAll
+          title="Artists"
+          href="/artists"
+          isShowAll={false}
+        >
+          <ArtistCards artists={searchArtists?.results.slice(0, 5)}/>
+        </TitleShowAll>
+      )}
 
-        {(searchAlbums?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Albums"
-            href="/albums"
-            isShowAll={false}
-          >
-            <AlbumCards albums={searchAlbums?.results.slice(0, 5)}/>
-          </TitleShowAll>
-        )}
+      {(searchAlbums?.count || 0) > 0 && (
+        <TitleShowAll
+          title="Albums"
+          href="/albums"
+          isShowAll={false}
+        >
+          <AlbumCards albums={searchAlbums?.results.slice(0, 5)}/>
+        </TitleShowAll>
+      )}
 
-        {(searchPlaylists?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Playlists"
-            href="/playlists"
-            isShowAll={false}
-          >
-            <PlaylistCards playlists={searchPlaylists?.results.slice(0, 5)}/>
-          </TitleShowAll>
-        )}
+      {(searchPlaylists?.count || 0) > 0 && (
+        <TitleShowAll
+          title="Playlists"
+          href="/playlists"
+          isShowAll={false}
+        >
+          <PlaylistCards playlists={searchPlaylists?.results.slice(0, 5)}/>
+        </TitleShowAll>
+      )}
 
-        {(searchProfiles?.count || 0) > 0 && (
-          <TitleShowAll
-            title="Profiles"
-            href="/users"
-            isShowAll={false}
-          >
-            <UserCards users={searchProfiles?.results.slice(0, 5)}/>
-          </TitleShowAll>
-        )}
-
-        <Footer/>
-      </div>
-    </MainSection>
+      {(searchProfiles?.count || 0) > 0 && (
+        <TitleShowAll
+          title="Profiles"
+          href="/users"
+          isShowAll={false}
+        >
+          <UserCards users={searchProfiles?.results.slice(0, 5)}/>
+        </TitleShowAll>
+      )}
+    </div>
   );
 }
