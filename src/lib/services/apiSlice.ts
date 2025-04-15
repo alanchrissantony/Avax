@@ -12,10 +12,6 @@ const mutex = new Mutex()
 const baseQuery = fetchBaseQuery({
   baseUrl: `${process.env.NEXT_PUBLIC_HOST}/api/v1`,
   credentials: 'include',
-  // headers: {
-  //   'Accept': 'application/json',
-  //   'Content-Type': 'application/json'
-  // }
 })
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
@@ -46,8 +42,8 @@ const baseQueryWithReauth: BaseQueryFn<
         } else {
           api.dispatch(logout())
         }
-      } catch (e) {
-        console.log(e);
+        // } catch (e) {
+        //   console.log(e);
       } finally {
         release()
       }
@@ -64,7 +60,7 @@ const baseQueryWithReauth: BaseQueryFn<
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["User", 'Candidate', 'Recruiter', 'Companies', 'Company', 'Vacancies', 'Vacancy', 'Chats', 'Messages', 'Feedback'],
+  tagTypes: ["User"],
   endpoints: builder => ({}),
 });
 

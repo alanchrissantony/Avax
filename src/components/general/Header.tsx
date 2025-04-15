@@ -5,6 +5,7 @@ import Image from "next/image";
 import {usePathname, useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import SearchInput from "@/components/ui/SearchInput";
+import Link from "next/link";
 
 
 export default function Header() {
@@ -60,14 +61,18 @@ export default function Header() {
         </div>
 
         <div className="felx items-center justify-between space-x-2">
-          <Button variant="ghost" className="rounded-full font-semibold"
-                  size="lg">
-            Sign up
-          </Button>
-          <Button className="text-black bg-white rounded-full font-semibold"
-                  size="lg">
-            Log in
-          </Button>
+          <Link href={`/auth/signup`}>
+            <Button variant="ghost" className="rounded-full font-semibold"
+                    size="lg">
+              Sign up
+            </Button>
+          </Link>
+          <Link href={`/auth/login`}>
+            <Button className="text-black bg-white rounded-full font-semibold"
+                    size="lg">
+              Log in
+            </Button>
+          </Link>
         </div>
 
         {/*<button*/}

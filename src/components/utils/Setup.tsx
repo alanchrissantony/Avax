@@ -1,12 +1,12 @@
 'use client';
 
-// import useVerify from "@/hooks/useVerify";
+import useVerify from "@/hooks/useVerify";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useTheme} from "next-themes";
 
 export default function Setup() {
-  // useVerify();
+  useVerify();
 
   const {theme} = useTheme()
 

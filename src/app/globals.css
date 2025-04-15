@@ -78,7 +78,7 @@
     }
 
     .dark {
-        --background: 20 14.3% 4.1%;
+        --background: 20 14.3% 0%;
         --foreground: 0 0% 95%;
         --card: 24 9.8% 10%;
         --card-foreground: 0 0% 95%;
@@ -94,8 +94,8 @@
         --accent-foreground: 0 0% 98%;
         --destructive: 0 62.8% 30.6%;
         --destructive-foreground: 0 85.7% 97.3%;
-        --border: 240 3.7% 15.9%;
-        --input: 240 3.7% 15.9%;
+        --border: 240 3.7% 30.9%;
+        --input: 240 3.7% 30.9%;
         --ring: 142.4 71.8% 29.2%;
     }
 }

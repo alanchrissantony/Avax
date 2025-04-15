@@ -28,6 +28,12 @@ export const trackSlice = createSlice({
       state.currentTracks = action.payload.tracks;
       state.currentIndex = action.payload.i;
     },
+    setReset: (state) => {
+      state.activeTrack = null;
+      state.currentTracks = null;
+      state.currentIndex = 0;
+      state.isLoading = true;
+    },
     nextSong: (state, action) => {
       if (state.currentTracks?.[action.payload]) {
         state.activeTrack = state.currentTracks[action.payload];
@@ -47,5 +53,5 @@ export const trackSlice = createSlice({
   },
 });
 
-export const {setCurrentTracks, setActiveTrack, prevSong, nextSong, finishInitialLoad,} = trackSlice.actions;
+export const {setCurrentTracks, setActiveTrack, setReset, prevSong, nextSong, finishInitialLoad,} = trackSlice.actions;
 export default trackSlice.reducer;

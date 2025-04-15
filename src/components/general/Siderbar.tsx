@@ -5,6 +5,7 @@ import Link from "next/link";
 
 
 export function Sidebar() {
+
   return (
     <aside className="flex flex-col h-[calc(97vh-4rem)] col-span-2 text-m">
       <div className="flex flex-col items-center p-4 rounded-lg bg-[#131313] m-2 pb-2">

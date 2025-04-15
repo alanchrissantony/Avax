@@ -2,8 +2,9 @@
 
 import React, {useEffect, useState, createContext, useContext, Dispatch, SetStateAction, useCallback} from "react";
 import {useAppSelector, useAppDispatch} from "@/lib/hooks";
-import {nextSong as nextSongAction, prevSong as prevSongAction} from "@/lib/features/tracks/trackSlice";
+import {nextSong as nextSongAction, prevSong as prevSongAction, setReset} from "@/lib/features/tracks/trackSlice";
 import {Track} from "@/types/types";
+import {usePathname} from "next/navigation";
 
 interface TrackProviderState {
   currentTrackAudio: HTMLAudioElement | null;
@@ -40,6 +41,9 @@ interface Props {
 }
 
 export default function TrackPlayerProvider({children}: Props) {
+  const pathname = usePathname();
+  const isAuthPage = pathname.startsWith("/auth");
+
   const {activeTrack, currentIndex, currentTracks} = useAppSelector((state) => state.track);
   const dispatch = useAppDispatch();
 
@@ -184,6 +188,12 @@ export default function TrackPlayerProvider({children}: Props) {
   const toggleLoop = () => {
     setLoop(!loop);
   };
+
+  useEffect(() => {
+    if (isAuthPage && isPlaying) {
+      pause();
+    }
+  }, [isPlaying, isAuthPage]);
 
   const value = {
     currentTrackAudio,
