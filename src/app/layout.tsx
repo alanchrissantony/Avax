@@ -10,6 +10,7 @@ import {Sidebar} from "@/components/general/Siderbar";
 import PreviewPlayer from "@/components/tracks/player/PreviewPlayer";
 import Setup from "@/components/utils/Setup";
 import {usePathname} from "next/navigation";
+import {accountUrl} from "@/utils/consts";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -22,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const isAuthPage = pathname.startsWith("/auth");
+  const iAccountPage = pathname.startsWith(accountUrl);
 
 
   return (
@@ -41,10 +42,10 @@ export default function RootLayout({
       disableTransitionOnChange
     >
       <ReduxStoreProvider>
-        {/*<Setup/>*/}
+        <Setup/>
 
         <TrackPlayerProvider>
-          {isAuthPage ? (
+          {iAccountPage ? (
             <main>{children}</main>
           ) : (
             <div className="grid grid-cols-10">

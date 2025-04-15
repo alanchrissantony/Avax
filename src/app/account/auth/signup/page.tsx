@@ -5,6 +5,7 @@ import {Separator} from "@/components/ui/separator";
 import {AppleIcon, ChromeIcon, FacebookIcon} from "lucide-react";
 import Link from "next/link";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
+import {loginUrl} from "@/utils/consts";
 
 
 export default function Page() {
@@ -66,7 +67,7 @@ export default function Page() {
 
       <div className="flex items-center justify-center space-x-2">
         <p className="text-sm text-white/70 font-normal">Already have an account?</p>
-        <Link href={`/auth/login`} className="hover:text-green-500 underline text-sm text-white/90 font-medium">
+        <Link href={loginUrl} className="hover:text-green-500 underline text-sm text-white/90 font-medium">
           Log in here.
         </Link>
       </div>

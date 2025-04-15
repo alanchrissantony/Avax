@@ -1,4 +1,6 @@
 import {Button} from "@/components/ui/button";
+import Link from "next/link";
+import {signupUrl} from "@/utils/consts";
 
 
 export default function FooterLogin() {
@@ -11,7 +13,9 @@ export default function FooterLogin() {
           Sign up to get unlimited songs and podcasts with occasional ads. No credit card needed.
         </p>
         </div>
+        <Link href={signupUrl}>
         <Button className="text-black bg-white rounded-full mr-4" size="lg">Sign up free</Button>
+        </Link>
       </div>
     </footer>
   )
