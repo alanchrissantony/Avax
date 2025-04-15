@@ -1,12 +1,12 @@
 "use client";
 
 import {useListPlaylistQuery} from "@/lib/features/other/publicApiSlice";
-import Footer from "@/components/general/Footer";
 import {usePathname} from "next/navigation";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TitleShowAll from "@/components/ui/title-show-all";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import ContentSection from "@/components/general/content-section";
 
 
 export default function UserPlaylistsPage() {
@@ -24,7 +24,7 @@ export default function UserPlaylistsPage() {
 
   return (
     <MainSection>
-      <div className="mx-6 my-6 space-y-6">
+      <ContentSection>
         {load ? <FullScreenSpinner/> : (
           (genrePlaylists?.count || 0) > 0 && (
             <div className="mt-20">
@@ -38,9 +38,7 @@ export default function UserPlaylistsPage() {
             </div>
           )
         )}
-
-        <Footer/>
-      </div>
+      </ContentSection>
     </MainSection>
   );
 }

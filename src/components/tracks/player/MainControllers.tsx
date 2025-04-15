@@ -60,9 +60,9 @@ export default function MainControllers() {
           className="flex items-center justify-center w-8 h-8 p-0 text-black bg-white rounded-full hover:scale-105 duration-150"
         >
           {isPlaying ? (
-            <MdPause className="text-2xl text-paper-700"/>
+            <MdPause className="text-2xl"/>
           ) : (
-            <MdPlayArrow className="text-2xl text-paper-700"/>
+            <MdPlayArrow className="text-2xl"/>
           )}
         </button>
         <button onClick={nextTrack} disabled={!hasNextTrack}>

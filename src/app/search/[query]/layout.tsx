@@ -1,7 +1,7 @@
 import type {Metadata} from "next";
 import SearchFilters from "@/components/ui/SearchFilters";
 import MainSection from "@/components/general/main-section";
-import Footer from "@/components/general/Footer";
+import ContentSection from "@/components/general/content-section";
 
 
 export const metadata: Metadata = {
@@ -15,11 +15,10 @@ export default function Layout({
 }>) {
   return (
     <MainSection bgColor="#161616">
-      <div className="mx-6 my-6 mt-4 space-y-8">
+      <ContentSection className="mt-4">
         <SearchFilters/>
         {children}
-        <Footer/>
-      </div>
+      </ContentSection>
     </MainSection>
   );
 }

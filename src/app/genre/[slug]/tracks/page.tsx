@@ -1,12 +1,12 @@
 "use client";
 
 import {useListRecentlyListenTracksQuery} from "@/lib/features/other/publicApiSlice";
-import Footer from "@/components/general/Footer";
 import {usePathname} from "next/navigation";
 import TracksTable from "@/components/tracks/TracksTable";
 import TitleShowAll from "@/components/ui/title-show-all";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import ContentSection from "@/components/general/content-section";
 
 
 export default function Page() {
@@ -24,7 +24,7 @@ export default function Page() {
 
   return (
     <MainSection>
-      <div className="mx-6 my-6 space-y-6">
+      <ContentSection>
         {load ? <FullScreenSpinner/> : (
           (genreTracks?.count || 0) > 0 && (
             <div className="mt-20">
@@ -44,8 +44,7 @@ export default function Page() {
           )
         )}
 
-        <Footer/>
-      </div>
+      </ContentSection>
     </MainSection>
   );
 }

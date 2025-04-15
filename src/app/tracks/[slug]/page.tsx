@@ -7,7 +7,6 @@ import {
   useListTrackQuery, useRetrieveAlbumQuery, useRetrieveTrackQuery
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
-import Footer from "@/components/general/Footer";
 import Link from "next/link";
 import {formatTime} from "@/utils/clientUtils";
 import AlbumCards from "@/components/albums/AlbumCards";
@@ -17,6 +16,7 @@ import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import ContentSection from "@/components/general/content-section";
 
 interface Props {
   params: {
@@ -136,7 +136,7 @@ export default function TracksPage({params}: Props) {
         </div>
       </div>
 
-      <div className="mx-6 my-6 space-y-8">
+      <ContentSection>
         {load ? <FullScreenSpinner/> : (
           <>
             <PlayButtonAndOther
@@ -216,9 +216,7 @@ export default function TracksPage({params}: Props) {
             )}
           </>
         )}
-
-        <Footer/>
-      </div>
+      </ContentSection>
     </MainSection>
   );
 }

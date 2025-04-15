@@ -5,6 +5,8 @@ import {Separator} from "@/components/ui/separator";
 
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="w-full pt-10">
       <div className="mx-auto w-full max-w-screen-xl text-sm">
@@ -107,7 +109,7 @@ export default function Footer() {
 
         <div className="px-4 py-6 md:flex md:items-center md:justify-between">
             <span className="text-sm text-white/70 sm:text-center font-normal pb-6">
-              © 2024 Avax AB
+              © {currentYear} Avax AB
             </span>
         </div>
       </div>

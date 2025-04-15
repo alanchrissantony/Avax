@@ -3,8 +3,8 @@
 import {CircleAlert} from "lucide-react";
 import MainSection from "@/components/general/main-section";
 import {Button} from "@/components/ui/button";
-import Footer from "@/components/general/Footer";
 import {useRouter} from "next/navigation";
+import ContentSection from "@/components/general/content-section";
 
 
 export default function NotFound() {
@@ -12,7 +12,7 @@ export default function NotFound() {
 
   return (
     <MainSection bgColor="#131313">
-      <div className="mx-6 my-6">
+      <ContentSection>
         <div className="flex min-h-[70dvh] flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <CircleAlert className="mx-auto h-14 w-14 text-white"/>
@@ -32,8 +32,7 @@ export default function NotFound() {
             </div>
           </div>
         </div>
-        <Footer/>
-      </div>
+      </ContentSection>
     </MainSection>
   )
 }

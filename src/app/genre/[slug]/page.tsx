@@ -2,11 +2,11 @@
 
 import {useListPlaylistQuery, useListTrackQuery, useRetrieveGenreQuery,} from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
-import Footer from "@/components/general/Footer";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import ContentSection from "@/components/general/content-section";
 
 interface Props {
   params: {
@@ -47,7 +47,7 @@ export default function Page({params}: Props) {
         </div>
       </div>
 
-      <div className="mx-6 my-6 space-y-8">
+      <ContentSection>
 
         {load ? <FullScreenSpinner/> : (
           <>
@@ -79,8 +79,7 @@ export default function Page({params}: Props) {
           </>
         )}
 
-        <Footer/>
-      </div>
+      </ContentSection>
     </MainSection>
   );
 }

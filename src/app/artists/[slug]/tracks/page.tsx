@@ -1,12 +1,12 @@
 "use client";
 
 import {useListTrackQuery} from "@/lib/features/other/publicApiSlice";
-import Footer from "@/components/general/Footer";
 import {usePathname} from "next/navigation";
 import TitleShowAll from "@/components/ui/title-show-all";
 import TracksTable from "@/components/tracks/TracksTable";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import ContentSection from "@/components/general/content-section";
 
 
 export default function Page() {
@@ -25,7 +25,7 @@ export default function Page() {
 
   return (
     <MainSection>
-      <div className="mx-6 my-6 space-y-6">
+      <ContentSection>
 
         {load ? <FullScreenSpinner/> : (
           (artistTracks?.count || 0) > 0 && (
@@ -46,8 +46,7 @@ export default function Page() {
           )
         )}
 
-        <Footer/>
-      </div>
+      </ContentSection>
     </MainSection>
   );
 }

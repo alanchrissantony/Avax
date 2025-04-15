@@ -1,11 +1,11 @@
 "use client";
 
 import {useListGenresQuery} from "@/lib/features/other/publicApiSlice";
-import Footer from "@/components/general/Footer";
 import GenreCards from "@/components/others/GenreCards";
 import TitleShowAll from "@/components/ui/title-show-all";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import ContentSection from "@/components/general/content-section";
 
 
 export default function Page() {
@@ -15,7 +15,7 @@ export default function Page() {
 
   return (
     <MainSection bgColor="#181818">
-      <div className="mx-6 my-6 space-y-8">
+      <ContentSection>
         {load ? <FullScreenSpinner/> : (
           <TitleShowAll
             title="Browse all"
@@ -39,8 +39,7 @@ export default function Page() {
             )}
           </TitleShowAll>
         )}
-        <Footer/>
-      </div>
+      </ContentSection>
     </MainSection>
   );
 }

@@ -17,7 +17,7 @@ export default function PlayerTrackInfo({activeTrack}: IProps) {
           alt={activeTrack.title}
           height={56}
           width={56}
-          className="object-cover w-14 h-14 aspect-square"
+          className="object-cover w-14 h-14 aspect-square rounded-md"
         />
       ) : (
         <Music size={56} className="mt-4 mb-4"/>
@@ -35,7 +35,7 @@ export default function PlayerTrackInfo({activeTrack}: IProps) {
       </div>
       {activeTrack &&
         <button>
-          <RxHeartFilled className="text-xl text-white/60 hover:text-primary"/>
+          <RxHeartFilled className="text-xl text-white hover:text-green-500"/>
         </button>
       }
     </div>

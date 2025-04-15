@@ -3,12 +3,12 @@
 import * as React from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 
-import { cn } from "@/lib/utils";
+import {cn} from "@/lib/utils";
 
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
->(({ className, ...props }, ref) => (
+>(({className, ...props}, ref) => (
   <SliderPrimitive.Root
     ref={ref}
     className={cn(
@@ -19,7 +19,7 @@ const Slider = React.forwardRef<
   >
     <SliderPrimitive.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-secondary">
       <SliderPrimitive.Range
-        className="absolute rounded-md h-full bg-white/90 group-hover:bg-primary transition-all duration-150 ease-in-out"
+        className="absolute rounded-md h-full bg-white/90 group-hover:bg-primary transition-colors duration-200 ease-in-out"
       />
     </SliderPrimitive.Track>
     <SliderPrimitive.Thumb
@@ -29,4 +29,4 @@ const Slider = React.forwardRef<
 ));
 Slider.displayName = SliderPrimitive.Root.displayName;
 
-export { Slider };
+export {Slider};

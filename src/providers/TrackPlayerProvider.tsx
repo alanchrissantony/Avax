@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useState, createContext, useContext, Dispatch, SetStateAction} from "react";
+import React, {useEffect, useState, createContext, useContext, Dispatch, SetStateAction, useCallback} from "react";
 import {useAppSelector, useAppDispatch} from "@/lib/hooks";
 import {nextSong as nextSongAction, prevSong as prevSongAction} from "@/lib/features/tracks/trackSlice";
 import {Track} from "@/types/types";
@@ -88,6 +88,8 @@ export default function TrackPlayerProvider({children}: Props) {
     setCurrentTrackAudio(tempAudio);
 
     return () => {
+      tempAudio.removeEventListener("loadeddata", setAudioData);
+      tempAudio.removeEventListener("timeupdate", setAudioTime);
       tempAudio.removeEventListener("ended", handleEnded);
       pause();
       setCurrentTrackAudio(null);
@@ -119,7 +121,7 @@ export default function TrackPlayerProvider({children}: Props) {
   };
 
   useEffect(() => {
-    if (currentTrackAudio && drag) {
+    if (currentTrackAudio) {
       currentTrackAudio.currentTime = Math.round((drag * currentTrackAudio.duration) / 100);
     }
   }, [drag]);

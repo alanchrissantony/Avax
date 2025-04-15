@@ -8,13 +8,13 @@ import {
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
 import {useAppSelector} from "@/lib/hooks";
-import Footer from "@/components/general/Footer";
 import Link from "next/link";
 import {formatDuration} from "@/utils/clientUtils";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import ContentSection from "@/components/general/content-section";
 
 interface Props {
   params: {
@@ -107,7 +107,7 @@ export default function PlaylistPage({params}: Props) {
                   {playlist?.duration && (
                     <>
                       <Dot/>
-                      <span className="text-white/50">about {formatDuration(playlist.duration)}</span>
+                      <span className="text-white/50">{formatDuration(playlist.duration)}</span>
                     </>
                   )}
                 </div>
@@ -117,7 +117,7 @@ export default function PlaylistPage({params}: Props) {
         </div>
       </div>
 
-      <div className="mx-6 my-6 space-y-8">
+      <ContentSection>
         {load ? <FullScreenSpinner/> : (
           <>
             <PlayButtonAndOther
@@ -156,8 +156,7 @@ export default function PlaylistPage({params}: Props) {
           </>
         )}
 
-        <Footer/>
-      </div>
+      </ContentSection>
     </MainSection>
   );
 }
