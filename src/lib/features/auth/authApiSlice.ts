@@ -41,15 +41,6 @@ const authApiSlice = apiSlice.injectEndpoints({
     retrieveUserProfile: builder.query<User, any | void>({
       query: ({}) => '/users/profiles/my/',
       keepUnusedDataFor: 5,
-      async onQueryStarted(_, {dispatch, queryFulfilled}) {
-        try {
-          const {data} = await queryFulfilled
-          dispatch(setUser(data))
-        } catch (err) {
-        } finally {
-          dispatch(finishInitialLoadUser())
-        }
-      },
       providesTags: ['User']
     }),
     updateUserProfile: builder.mutation<User, object>({
