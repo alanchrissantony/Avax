@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {Track} from "@/types/types";
 
 interface OtherState {
   searchQuery: string;

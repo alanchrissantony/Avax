@@ -1,8 +1,8 @@
 "use client";
 
-import React, {useEffect, useState, createContext, useContext, Dispatch, SetStateAction, useCallback} from "react";
+import React, {useEffect, useState, createContext, useContext, Dispatch, SetStateAction} from "react";
 import {useAppSelector, useAppDispatch} from "@/lib/hooks";
-import {nextSong as nextSongAction, prevSong as prevSongAction, setReset} from "@/lib/features/tracks/trackSlice";
+import {nextSong as nextSongAction, prevSong as prevSongAction} from "@/lib/features/tracks/trackSlice";
 import {Track} from "@/types/types";
 import {usePathname} from "next/navigation";
 import {accountUrl} from "@/utils/consts";

@@ -1,17 +1,16 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {finishInitialLoadUser, setUser} from "@/lib/features/auth/authSlice";
-import {Playlists, PlaylistsLiked, User} from "@/types/types";
+import {AlbumsLiked} from "@/types/types";
 
 
 const albumApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    listUserPlaylistLiked: builder.query<PlaylistsLiked, any | void>({
-      query: ({page = 1,}) => `/playlists/favorite/?page=${page}`,
-      providesTags: ['Playlist']
+    listUserAlbumLiked: builder.query<AlbumsLiked, any | void>({
+      query: ({page = 1,}) => `/albums/favorite/?page=${page}`,
+      providesTags: ['Album']
     }),
   }),
 });
 
 export const {
-  useListUserPlaylistLikedQuery,
+  useListUserAlbumLikedQuery,
 } = albumApiSlice

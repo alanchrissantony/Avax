@@ -1,5 +1,5 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {Playlists, PlaylistsLiked} from "@/types/types";
+import {PlaylistsLiked} from "@/types/types";
 
 
 const playlistApiSlice = apiSlice.injectEndpoints({

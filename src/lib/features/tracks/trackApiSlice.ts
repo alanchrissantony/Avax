@@ -1,6 +1,5 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {finishInitialLoadUser, setUser} from "@/lib/features/auth/authSlice";
-import {Playlists, PlaylistsLiked, Tracks, User} from "@/types/types";
+import {Tracks} from "@/types/types";
 
 
 const trackApiSlice = apiSlice.injectEndpoints({

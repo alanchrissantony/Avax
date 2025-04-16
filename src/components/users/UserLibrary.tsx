@@ -14,6 +14,8 @@ import {usePathname} from "next/navigation";
 import {useListUserPlaylistLikedQuery} from "@/lib/features/playlists/playlistApiSlice";
 import {useListUserTracksLikedQuery} from "@/lib/features/tracks/trackApiSlice";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import {useListUserAlbumLikedQuery} from "@/lib/features/albums/albumApiSlice";
+import {useListUserArtistLikedQuery} from "@/lib/features/artists/artistApiSlice";
 
 
 export default function UserLibrary() {
@@ -27,26 +29,44 @@ export default function UserLibrary() {
     isLoading: isLoadingT,
     isFetching: isFetchingT,
   } = useListUserTracksLikedQuery({});
+  const {
+    data: albums,
+    isLoading: isLoadingA,
+    isFetching: isFetchingA,
+  } = useListUserAlbumLikedQuery({});
+  const {
+    data: artists,
+    isLoading: isLoadingAr,
+    isFetching: isFetchingAr,
+  } = useListUserArtistLikedQuery({});
 
   const pathname = usePathname();
   const {isAuthenticated} = useAppSelector(state => state.auth)
 
-  const [libraryType, setLibraryType] = useState(
-    localStorage.getItem("libraryType") ?? "playlists"
-  );
+  let value = "playlists"
+  if (typeof window !== "undefined") {
+    value = localStorage.getItem("libraryType") || "playlists"
+  }
+
+  const [libraryType, setLibraryType] = useState(value);
 
   function handleLibraryType(newType: string) {
     setLibraryType(newType);
-    localStorage.setItem("libraryType", newType);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("libraryType", newType);
+    }
   }
 
   function handleResetType() {
     setLibraryType("");
-    localStorage.removeItem("libraryType");
+    if (typeof window !== "undefined") {
+      localStorage.setItem("libraryType", "");
+    }
   }
 
   const load = (
-    isLoadingP || isFetchingP || isLoadingT || isFetchingT
+    isLoadingP || isFetchingP || isLoadingT || isFetchingT ||
+    isLoadingA || isFetchingA || isLoadingAr || isFetchingAr
   )
 
   if (load) return <FullScreenSpinner/>
@@ -133,6 +153,76 @@ export default function UserLibrary() {
           </div>
 
           <ul className="flex flex-col py-1 w-full overflow-y-auto text-sm">
+            {libraryType === "" && (
+              <>
+                <Link
+                  href={collectionTracks}
+                  className={`${
+                    pathname.includes(collectionTracks) ? "bg-[#303030]/50" : ""
+                  } flex items-center p-2 gap-3 rounded-sm text-white cursor-pointer hover:bg-[#404040]/20`}
+                >
+                  <Image
+                    src="/images/liked_cover.jpeg"
+                    height={50}
+                    width={50}
+                    className="rounded-md"
+                    alt="Liked playlist cover"
+                  />
+
+                  <div className="truncate">
+                    <h6 className="w-full text-sm font-semibold truncate">
+                      Liked Songs
+                    </h6>
+                    <span className="mt-1 text-xs font-semibold text-white/60">
+                      {tracks?.count || 0} songs
+                    </span>
+                  </div>
+                </Link>
+                {(playlists?.count || 0) > 0 && (
+                  playlists?.results?.map((item) => (
+                    <LibraryItemCard
+                      key={item?.playlist?.id}
+                      type="playlists"
+                      heading={item?.playlist?.title}
+                      image={item?.playlist?.image}
+                      altTitle={item?.playlist?.title}
+                      slug={item?.playlist?.slug}
+                      subtitle={item?.playlist?.user?.display_name}
+                    />
+                  ))
+                )}
+
+                {(albums?.count || 0) > 0 && (
+                  albums?.results?.map((item) => (
+                    <LibraryItemCard
+                      key={item?.album?.id}
+                      type="albums"
+                      heading={item?.album?.title}
+                      image={item?.album?.image}
+                      altTitle={item?.album?.title}
+                      slug={item?.album?.slug}
+                      subtitle={item?.album?.artist?.display_name}
+                    />
+                  ))
+                )}
+
+                {(artists?.count || 0) > 0 && (
+                  artists?.results?.map((item) => (
+                    <LibraryItemCard
+                      key={item?.artist?.id}
+                      type="artists"
+                      heading={item?.artist?.display_name}
+                      image={item?.artist?.image}
+                      altTitle={item?.artist?.display_name}
+                      slug={item?.artist?.slug}
+                      subtitle={item?.artist?.display_name}
+                    />
+                  ))
+                )}
+              </>
+            )}
+
+
             {libraryType === "playlists" && (
               <>
                 <Link
@@ -174,20 +264,37 @@ export default function UserLibrary() {
               </>
             )}
 
-            {/*{libraryType === "albums" &&*/}
-            {/*  albums.map((album) => (*/}
-            {/*    <LibraryItemCard*/}
-            {/*      key={album.id}*/}
-            {/*      entity={album}*/}
-            {/*      type="albums"*/}
-            {/*      subtitle={album.artists[0].name}*/}
-            {/*    />*/}
-            {/*  ))}*/}
+            {libraryType === "albums" && (
+              (albums?.count || 0) > 0 && (
+                albums?.results?.map((item) => (
+                  <LibraryItemCard
+                    key={item?.album?.id}
+                    type="albums"
+                    heading={item?.album?.title}
+                    image={item?.album?.image}
+                    altTitle={item?.album?.title}
+                    slug={item?.album?.slug}
+                    subtitle={item?.album?.artist?.display_name}
+                  />
+                ))
+              ))
+            }
 
-            {/*{libraryType === "artists" &&*/}
-            {/*  artists.map((artist) => (*/}
-            {/*    <LibraryItemCard key={artist.id} entity={artist} type="artists" />*/}
-            {/*  ))}*/}
+            {libraryType === "artists" && (
+              (artists?.count || 0) > 0 && (
+                artists?.results?.map((item) => (
+                  <LibraryItemCard
+                    key={item?.artist?.id}
+                    type="artists"
+                    heading={item?.artist?.display_name}
+                    image={item?.artist?.image}
+                    altTitle={item?.artist?.display_name}
+                    slug={item?.artist?.slug}
+                    subtitle={item?.artist?.display_name}
+                  />
+                ))
+              ))
+            }
           </ul>
         </>
       )}
