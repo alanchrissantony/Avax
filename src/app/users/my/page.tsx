@@ -16,10 +16,16 @@ import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
 import {useRetrieveUserMeQuery} from "@/lib/features/auth/authApiSlice";
+import {useAppSelector} from "@/lib/hooks";
 
 
 export default function Page() {
-  const {data: user, isLoading, isFetching} = useRetrieveUserMeQuery();
+  const {isAuthenticated} = useAppSelector(state => state.auth)
+  const {
+    data: user,
+    isLoading,
+    isFetching
+  } = useRetrieveUserMeQuery({}, {skip: !isAuthenticated});
   const userId = user?.id || null;
   const {
     data: userPlaylists,

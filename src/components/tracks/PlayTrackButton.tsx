@@ -12,6 +12,7 @@ interface Props {
   track?: Track | undefined;
   tracks?: Track[] | undefined;
   index?: number | null;
+  disabled?: boolean;
   className?: string;
 }
 
@@ -33,6 +34,7 @@ export default function PlayTrackButton({
                                           track = undefined,
                                           tracks = undefined,
                                           index = 0,
+                                          disabled=!track,
                                           className,
                                         }: Props) {
   const dispatch = useAppDispatch();
@@ -55,7 +57,7 @@ export default function PlayTrackButton({
         dispatch(setActiveTrack({track, tracks, i: index}));
         togglePlay();
       }}
-      disabled={!track}
+      disabled={disabled}
     >
       {isPlayingButton && isPlaying ? (
         lines ? (

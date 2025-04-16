@@ -17,17 +17,25 @@ import TitleShowAll from "@/components/ui/title-show-all";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
+import {useListUserTracksLikedQuery} from "@/lib/features/tracks/trackApiSlice";
 
 
 export default function Home() {
+  const {isAuthenticated} = useAppSelector(state => state.auth)
   const {data: topArtists, isLoading, isFetching} = useListArtistQuery({})
   const {data: topAlbums, isLoading: isLoadingAlbums, isFetching: isFetchingAlbums} = useListAlbumQuery({})
   const {data: topTracks, isLoading: isLoadingTrack, isFetching: isFetchingTrack} = useListTrackQuery({})
+  const {
+    data: likedTracks,
+    isLoading: isLoadingTrackL,
+    isFetching: isFetchingTrackL
+  } = useListUserTracksLikedQuery({}, {skip: !isAuthenticated});
   const {data: topPlaylists, isLoading: isLoadingPlaylist, isFetching: isFetchingPlaylist} = useListPlaylistQuery({})
 
   const load = (
     isLoading || isFetching || isLoadingAlbums || isFetchingAlbums ||
-    isLoadingTrack || isFetchingTrack || isLoadingPlaylist || isFetchingPlaylist
+    isLoadingTrack || isFetchingTrack || isLoadingPlaylist || isFetchingPlaylist ||
+    isLoadingTrackL || isFetchingTrackL
   )
 
   const {activeTrack} = useAppSelector(state => state.track)
@@ -51,7 +59,10 @@ export default function Home() {
                 <div className="flex items-center">
                   <Link href={"/tracks"} className="mt-4 ml-4">Top tracks</Link>
                 </div>
-                <TrackCardsLittle tracks={topTracks?.results.slice(0, 6)}/>
+                <TrackCardsLittle
+                  tracks={topTracks?.results.slice(0, 7)}
+                  tracksCollection={likedTracks?.results}
+                />
               </div>
 
               <TitleShowAll title="Popular artists" href="/artists">

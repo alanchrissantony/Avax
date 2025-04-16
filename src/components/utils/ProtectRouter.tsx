@@ -3,6 +3,7 @@
 import {redirect} from "next/navigation";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import {useAppSelector} from "@/lib/hooks";
+import {loginUrl} from "@/utils/consts";
 
 interface Props {
   allowedRoles: string[];
@@ -19,7 +20,7 @@ export default function ProtectRouter({children, allowedRoles}: Props) {
   }
 
   if (!user) {
-    return redirect('/login');
+    return redirect(loginUrl);
   }
 
   if (!allowedRoles.includes(user?.type_profile as string)) {

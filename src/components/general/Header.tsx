@@ -8,10 +8,11 @@ import Link from "next/link";
 import {loginUrl, signupUrl} from "@/utils/consts";
 import {useAppSelector} from "@/lib/hooks";
 import ProfileDropdownMenu from "@/components/general/ProfileDropdownMenu";
+import {Skeleton} from "@/components/ui/skeleton";
 
 
 export default function Header() {
-  const {isAuthenticated, user} = useAppSelector(state => state.auth)
+  const {isAuthenticated, isLoading} = useAppSelector(state => state.auth)
   const pathname = usePathname();
   const router = useRouter();
 
@@ -46,32 +47,33 @@ export default function Header() {
 
       <div className="flex items-center gap-6">
 
-        {isAuthenticated ? (
-          <div className="flex items-center justify-between space-x-4 p-2">
-            <Link href={`/premium`}>
-              <Button className="text-black bg-white h-8 rounded-full font-semibold"
-                      size="default">
-                Explore Premium
-              </Button>
-            </Link>
-            <ProfileDropdownMenu/>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between space-x-2">
-            <Link href={signupUrl}>
-              <Button variant="ghost" className="rounded-full font-semibold"
-                      size="lg">
-                Sign up
-              </Button>
-            </Link>
-            <Link href={loginUrl}>
-              <Button className="text-black bg-white rounded-full font-semibold"
-                      size="lg">
-                Log in
-              </Button>
-            </Link>
-          </div>
-        )}
+        {isLoading ? <Skeleton className="h-12 w-12 rounded-full"/> :
+          isAuthenticated ? (
+            <div className="flex items-center justify-between space-x-4 p-2">
+              <Link href={`/premium`}>
+                <Button className="text-black bg-white h-8 rounded-full font-semibold"
+                        size="default">
+                  Explore Premium
+                </Button>
+              </Link>
+              <ProfileDropdownMenu/>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between space-x-2">
+              <Link href={signupUrl}>
+                <Button variant="ghost" className="rounded-full font-semibold"
+                        size="lg">
+                  Sign up
+                </Button>
+              </Link>
+              <Link href={loginUrl}>
+                <Button className="text-black bg-white rounded-full font-semibold"
+                        size="lg">
+                  Log in
+                </Button>
+              </Link>
+            </div>
+          )}
       </div>
     </header>
   );

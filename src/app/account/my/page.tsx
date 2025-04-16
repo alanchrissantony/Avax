@@ -3,9 +3,11 @@ import {Separator} from "@/components/ui/separator"
 import {useRetrieveUserProfileQuery} from "@/lib/features/auth/authApiSlice";
 import Spinner from "@/components/general/Spinner";
 import {AccountForm} from "@/components/forms/account-form";
+import {useAppSelector} from "@/lib/hooks";
 
 export default function Page() {
-  const {data: user, isLoading, isFetching} = useRetrieveUserProfileQuery({})
+  const {isAuthenticated} = useAppSelector(state => state.auth)
+  const {data: user, isLoading, isFetching} = useRetrieveUserProfileQuery({}, {skip: !isAuthenticated})
 
   return (
     <div className="space-y-6">

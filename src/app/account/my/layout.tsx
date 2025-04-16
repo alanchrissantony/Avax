@@ -15,6 +15,7 @@ import {
   accountMySubscriptionUrl,
   accountMyUrl
 } from "@/utils/consts";
+import {useAppSelector} from "@/lib/hooks";
 
 
 interface SettingsLayoutProps {
@@ -22,7 +23,8 @@ interface SettingsLayoutProps {
 }
 
 export default function SettingsLayout({children}: SettingsLayoutProps) {
-  const {data: user, isLoading, isFetching} = useRetrieveUserMeQuery();
+  const {isAuthenticated} = useAppSelector(state => state.auth)
+  const {data: user, isLoading, isFetching} = useRetrieveUserMeQuery({}, {skip: !isAuthenticated});
 
   let sidebarNavItems: { href: string; title: string; }[] = [];
   if (user?.type_profile === "User") {

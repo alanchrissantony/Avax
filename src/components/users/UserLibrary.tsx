@@ -16,32 +16,35 @@ import {useListUserTracksLikedQuery} from "@/lib/features/tracks/trackApiSlice";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import {useListUserAlbumLikedQuery} from "@/lib/features/albums/albumApiSlice";
 import {useListUserArtistLikedQuery} from "@/lib/features/artists/artistApiSlice";
+import {useRetrieveUserMeQuery} from "@/lib/features/auth/authApiSlice";
 
 
 export default function UserLibrary() {
+  const {isAuthenticated} = useAppSelector(state => state.auth)
+
+  const {isLoading, isFetching} = useRetrieveUserMeQuery({}, {skip: !isAuthenticated})
   const {
     data: playlists,
     isLoading: isLoadingP,
     isFetching: isFetchingP,
-  } = useListUserPlaylistLikedQuery({});
+  } = useListUserPlaylistLikedQuery({}, {skip: !isAuthenticated});
   const {
     data: tracks,
     isLoading: isLoadingT,
     isFetching: isFetchingT,
-  } = useListUserTracksLikedQuery({});
+  } = useListUserTracksLikedQuery({}, {skip: !isAuthenticated});
   const {
     data: albums,
     isLoading: isLoadingA,
     isFetching: isFetchingA,
-  } = useListUserAlbumLikedQuery({});
+  } = useListUserAlbumLikedQuery({}, {skip: !isAuthenticated});
   const {
     data: artists,
     isLoading: isLoadingAr,
     isFetching: isFetchingAr,
-  } = useListUserArtistLikedQuery({});
+  } = useListUserArtistLikedQuery({}, {skip: !isAuthenticated});
 
   const pathname = usePathname();
-  const {isAuthenticated} = useAppSelector(state => state.auth)
 
   let value = "playlists"
   if (typeof window !== "undefined") {
@@ -66,7 +69,8 @@ export default function UserLibrary() {
 
   const load = (
     isLoadingP || isFetchingP || isLoadingT || isFetchingT ||
-    isLoadingA || isFetchingA || isLoadingAr || isFetchingAr
+    isLoadingA || isFetchingA || isLoadingAr || isFetchingAr ||
+    isLoading || isFetching
   )
 
   if (load) return <FullScreenSpinner/>
@@ -162,11 +166,11 @@ export default function UserLibrary() {
                   } flex items-center p-2 gap-3 rounded-sm text-white cursor-pointer hover:bg-[#404040]/20`}
                 >
                   <Image
-                    src="/images/liked_cover.jpeg"
+                    src="/images/avax_like.png"
+                    alt="Liked playlist cover"
                     height={50}
                     width={50}
                     className="rounded-md"
-                    alt="Liked playlist cover"
                   />
 
                   <div className="truncate">
@@ -232,7 +236,7 @@ export default function UserLibrary() {
                   } flex items-center p-2 gap-3 rounded-sm text-white cursor-pointer hover:bg-[#404040]/20`}
                 >
                   <Image
-                    src="/images/liked_cover.jpeg"
+                    src="/images/avax_like.png"
                     height={50}
                     width={50}
                     className="rounded-md"

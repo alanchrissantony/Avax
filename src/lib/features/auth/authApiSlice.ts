@@ -16,8 +16,8 @@ interface CreateUserResponse {
 
 const authApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    retrieveUserMe: builder.query<User, void>({
-      query: () => '/auth/users/me/',
+    retrieveUserMe: builder.query<User, any | void>({
+      query: ({}) => '/auth/users/me/',
       keepUnusedDataFor: 5,
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
         try {
@@ -40,6 +40,16 @@ const authApiSlice = apiSlice.injectEndpoints({
     }),
     retrieveUserProfile: builder.query<User, any | void>({
       query: ({}) => '/users/profiles/my/',
+      keepUnusedDataFor: 5,
+      async onQueryStarted(_, {dispatch, queryFulfilled}) {
+        try {
+          const {data} = await queryFulfilled
+          dispatch(setUser(data))
+        } catch (err) {
+        } finally {
+          dispatch(finishInitialLoadUser())
+        }
+      },
       providesTags: ['User']
     }),
     updateUserProfile: builder.mutation<User, object>({
