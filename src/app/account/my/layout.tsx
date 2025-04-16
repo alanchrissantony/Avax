@@ -7,6 +7,14 @@ import {useRetrieveUserMeQuery} from "@/lib/features/auth/authApiSlice";
 import {Skeleton} from "@/components/ui/skeleton";
 import Header from "@/components/general/Header";
 import ContentSection from "@/components/general/content-section";
+import {
+  accountMyAnalyticsUrl, accountMyHelpUrl,
+  accountMyPaymentUrl,
+  accountMyProfileArtistUrl,
+  accountMySettingsUrl,
+  accountMySubscriptionUrl,
+  accountMyUrl
+} from "@/utils/consts";
 
 
 interface SettingsLayoutProps {
@@ -21,54 +29,54 @@ export default function SettingsLayout({children}: SettingsLayoutProps) {
     sidebarNavItems = [
       {
         title: "Account",
-        href: "/account/my",
+        href: accountMyUrl,
       },
       {
         title: "Manage your subscription",
-        href: "/account/my/subscription",
+        href: accountMySubscriptionUrl,
       },
       {
         title: "Payment",
-        href: "/account/my/payment",
+        href: accountMyPaymentUrl,
       },
       {
         title: "Settings",
-        href: "/account/my/settings",
+        href: accountMySettingsUrl,
       },
       {
         title: "Help",
-        href: "/account/my/help",
+        href: accountMyHelpUrl,
       },
     ]
   } else if (user?.type_profile === "Artist") {
     sidebarNavItems = [
       {
         title: "Account",
-        href: "/account/my",
+        href: accountMyUrl,
       },
       {
         title: "Artist profile",
-        href: "/account/my/artist-profile",
+        href: accountMyProfileArtistUrl,
       },
       {
         title: "Manage your subscription",
-        href: "/account/my/subscription",
+        href: accountMySubscriptionUrl,
       },
       {
         title: "Payment",
-        href: "/account/my/payment",
+        href: accountMyPaymentUrl,
       },
       {
         title: "Settings",
-        href: "/account/my/settings",
+        href: accountMySettingsUrl,
       },
       {
         title: "Analytics",
-        href: "/account/my/analytics",
+        href: accountMyAnalyticsUrl,
       },
       {
         title: "Help",
-        href: "/account/my/help",
+        href: accountMyHelpUrl,
       },
     ]
   }
@@ -107,7 +115,7 @@ export default function SettingsLayout({children}: SettingsLayoutProps) {
               }
             </aside>
             <div className="flex item-center justify-center w-full">
-            <div className="flex-1 justify-center lg:max-w-4xl">{children}</div>
+              <div className="flex-1 justify-center lg:max-w-4xl">{children}</div>
             </div>
           </div>
         </div>

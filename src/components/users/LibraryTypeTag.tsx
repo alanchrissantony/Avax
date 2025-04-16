@@ -5,8 +5,8 @@ interface Props {
 }
 
 export default function LibraryTypeTag({active, onClick, children}: Props) {
-  const activeStyles = "bg-white text-paper-700";
-  const inactiveStyles = "bg-paper-600 hover:bg-paper-400 text-white";
+  const activeStyles = "bg-white text-gray-950";
+  const inactiveStyles = "bg-[#262626] hover:bg-[#303030] text-white";
 
   return (
     <button

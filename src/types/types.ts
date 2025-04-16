@@ -1,4 +1,5 @@
 import {ChangeEvent, FormEvent} from 'react'
+import {infer} from "zod";
 
 export type InputChange = ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
 
@@ -155,6 +156,15 @@ export interface Playlists extends ListBaseApi {
   results: Playlist[];
 }
 
+
+export interface PlaylistsLiked extends ListBaseApi {
+  results: {
+    id: number;
+    playlist: Playlist;
+    created_at: string;
+    updated_at: string;
+  }[];
+}
 
 export interface RecentlyListenTracks extends ListBaseApi {
   results: Track[];

@@ -38,8 +38,8 @@ const authApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
-    retrieveUserProfile: builder.query<User, void>({
-      query: () => '/users/profiles/my/',
+    retrieveUserProfile: builder.query<User, any | void>({
+      query: ({}) => '/users/profiles/my/',
       providesTags: ['User']
     }),
     updateUserProfile: builder.mutation<User, object>({

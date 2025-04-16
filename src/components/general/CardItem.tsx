@@ -41,7 +41,7 @@ export default function CardItem({
   return (
     <Link href={`/${type}/${artist_slug || slug || id}`}>
       <div
-        className={`h-full p-4 transition duration-300 rounded-md cursor-pointer group/item
+        className={`h-full w-auto p-4 transition duration-300 rounded-md cursor-pointer group/item
         ${type === "artists" || "users" ? "hover:bg-gradient-to-t hover:from-[#303030]/50" : "hover:bg-[#353535]/50"}`}>
         <div className="relative">
           {image.length > 0 ? (
@@ -71,7 +71,7 @@ export default function CardItem({
           }
         </div>
 
-        <h3 className="mt-2 font-bold text-base truncate">{heading}</h3>
+        <h3 className="mt-2 font-bold text-base truncate">{heading.slice(0, 20) + (heading.length >= 20 ? "..." : "")}</h3>
         {subheading && (
           <h6 className="mt-1 text-xs font-semibold truncate text-white/70">
             {subheading}

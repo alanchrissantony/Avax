@@ -5,7 +5,7 @@ import Spinner from "@/components/general/Spinner";
 import {AccountForm} from "@/components/forms/account-form";
 
 export default function Page() {
-  const {data: user, isLoading, isFetching} = useRetrieveUserProfileQuery()
+  const {data: user, isLoading, isFetching} = useRetrieveUserProfileQuery({})
 
   return (
     <div className="space-y-6">

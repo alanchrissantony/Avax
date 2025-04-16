@@ -8,8 +8,9 @@ import FooterLogin from "@/components/general/FooterLogin";
 
 export default function PreviewPlayer() {
   const {activeTrack} = useAppSelector(state => state.track);
+  const {isAuthenticated} = useAppSelector(state => state.auth)
 
-  if (!activeTrack) return <FooterLogin/>;
+  if (!isAuthenticated) return <FooterLogin/>;
 
   return (
     <footer
