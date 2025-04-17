@@ -8,7 +8,7 @@ import {useEffect} from "react";
 import {redirect} from "next/navigation";
 import {profileMyUrl} from "@/utils/consts";
 
-export default function Google() {
+export default function Page() {
   const [googleAuthenticate] = useSocialAuthenticateMutation()
   useSocialAuth(googleAuthenticate, 'google-oauth2')
 
@@ -19,6 +19,6 @@ export default function Google() {
   }, [isAuthenticated]);
 
   return (
-    <FullScreenSpinner/>
+      <FullScreenSpinner/>
   )
 }

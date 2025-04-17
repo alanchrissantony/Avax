@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <header
       className="sticky top-0 z-50 flex items-center h-24 sm:h-auto justify-between w-full p-2 pr-5 pl-5 bg-[#0f0f0f] bg-opacity-90 backdrop-blur-md">
-      <div className="flex items-center gap-3 w-[10rem] sm:w-[15rem] md:w-[17rem] lg:w-[28rem] xl:w-[32rem]">
+      <div className="flex items-center gap-3 w-[32rem]">
         <div className="flex items-center gap-3">
           <Button
             size="icon"
@@ -50,7 +50,7 @@ export default function Header() {
         {isLoading ? <Skeleton className="h-12 w-12 rounded-full"/> :
           isAuthenticated ? (
             <div className="flex items-center justify-between space-x-4 p-2">
-              <Link href={`/premium`}>
+              <Link href={`/premium`} className="hidden sm:flex">
                 <Button className="text-black bg-white h-8 rounded-full font-semibold"
                         size="default">
                   Explore Premium
@@ -59,9 +59,9 @@ export default function Header() {
               <ProfileDropdownMenu/>
             </div>
           ) : (
-            <div className="flex items-center justify-between space-x-2">
+            <div className="hidden sm:flex items-center justify-between space-x-2">
               <Link href={signupUrl}>
-                <Button variant="ghost" className="rounded-full font-semibold"
+                <Button variant="ghost" className="hidden md:block rounded-full font-semibold"
                         size="lg">
                   Sign up
                 </Button>

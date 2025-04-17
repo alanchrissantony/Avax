@@ -55,7 +55,7 @@ export default function MainSection({
       onLayout={handleLayoutChange}
       className="h-full items-stretch"
     >
-      <ResizablePanel defaultSize={defaultLayout?.[0] || 20} minSize={20} maxSize={45} className="min-w-60">
+      <ResizablePanel defaultSize={defaultLayout?.[0] || 20} minSize={20} maxSize={45} className="min-w-60 hidden sm:block">
         <Sidebar/>
       </ResizablePanel>
       <ResizableHandle className="bg-black/0 hover:bg-white/40 my-4 mx-1 cursor-grab active:cursor-grabbing"/>

@@ -27,7 +27,7 @@ export default function MainControllers() {
   const hasNextTrack = currentIndex < tracks.length - 1;
 
   return (
-    <div className="flex flex-col items-center justify-center col-span-6 gap-3">
+    <div className="flex flex-col items-center justify-center col-span-4 sm:col-span-6 gap-3">
       <div className="flex items-center gap-5">
 
         <button onClick={toggleShuffle} className="flex items-center w-9 disabled:cursor-not-allowed"
@@ -103,7 +103,7 @@ export default function MainControllers() {
             setDrag(value[0]);
             setSlider(value[0]);
           }}
-          className="bg-[#303030] w-[70%]"
+          className="bg-[#303030] w-full sm:w-[70%]"
         />
         <span className="text-xs text-gray-400 mb-1">
           {duration ? fmtMSS(duration * 1000) : "-:--"}
