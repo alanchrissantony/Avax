@@ -15,6 +15,7 @@ import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
+import {useListUserPlaylistLikedQuery} from "@/lib/features/playlists/playlistApiSlice";
 
 interface Props {
   params: {
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export default function PlaylistPage({params}: Props) {
+  const {isAuthenticated} = useAppSelector(state => state.auth)
   const {
     data: playlist,
     isLoading,
@@ -34,8 +36,13 @@ export default function PlaylistPage({params}: Props) {
     isLoading: isLoadingRec,
     isFetching: isFetchingRec,
   } = useListTrackQuery({genreSlug}, {skip: !genreSlug})
+  const {
+    data: playlistsFav,
+    isLoading: isLoadingPlFav,
+    isFetching: isFetchingPlFav,
+  } = useListUserPlaylistLikedQuery({}, {skip: !isAuthenticated || !params.slug});
 
-  const load = isLoading || isFetching || isLoadingRec || isFetchingRec
+  const load = isLoading || isFetching || isLoadingRec || isFetchingRec || isLoadingPlFav || isFetchingPlFav
 
   const {activeTrack, currentIndex} = useAppSelector(state => state.track)
 
@@ -124,7 +131,10 @@ export default function PlaylistPage({params}: Props) {
               track={playlist?.tracks?.[currentIndex] || (activeTrack || undefined)}
               tracks={playlist?.tracks}
               index={currentIndex}
-              isFavorite
+              isShowFavorite={isAuthenticated}
+              favoriteType="playlist"
+              isFavorite={playlistsFav?.results?.some((item) => item?.playlist?.slug === playlist?.slug)}
+              slugFav={playlist?.slug}
             />
 
             <div>

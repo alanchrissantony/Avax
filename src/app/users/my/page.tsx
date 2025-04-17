@@ -4,7 +4,6 @@ import {Dot, Music} from "lucide-react";
 import Image from "next/image";
 import {
   useListPlaylistQuery, useListRecentlyListenTracksQuery,
-  useListUserFollowersQuery, useListUserFollowingQuery,
 } from "@/lib/features/other/publicApiSlice";
 import Link from "next/link";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
@@ -14,7 +13,11 @@ import TitleShowAll from "@/components/ui/title-show-all";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
-import {useRetrieveUserMeQuery} from "@/lib/features/auth/authApiSlice";
+import {
+  useListUserFollowersQuery,
+  useListUserFollowingQuery,
+  useRetrieveUserMeQuery
+} from "@/lib/features/auth/authApiSlice";
 import {useAppSelector} from "@/lib/hooks";
 import UserMyDialogDropdown from "@/components/users/UserMyDialogDropdown";
 

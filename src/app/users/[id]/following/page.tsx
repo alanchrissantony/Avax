@@ -1,12 +1,12 @@
 "use client";
 
-import {useListUserFollowingQuery} from "@/lib/features/other/publicApiSlice";
 import UserCards from "@/components/users/UserCards";
 import {usePathname} from "next/navigation";
 import TitleShowAll from "@/components/ui/title-show-all";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
+import {useListUserFollowingQuery} from "@/lib/features/auth/authApiSlice";
 
 
 export default function UserFollowingPage() {

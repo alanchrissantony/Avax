@@ -4,8 +4,6 @@ import {Dot, Music} from "lucide-react";
 import Image from "next/image";
 import {
   useListPlaylistQuery, useListRecentlyListenTracksQuery,
-  useListUserFollowersQuery, useListUserFollowingQuery,
-  useRetrieveUserQuery
 } from "@/lib/features/other/publicApiSlice";
 import Link from "next/link";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
@@ -16,6 +14,12 @@ import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
+import {useAppSelector} from "@/lib/hooks";
+import {
+  useListUserFollowersQuery,
+  useListUserFollowingQuery,
+  useRetrieveUserQuery
+} from "@/lib/features/auth/authApiSlice";
 
 interface Props {
   params: {
@@ -24,6 +28,7 @@ interface Props {
 }
 
 export default function UserPage({params}: Props) {
+  const {isAuthenticated, user: currUser} = useAppSelector(state => state.auth)
   const {data: user, isLoading, isFetching} = useRetrieveUserQuery(params.id)
   const userId = user?.id || null;
   const {
@@ -56,7 +61,7 @@ export default function UserPage({params}: Props) {
   const userBgColor = user?.color || "#202020";
 
   return (
-    <MainSection bgColor={userBgColor}>
+    <MainSection bgColor={userBgColor} bgGradient="30%">
       <div className="h-60 bg-opacity-30 bg-black">
         <div className="flex items-end gap-6 p-4 pt-10">
           {user && (
@@ -78,7 +83,8 @@ export default function UserPage({params}: Props) {
 
               <div className="flex flex-col gap-3">
                 <h5 className="text-xs font-semibold text-white/80">Profile</h5>
-                <h2 className="text-6xl xl:text-7xl font-black drop-shadow-sm truncate whitespace-normal">{user.display_name}</h2>
+                <h2
+                  className="text-6xl xl:text-7xl font-black drop-shadow-sm truncate whitespace-normal">{user.display_name}</h2>
 
                 <div className="flex items-center text-sm font-medium">
                   {user.playlists_count >= 0 && (
@@ -117,7 +123,9 @@ export default function UserPage({params}: Props) {
           <>
             <PlayButtonAndOther
               isPlayButton={false}
-              isFollow
+              isShowFollow={isAuthenticated}
+              isFollowing={userFollowers?.some(follower => follower.id === currUser?.id)}
+              userIdFollow={user?.id}
             />
 
             {(recentlyTracks?.count || 0) > 0 && (

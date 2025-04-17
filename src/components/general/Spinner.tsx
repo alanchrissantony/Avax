@@ -1,7 +1,7 @@
 "use client";
 
 import {CSSProperties} from "react";
-import {MoonLoader} from "react-spinners";
+import {BeatLoader} from "react-spinners";
 
 
 const override: CSSProperties = {
@@ -10,11 +10,12 @@ const override: CSSProperties = {
   borderColor: "gray",
 };
 
-export default function Spinner({size = 80}) {
+export default function Spinner({size = 15}) {
   return (
     <div>
-      <MoonLoader
+      <BeatLoader
         color='white'
+        className="opacity-60"
         loading={true}
         cssOverride={override}
         size={size}

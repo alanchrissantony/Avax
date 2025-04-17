@@ -16,6 +16,7 @@ import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
+import {useListUserAlbumLikedQuery} from "@/lib/features/albums/albumApiSlice";
 
 interface Props {
   params: {
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export default function AlbumsPage({params}: Props) {
+  const {isAuthenticated} = useAppSelector(state => state.auth)
   const {data: album, isLoading, isFetching} = useRetrieveAlbumQuery(params.slug)
   const artistSlug = album?.artist?.slug || null;
   const {
@@ -31,8 +33,13 @@ export default function AlbumsPage({params}: Props) {
     isLoading: isLoadingA,
     isFetching: isFetchingA,
   } = useListAlbumQuery({artistSlug}, {skip: !artistSlug})
+  const {
+    data: albumsFav,
+    isLoading: isLoadingAlFav,
+    isFetching: isFetchingAlFav,
+  } = useListUserAlbumLikedQuery({}, {skip: !isAuthenticated || !artistSlug});
 
-  const load = isLoading || isFetching || isLoadingA || isFetchingA
+  const load = isLoading || isFetching || isLoadingA || isFetchingA || isLoadingAlFav || isFetchingAlFav
 
   const {activeTrack, currentIndex} = useAppSelector(state => state.track)
 
@@ -112,7 +119,10 @@ export default function AlbumsPage({params}: Props) {
               track={album?.tracks?.[currentIndex] || (activeTrack || undefined)}
               tracks={album?.tracks}
               index={currentIndex}
-              isFavorite
+              isShowFavorite={isAuthenticated}
+              favoriteType="album"
+              isFavorite={albumsFav?.results?.some((item) => item?.album?.slug === album?.slug)}
+              slugFav={album?.slug}
             />
 
             <div>

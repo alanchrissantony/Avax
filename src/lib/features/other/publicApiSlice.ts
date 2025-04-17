@@ -6,21 +6,13 @@ import {
   DetailAlbum,
   DetailPlaylist,
   DetailTrack, Genre, Genres,
-  Playlists, RecentlyListenTracks, ShortUser, ShortUsers,
-  Tracks, User
+  Playlists, RecentlyListenTracks,
+  Tracks,
 } from "@/types/types";
 
 
 const publicApiSlice = apiPublicSlice.injectEndpoints({
   endpoints: builder => ({
-    listUser: builder.query<User[], any | void>({
-      query: ({}) => `/auth/users/`,
-      providesTags: ["User"],
-    }),
-    retrieveUser: builder.query<User, number>({
-      query: (id) => `/auth/users/${id}/`,
-      providesTags: ["User"],
-    }),
     listArtist: builder.query<Artists, any | void>({
       query: ({page = 1, search = ''}) =>
         `/artists/?page=${page}&search=${search}`,
@@ -62,21 +54,6 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
         `/tracks/recently/user/${userId}/?page=${page}`,
       providesTags: ["Track"],
     }),
-    listUsersProfile: builder.query<ShortUsers, any | void>({
-      query: ({page = 1, search = ''}) =>
-        `/users/profiles/?page=${page}&search=${search}`,
-      providesTags: ["User"],
-    }),
-    listUserFollowers: builder.query<ShortUser[], any | void>({
-      query: ({userId}) =>
-        `/users/${userId}/followers/`,
-      providesTags: ["User"],
-    }),
-    listUserFollowing: builder.query<ShortUser[], any | void>({
-      query: ({userId}) =>
-        `/users/${userId}/following/`,
-      providesTags: ["User"],
-    }),
     listGenres: builder.query<Genres, any | void>({
       query: ({page = 1}) =>
         `/others/genres/?page=${page}`,
@@ -94,11 +71,6 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
 
 
 export const {
-  useListUserQuery,
-  useListUsersProfileQuery,
-  useListUserFollowersQuery,
-  useListUserFollowingQuery,
-  useRetrieveUserQuery,
   useListArtistQuery,
   useRetrieveArtistQuery,
   useListAlbumQuery,

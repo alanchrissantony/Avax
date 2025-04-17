@@ -61,9 +61,9 @@ export default function UserLibrary() {
   }
 
   function handleResetType() {
-    setLibraryType("");
+    setLibraryType("all");
     if (typeof window !== "undefined") {
-      localStorage.setItem("libraryType", "");
+      localStorage.setItem("libraryType", "all");
     }
   }
 
@@ -130,7 +130,7 @@ export default function UserLibrary() {
       {isAuthenticated && (
         <>
           <div className="flex flex-wrap items-center gap-2 pb-4 text-xs font-semibold">
-            {libraryType ? (
+            {libraryType !== "all" ? (
               <Button onClick={handleResetType} size="icon" variant="ghost" className="h-6 w-6">
                 <CircleX className="text-[#606060]"/>
               </Button>
@@ -157,77 +157,8 @@ export default function UserLibrary() {
           </div>
 
           <ul className="flex flex-col py-1 w-full overflow-y-auto text-sm">
-            {libraryType === "" && (
-              <>
-                <Link
-                  href={collectionTracks}
-                  className={`${
-                    pathname.includes(collectionTracks) ? "bg-[#303030]/50" : ""
-                  } flex items-center p-2 gap-3 rounded-sm text-white cursor-pointer hover:bg-[#404040]/20`}
-                >
-                  <Image
-                    src="/images/avax_like.png"
-                    alt="Liked playlist cover"
-                    height={50}
-                    width={50}
-                    className="rounded-md"
-                  />
 
-                  <div className="truncate">
-                    <h6 className="w-full text-sm font-semibold truncate">
-                      Liked Songs
-                    </h6>
-                    <span className="mt-1 text-xs font-semibold text-white/60">
-                      {tracks?.count || 0} songs
-                    </span>
-                  </div>
-                </Link>
-                {(playlists?.count || 0) > 0 && (
-                  playlists?.results?.map((item) => (
-                    <LibraryItemCard
-                      key={item?.playlist?.id}
-                      type="playlists"
-                      heading={item?.playlist?.title}
-                      image={item?.playlist?.image}
-                      altTitle={item?.playlist?.title}
-                      slug={item?.playlist?.slug}
-                      subtitle={item?.playlist?.user?.display_name}
-                    />
-                  ))
-                )}
-
-                {(albums?.count || 0) > 0 && (
-                  albums?.results?.map((item) => (
-                    <LibraryItemCard
-                      key={item?.album?.id}
-                      type="albums"
-                      heading={item?.album?.title}
-                      image={item?.album?.image}
-                      altTitle={item?.album?.title}
-                      slug={item?.album?.slug}
-                      subtitle={item?.album?.artist?.display_name}
-                    />
-                  ))
-                )}
-
-                {(artists?.count || 0) > 0 && (
-                  artists?.results?.map((item) => (
-                    <LibraryItemCard
-                      key={item?.artist?.id}
-                      type="artists"
-                      heading={item?.artist?.display_name}
-                      image={item?.artist?.image}
-                      altTitle={item?.artist?.display_name}
-                      slug={item?.artist?.slug}
-                      subtitle={item?.artist?.display_name}
-                    />
-                  ))
-                )}
-              </>
-            )}
-
-
-            {libraryType === "playlists" && (
+            {(libraryType === "playlists" || libraryType === "all") && (
               <>
                 <Link
                   href={collectionTracks}
@@ -268,7 +199,7 @@ export default function UserLibrary() {
               </>
             )}
 
-            {libraryType === "albums" && (
+            {(libraryType === "albums" || libraryType === "all") && (
               (albums?.count || 0) > 0 && (
                 albums?.results?.map((item) => (
                   <LibraryItemCard
@@ -284,7 +215,7 @@ export default function UserLibrary() {
               ))
             }
 
-            {libraryType === "artists" && (
+            {(libraryType === "artists" || libraryType === "all") && (
               (artists?.count || 0) > 0 && (
                 artists?.results?.map((item) => (
                   <LibraryItemCard

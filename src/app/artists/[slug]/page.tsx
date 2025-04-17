@@ -18,6 +18,8 @@ import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
+import {useListUserFollowersQuery} from "@/lib/features/auth/authApiSlice";
+import {useListUserArtistLikedQuery} from "@/lib/features/artists/artistApiSlice";
 
 interface Props {
   params: {
@@ -26,8 +28,9 @@ interface Props {
 }
 
 export default function ArtistPage({params}: Props) {
+  const {isAuthenticated, user: currUser} = useAppSelector(state => state.auth)
   const {data: artist, isLoading, isFetching} = useRetrieveArtistQuery(params.slug)
-  const userId = artist?.user?.id || null;
+  const userId = artist?.user?.id || undefined;
   const {
     data: artistTracks,
     isLoading: isLoadingTracks,
@@ -48,11 +51,22 @@ export default function ArtistPage({params}: Props) {
     isLoading: isLoadingArtists,
     isFetching: isFetchingArtists
   } = useListArtistQuery({})
+  const {
+    data: userFollowers,
+    isLoading: isLoadingFollowers,
+    isFetching: isFetchingFollowers,
+  } = useListUserFollowersQuery({userId}, {skip: !isAuthenticated || !userId})
+  const {
+    data: artistsFav,
+    isLoading: isLoadingArFav,
+    isFetching: isFetchingArFav,
+  } = useListUserArtistLikedQuery({}, {skip: !isAuthenticated || !userId});
 
   const load = (
     isLoading || isFetching || isLoadingTracks || isFetchingTracks ||
     isLoadingAlbums || isFetchingAlbums || isLoadingArtists || isFetchingArtists ||
-    isLoadingPlaylists || isFetchingPlaylists
+    isLoadingPlaylists || isFetchingPlaylists || isLoadingFollowers || isFetchingFollowers ||
+    isLoadingArFav || isFetchingArFav
   )
 
   const {activeTrack, currentIndex} = useAppSelector(state => state.track)
@@ -95,7 +109,13 @@ export default function ArtistPage({params}: Props) {
               track={artistTracks?.results?.[currentIndex] || (activeTrack || undefined)}
               tracks={artistTracks?.results}
               index={currentIndex}
-              isFollow
+              isShowFavorite={isAuthenticated}
+              favoriteType="artist"
+              isFavorite={artistsFav?.results?.some((item) => item?.artist?.slug === artist?.slug)}
+              isShowFollow={isAuthenticated}
+              isFollowing={userFollowers?.some(follower => follower.id === currUser?.id)}
+              userIdFollow={userId}
+              slugFav={artist?.slug}
             />
 
             {(artistTracks?.count || 0) > 0 && (

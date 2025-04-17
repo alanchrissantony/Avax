@@ -8,9 +8,25 @@ const playlistApiSlice = apiSlice.injectEndpoints({
       query: ({page = 1,}) => `/playlists/favorite/?page=${page}`,
       providesTags: ['Playlist']
     }),
+    playlistAddFavorite: builder.mutation({
+      query: ({playlistSlug}) => ({
+        url: `/playlists/${playlistSlug}/favorite/`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Playlist'],
+    }),
+    playlistRemoveFavorite: builder.mutation({
+      query: ({playlistSlug}) => ({
+        url: `/playlists/${playlistSlug}/favorite/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Playlist'],
+    }),
   }),
 });
 
 export const {
   useListUserPlaylistLikedQuery,
+  usePlaylistAddFavoriteMutation,
+  usePlaylistRemoveFavoriteMutation,
 } = playlistApiSlice

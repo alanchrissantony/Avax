@@ -8,13 +8,14 @@ import {
   useListAlbumQuery,
   useListArtistQuery,
   useListPlaylistQuery,
-  useListTrackQuery, useListUsersProfileQuery
+  useListTrackQuery
 } from "@/lib/features/other/publicApiSlice";
 import TitleShowAll from "@/components/ui/title-show-all";
 import TopResult from "@/components/tracks/TopResult";
 import UserCards from "@/components/users/UserCards";
 import NotFoundSearch from "@/components/search/not-found-search";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import {useListUsersProfileQuery} from "@/lib/features/auth/authApiSlice";
 
 interface Props {
   params: {
