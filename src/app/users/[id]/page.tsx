@@ -78,7 +78,7 @@ export default function UserPage({params}: Props) {
 
               <div className="flex flex-col gap-3">
                 <h5 className="text-xs font-semibold text-white/80">Profile</h5>
-                <h2 className="text-8xl font-black drop-shadow-sm">{user.display_name}</h2>
+                <h2 className="text-6xl xl:text-7xl font-black drop-shadow-sm truncate whitespace-normal">{user.display_name}</h2>
 
                 <div className="flex items-center text-sm font-medium">
                   {user.playlists_count >= 0 && (

@@ -10,7 +10,7 @@ export default function PreviewPlayer() {
   const {activeTrack} = useAppSelector(state => state.track);
   const {isAuthenticated} = useAppSelector(state => state.auth)
 
-  if (!isAuthenticated) return <FooterLogin/>;
+  if (!activeTrack && !isAuthenticated) return <FooterLogin/>;
 
   return (
     <footer

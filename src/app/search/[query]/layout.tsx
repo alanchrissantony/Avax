@@ -1,12 +1,9 @@
-import type {Metadata} from "next";
+"use client";
+
 import SearchFilters from "@/components/ui/SearchFilters";
 import MainSection from "@/components/general/main-section";
 import ContentSection from "@/components/general/content-section";
 
-
-export const metadata: Metadata = {
-  title: 'Avax - Search'
-}
 
 export default function Layout({
                                  children,

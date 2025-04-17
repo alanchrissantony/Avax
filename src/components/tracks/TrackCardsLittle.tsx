@@ -35,14 +35,16 @@ export default function TrackCardsLittle({tracks, tracksCollection}: Props) {
             </h4>
           </div>
 
-          <div>
-            <PlayTrackButton
-              track={tracksCollection?.[0]}
-              tracks={tracksCollection}
-              variant="filled"
-              className={`${tracksCollection?.[0]?.slug === activeTrack?.slug ? "visible" : "invisible"} w-12 h-12 shadow-md text-3xl group/btn group-hover/item:visible cursor-pointer`}
-            />
-          </div>
+          {tracksCollection?.length > 0 && (
+            <div>
+              <PlayTrackButton
+                track={tracksCollection?.[0]}
+                tracks={tracksCollection}
+                variant="filled"
+                className={`${tracksCollection?.[0]?.slug === activeTrack?.slug ? "visible" : "invisible"} w-12 h-12 shadow-md text-3xl group/btn group-hover/item:visible cursor-pointer`}
+              />
+            </div>
+          )}
         </Link>
       )}
 

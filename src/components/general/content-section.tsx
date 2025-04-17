@@ -10,7 +10,7 @@ export default function ContentSection({
                                          className,
                                        }: Props) {
   return (
-    <div className={`mx-6 my-6 space-y-8 ${className}`}>
+    <div className={`mx-2 my-6 space-y-8 ${className}`}>
       {children}
       <Footer/>
     </div>

@@ -11,12 +11,12 @@ import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TracksTable from "@/components/tracks/TracksTable";
 import UserCards from "@/components/users/UserCards";
 import TitleShowAll from "@/components/ui/title-show-all";
-import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
 import {useRetrieveUserMeQuery} from "@/lib/features/auth/authApiSlice";
 import {useAppSelector} from "@/lib/hooks";
+import UserMyDialogDropdown from "@/components/users/UserMyDialogDropdown";
 
 
 export default function Page() {
@@ -79,7 +79,7 @@ export default function Page() {
 
               <div className="flex flex-col gap-3">
                 <h5 className="text-xs font-semibold text-white/80">Profile</h5>
-                <h2 className="text-8xl font-black drop-shadow-sm">{user.display_name}</h2>
+                <h2 className="text-6xl xl:text-7xl font-black drop-shadow-sm">{user.display_name}</h2>
 
                 <div className="flex items-center text-sm font-medium">
                   {user.playlists_count >= 0 && (
@@ -89,22 +89,30 @@ export default function Page() {
                         </span>
                     </>
                   )}
-                  {user.followers_count >= 0 && (
-                    <>
-                      <Dot/>
+                  <>
+                    <Dot/>
+                    {user.followers_count > 0 ? (
                       <Link href={`/users/${user.id}/followers`} className="hover:underline">
                         {user.followers_count.toLocaleString()} {user.followers_count === 1 ? "Follower" : "Followers"}
                       </Link>
-                    </>
-                  )}
-                  {user.following_count >= 0 && (
-                    <>
-                      <Dot/>
+                    ) : (
+                      <p className="text-[#707070]">
+                        {user.followers_count.toLocaleString()} Follower
+                      </p>
+                    )}
+                  </>
+                  <>
+                    <Dot/>
+                    {user.following_count > 0 ? (
                       <Link href={`/users/${user.id}/following`} className="hover:underline">
                         {user.following_count.toLocaleString()} Following
                       </Link>
-                    </>
-                  )}
+                    ) : (
+                      <p className="text-[#707070]">
+                        {user.following_count.toLocaleString()} Following
+                      </p>
+                    )}
+                  </>
                 </div>
               </div>
             </>
@@ -116,10 +124,9 @@ export default function Page() {
 
         {load ? <FullScreenSpinner/> : (
           <>
-            <PlayButtonAndOther
-              isPlayButton={false}
-              isFollow
-            />
+            <div className="flex items-center space-x-6 ml-4">
+              <UserMyDialogDropdown user={user}/>
+            </div>
 
             {(recentlyTracks?.count || 0) > 0 && (
               <TitleShowAll

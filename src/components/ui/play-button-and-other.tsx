@@ -20,10 +20,10 @@ export default function PlayButtonAndOther({
                                              index,
                                              isPlayButton = true,
                                              isFollow = false,
-                                             isFavorite = false
+                                             isFavorite = false,
                                            }: Props) {
   return (
-    <div className="flex items-center space-x-6">
+    <div className="flex items-center space-x-6 ml-4">
       {isPlayButton && (
         <PlayTrackButton
           track={track}
