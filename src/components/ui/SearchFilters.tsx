@@ -14,7 +14,7 @@ export default function SearchFilters() {
   const inactiveStyles = "bg-[#262626] hover:bg-[#303030] text-white";
 
   return (
-    <div className="flex items-center gap-2 text-sm">
+    <div className="flex items-center gap-2 ml-4 text-sm">
       {searchFilterTags.map((tag) => {
         const href = `/search/${query}${tag.link}`;
         return (

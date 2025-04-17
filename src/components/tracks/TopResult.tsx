@@ -4,6 +4,7 @@ import {Dot, Music} from "lucide-react";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import Link from "next/link";
 import {useAppSelector} from "@/lib/hooks";
+import {useRouter} from "next/navigation";
 
 
 interface Props {
@@ -14,10 +15,12 @@ interface Props {
 export default function TopResult({track, type}: Props) {
   const {activeTrack} = useAppSelector((state) => state.track);
 
+  const router = useRouter();
+
   return (
     <Link href={`/tracks/${track?.slug}`}>
       <div
-        className={`h-full max-w-md lg:max-w-full p-5 transition relative duration-300 rounded-md cursor-pointer group/item bg-[#202020]/40 shadow-2xl hover:bg-[#353535]/50`}>
+        className={`h-auto max-w-md lg:max-w-full p-5 transition relative duration-300 rounded-md cursor-pointer group/item bg-[#202020]/40 shadow-2xl hover:bg-[#353535]/50`}>
         <div className="mb-4">
           {track?.album?.image ? (
             <Image
@@ -40,11 +43,12 @@ export default function TopResult({track, type}: Props) {
             {type}
           </h6>
           <Dot/>
-          <Link
-            href={`/artists/${track?.artist?.slug}`}
+          <div>
+          <p onClick={() => router.replace(`/artists/${track?.artist?.slug}`)}
             className="mt-0.5 font-semibold text-sm truncate hover:underline text-white/90">
             {track?.artist?.display_name}
-          </Link>
+          </p>
+          </div>
         </div>
 
         {track &&

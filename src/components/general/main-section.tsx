@@ -18,9 +18,11 @@ export default function MainSection({
                                       bgGradient = '',
                                     }: Props) {
   const layout = getCookie("react-resizable-panels:layout")
-  console.log(layout)
 
-  const defaultLayout = layout ? JSON.parse(layout) : [20, 80]
+  if (!layout) setCookie("react-resizable-panels:layout", "[20, 80]");
+
+  // @ts-ignore
+  const defaultLayout = JSON.parse(layout)
 
 
   return (
@@ -31,13 +33,14 @@ export default function MainSection({
       }}
       className="h-full items-stretch"
     >
-      <ResizablePanel defaultSize={defaultLayout[0]} minSize={20} maxSize={45} className="min-w-60">
+      <ResizablePanel defaultSize={defaultLayout?.[0] || 20} minSize={20} maxSize={45} className="min-w-60">
         <Sidebar/>
       </ResizablePanel>
-      <ResizableHandle className="bg-black hover:bg-white/40 my-4 mx-1 hover:cursor-grabbing"/>
-      <ResizablePanel defaultSize={defaultLayout[1]}>
+      <ResizableHandle className="bg-black/0 hover:bg-white/40 my-4 mx-1 cursor-grab hover:cursor-grabbing"/>
+      <ResizablePanel defaultSize={defaultLayout?.[1] || 80}>
         <div className="grid grid-cols-8">
-          <div className="flex flex-col h-[calc(95vh-4rem)] w-auto overflow-auto col-span-8 rounded-lg mt-2 mr-2">
+          <div
+            className="flex flex-col h-[calc(95vh-4rem)] bg-[#131313] w-auto overflow-auto col-span-8 rounded-lg mt-2 mr-2">
             <main>
               <div
                 className={`h-full w-full rounded-lg ${className}`}
@@ -53,15 +56,5 @@ export default function MainSection({
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
-
-// <div
-    //   className={`h-full rounded-lg ${className}`}
-    //   style={{
-    //     backgroundImage: `linear-gradient(to bottom, ${bgColor} 0%, #131313 ${bgGradient}, #131313 100%)`,
-    //   }}
-    // >
-    //   <Header/>
-    //   {children}
-    // </div>
   )
 }
