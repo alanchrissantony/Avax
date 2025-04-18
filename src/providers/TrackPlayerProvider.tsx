@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useState, createContext, useContext, Dispatch, SetStateAction} from "react";
+import React, {useEffect, useState, createContext, useContext, Dispatch, SetStateAction, useCallback} from "react";
 import {useAppSelector, useAppDispatch} from "@/lib/hooks";
 import {nextSong as nextSongAction, prevSong as prevSongAction} from "@/lib/features/tracks/trackSlice";
 import {Track} from "@/types/types";
@@ -110,20 +110,20 @@ export default function TrackPlayerProvider({children}: Props) {
     handlePlay();
   }, [currentTrackAudio]);
 
-  const togglePlay = async () => {
-    if (isPlaying) pause();
-    else await play();
-  };
-
-  const play = async () => {
+  const play = useCallback(async () => {
     setIsPlaying(true);
     await currentTrackAudio?.play();
-  };
+  }, [currentTrackAudio]);
 
-  const pause = () => {
+  const pause = useCallback(() => {
     setIsPlaying(false);
     currentTrackAudio?.pause();
-  };
+  }, [currentTrackAudio]);
+
+  const togglePlay = useCallback(async () => {
+    if (isPlaying) pause();
+    else await play();
+  }, [isPlaying, pause, play]);
 
   useEffect(() => {
     if (currentTrackAudio) {
@@ -137,41 +137,47 @@ export default function TrackPlayerProvider({children}: Props) {
     }
   }, [volume]);
 
-  const toggleMute = () => {
+  const toggleMute = useCallback(() => {
     setIsMuted(!isMuted);
     if (currentTrackAudio) {
       currentTrackAudio.muted = !isMuted;
     }
-  };
+  }, [isMuted, currentTrackAudio]);
 
-  const setMute = (mute: boolean) => {
+  const setMute = useCallback((mute: boolean) => {
     setIsMuted(mute);
     if (currentTrackAudio) {
       currentTrackAudio.muted = mute;
     }
-  };
+  }, [currentTrackAudio]);
 
-  const shuffleArray = (array: Track[]) => {
+  const shuffleArray = useCallback((array: Track[]) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
     }
     return shuffledArray;
-  };
+  }, []);
 
-  const nextTrack = () => {
+  const nextTrack = useCallback(() => {
     if (currentTracks) {
       if (shuffle) {
         const shuffledTracks = shuffleArray(currentTracks);
-        dispatch(nextSongAction(shuffledTracks.findIndex((track) => track.id === activeTrack?.id) + 1));
+        const nextIndex = shuffledTracks.findIndex((track) => track.id === activeTrack?.id) + 1;
+        if (nextIndex >= shuffledTracks.length) {
+          dispatch(nextSongAction(shuffledTracks[0].id));
+        } else {
+          dispatch(nextSongAction(shuffledTracks[nextIndex].id));
+        }
       } else if (currentIndex < currentTracks.length - 1) {
         dispatch(nextSongAction(currentIndex + 1));
       }
     }
-  };
+  }, [currentTracks, shuffle, currentIndex, activeTrack, shuffleArray, dispatch]);
 
-  const prevTrack = () => {
+
+  const prevTrack = useCallback(() => {
     if (currentTracks) {
       if (shuffle) {
         const shuffledTracks = shuffleArray(currentTracks);
@@ -180,21 +186,21 @@ export default function TrackPlayerProvider({children}: Props) {
         dispatch(prevSongAction(currentIndex - 1));
       }
     }
-  };
+  }, [currentTracks, shuffle, currentIndex, activeTrack, shuffleArray, dispatch]);
 
-  const toggleShuffle = () => {
-    setShuffle(!shuffle);
-  };
+  const toggleShuffle = useCallback(() => {
+    setShuffle(prevShuffle => !prevShuffle);
+  }, []);
 
-  const toggleLoop = () => {
-    setLoop(!loop);
-  };
+  const toggleLoop = useCallback(() => {
+    setLoop(prevLoop => !prevLoop);
+  }, []);
 
   useEffect(() => {
     if (isAccountPage && isPlaying) {
       pause();
     }
-  }, [isPlaying, isAccountPage]);
+  }, [isPlaying, isAccountPage, pause]);
 
   const value = {
     currentTrackAudio,
