@@ -1,13 +1,16 @@
 import CardItemGrid from "@/components/general/CardItemGrid";
 import CardItem from "@/components/general/CardItem";
 import {Album} from "@/types/types";
+import SkeletonCards from "@/components/ui/SkeletonCards";
 
 
 interface Props {
   albums: Album[] | undefined;
+  isLoading?: boolean;
 }
 
-export default function AlbumCards({albums}: Props) {
+export default function AlbumCards({albums, isLoading}: Props) {
+  if (isLoading) return <SkeletonCards/>
 
   return (
     <CardItemGrid>

@@ -1,9 +1,9 @@
 "use client";
 import {Separator} from "@/components/ui/separator"
 import {useRetrieveUserProfileQuery} from "@/lib/features/auth/authApiSlice";
-import Spinner from "@/components/general/Spinner";
 import {AccountForm} from "@/components/forms/account-form";
 import {useAppSelector} from "@/lib/hooks";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 export default function Page() {
   const {isAuthenticated} = useAppSelector(state => state.auth)
@@ -18,7 +18,7 @@ export default function Page() {
         </p>
       </div>
       <Separator/>
-      {isLoading || isFetching ? <Spinner size={200}/> :
+      {isLoading || isFetching ? <FullScreenSpinner/> :
         <AccountForm user={user}/>
       }
     </div>

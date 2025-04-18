@@ -131,7 +131,7 @@ export default function PlaylistPage({params}: Props) {
               track={playlist?.tracks?.[currentIndex] || (activeTrack || undefined)}
               tracks={playlist?.tracks}
               index={currentIndex}
-              isShowFavorite={isAuthenticated}
+              isShowFavorite={true}
               favoriteType="playlist"
               isFavorite={playlistsFav?.results?.some((item) => item?.playlist?.slug === playlist?.slug)}
               slugFav={playlist?.slug}

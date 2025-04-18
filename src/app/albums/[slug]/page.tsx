@@ -119,7 +119,7 @@ export default function AlbumsPage({params}: Props) {
               track={album?.tracks?.[currentIndex] || (activeTrack || undefined)}
               tracks={album?.tracks}
               index={currentIndex}
-              isShowFavorite={isAuthenticated}
+              isShowFavorite={true}
               favoriteType="album"
               isFavorite={albumsFav?.results?.some((item) => item?.album?.slug === album?.slug)}
               slugFav={album?.slug}

@@ -10,15 +10,11 @@ import {useAppSelector} from "@/lib/hooks";
 import {formatTime} from "@/utils/clientUtils";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import Loader from "@/components/general/Loader";
-import {toast} from "react-toastify";
 import {
   useListUserTracksLikedQuery,
-  useTrackAddFavoriteMutation,
-  useTrackRemoveFavoriteMutation
 } from "@/lib/features/tracks/trackApiSlice";
-import {useRouter} from "next/navigation";
-import {loginUrl} from "@/utils/consts";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import useFavoriteFollow from "@/hooks/use-favorite-follow";
 
 interface Props {
   tracks: Track[] | undefined;
@@ -46,8 +42,6 @@ export default function TracksTable({
   const {isAuthenticated} = useAppSelector(state => state.auth)
   const {activeTrack} = useAppSelector(state => state.track)
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
-  const [hoveredTrackSlug, setHoveredTrackSlug] = useState<string | null>(null);
-  const router = useRouter()
 
   const {
     data: tracksFav,
@@ -55,43 +49,18 @@ export default function TracksTable({
     isFetching: isFetchingTrFav,
   } = useListUserTracksLikedQuery({}, {skip: !isAuthenticated || !tracks});
 
-  const [trackAddFav, {isLoading: isTrackAddFavorite}] = useTrackAddFavoriteMutation()
-  const [trackRemoveFav, {isLoading: isTrackRemoveFavorite}] = useTrackRemoveFavoriteMutation()
+  const {
+    handleAddFav,
+    handleRemoveFav,
+    setHoveredTrackSlug,
+    isLoadingAddFav,
+    isLoadingRemoveFav,
+  } = useFavoriteFollow({favoriteType: "track"})
+
 
   const load = isLoadingTrFav || isFetchingTrFav
 
   if (load) return <FullScreenSpinner/>
-
-
-  function handleAddFav(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-
-    if (!isAuthenticated) return router.replace(loginUrl)
-
-    trackAddFav({trackSlug: hoveredTrackSlug})
-      .unwrap()
-      .then((data) => {
-        toast.success(data?.msg || "Track liked successfully")
-      })
-      .catch(() => {
-        toast.error("Failed to like Track.")
-      })
-  }
-
-  function handleRemoveFav(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-
-    if (!isAuthenticated) return router.replace(loginUrl)
-
-    trackRemoveFav({trackSlug: hoveredTrackSlug})
-      .unwrap()
-      .then((data) => {
-        toast.success(data?.msg || "Track remove from favorite successfully")
-      })
-      .catch(() => {
-        toast.error("Failed to removing track from favorite.")
-      })
-  }
 
 
   return (
@@ -295,19 +264,16 @@ export default function TracksTable({
 
             <small className="flex items-center justify-center col-span-1 text-sm font-medium text-white/60 ">
               <div className="flex items-center w-full gap-3">
-                {/*<CirclePlus size={18}*/}
-                {/*            className="opacity-0 group-hover/item:opacity-100 hover:text-white transition duration-150 ease-in-out transform hover:scale-105"/>*/}
-                {/*<CircleCheck size={18} className="text-primary"/>*/}
                 <TooltipProvider>
                   <Tooltip>
                     {tracksFav?.results?.some((trackFav) => trackFav.slug === track?.slug) ? (
                       <>
                         <TooltipTrigger
                           onClick={handleRemoveFav}
-                          disabled={isTrackRemoveFavorite && (hoveredRow === index)}
+                          disabled={isLoadingRemoveFav && (hoveredRow === index)}
                         >
-                          {(isTrackRemoveFavorite && (hoveredRow === index)) ?
-                            <Loader className="w-[17px] h-[17px]"/> : (
+                          {(isLoadingRemoveFav && (hoveredRow === index)) ?
+                            <Loader className="w-[15px] h-[15px]"/> : (
                               <CircleCheck
                                 strokeWidth={3}
                                 size={18}
@@ -321,8 +287,8 @@ export default function TracksTable({
                       </>
                     ) : (
                       <>
-                        <TooltipTrigger onClick={handleAddFav} disabled={isTrackAddFavorite && (hoveredRow === index)}>
-                          {(isTrackAddFavorite && (hoveredRow === index)) ? <Loader className="w-[17px] h-[17px]"/> : (
+                        <TooltipTrigger onClick={handleAddFav} disabled={isLoadingAddFav && (hoveredRow === index)}>
+                          {(isLoadingAddFav && (hoveredRow === index)) ? <Loader className="w-[15px] h-[15px]"/> : (
                             <CirclePlus
                               size={18}
                               className="opacity-0 group-hover/item:opacity-100 transition ease-in-out transform text-white/60 hover:scale-105 duration-150 hover:text-gray-100"

@@ -5,15 +5,19 @@ import {Album} from "lucide-react";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import {useAppSelector} from "@/lib/hooks";
 import {collectionTracks} from "@/utils/consts";
+import SkeletonTrack from "@/components/ui/SkeletonTrack";
 
 
 interface Props {
   tracks: Track[] | undefined;
   tracksCollection?: Track[] | undefined;
+  isLoading: boolean;
 }
 
-export default function TrackCardsLittle({tracks, tracksCollection}: Props) {
+export default function TrackCardsLittle({tracks, tracksCollection, isLoading}: Props) {
   const {activeTrack} = useAppSelector(state => state.track);
+
+  if (isLoading) return <SkeletonTrack/>
 
   return (
     <div className="grid w-full grid-cols-12 gap-4 p-4">

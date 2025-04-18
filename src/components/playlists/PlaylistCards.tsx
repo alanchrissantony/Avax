@@ -1,13 +1,16 @@
 import CardItemGrid from "@/components/general/CardItemGrid";
 import CardItem from "@/components/general/CardItem";
 import {Playlist} from "@/types/types";
+import SkeletonCards from "@/components/ui/SkeletonCards";
 
 
 interface Props {
   playlists: Playlist[] | undefined;
+  isLoading?: boolean;
 }
 
-export default function PlaylistCards({playlists}: Props) {
+export default function PlaylistCards({playlists, isLoading}: Props) {
+  if (isLoading) return <SkeletonCards/>
 
   return (
     <CardItemGrid>

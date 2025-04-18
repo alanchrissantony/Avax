@@ -22,7 +22,7 @@ export default function TitleShowAll({
                                        className = ""
                                      }: Props) {
   return (
-    <div>
+    <div className="w-full">
       <div className={"flex items-center justify-between font-bold text-2xl w-full mb-2 pl-4 pr-5 " + className}>
         {href ? (
           <div className="w-full">

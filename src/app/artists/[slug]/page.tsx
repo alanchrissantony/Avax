@@ -109,10 +109,10 @@ export default function ArtistPage({params}: Props) {
               track={artistTracks?.results?.[currentIndex] || (activeTrack || undefined)}
               tracks={artistTracks?.results}
               index={currentIndex}
-              isShowFavorite={isAuthenticated}
+              isShowFavorite={true}
               favoriteType="artist"
               isFavorite={artistsFav?.results?.some((item) => item?.artist?.slug === artist?.slug)}
-              isShowFollow={isAuthenticated}
+              isShowFollow={true}
               isFollowing={userFollowers?.some(follower => follower.id === currUser?.id)}
               userIdFollow={userId}
               slugFav={artist?.slug}

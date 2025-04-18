@@ -15,7 +15,6 @@ import {useAppSelector} from "@/lib/hooks";
 import {useEffect, useState} from "react";
 import TitleShowAll from "@/components/ui/title-show-all";
 import MainSection from "@/components/general/main-section";
-import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
 import {useListUserTracksLikedQuery} from "@/lib/features/tracks/trackApiSlice";
 
@@ -53,32 +52,33 @@ export default function Home() {
       <ContentSection>
         <section className="flex flex-col items-start space-y-8 text-2xl font-bold">
 
-          {load ? <FullScreenSpinner/> : (
+          {(
             <>
-              <div>
+              <div className="w-full">
                 <div className="flex items-center">
                   <Link href={"/tracks"} className="mt-4 ml-4">Top tracks</Link>
                 </div>
                 <TrackCardsLittle
                   tracks={topTracks?.results.slice(0, 7)}
                   tracksCollection={likedTracks?.results}
+                  isLoading={load}
                 />
               </div>
 
               <TitleShowAll title="Popular artists" href="/artists">
-                <ArtistCards artists={topArtists?.results.slice(0, 5)}/>
+                <ArtistCards artists={topArtists?.results.slice(0, 5)} isLoading={load}/>
               </TitleShowAll>
 
               <TitleShowAll title="Popular albums" href="/albums">
-                <AlbumCards albums={topAlbums?.results.slice(0, 5)}/>
+                <AlbumCards albums={topAlbums?.results.slice(0, 5)} isLoading={load}/>
               </TitleShowAll>
 
               <TitleShowAll title="Popular playlists" href="/playlists">
-                <PlaylistCards playlists={topPlaylists?.results.slice(0, 5)}/>
+                <PlaylistCards playlists={topPlaylists?.results.slice(0, 5)} isLoading={load}/>
               </TitleShowAll>
 
               <TitleShowAll title="Popular tracks" href="/tracks">
-                <TrackCards tracks={topTracks?.results.slice(0, 5)}/>
+                <TrackCards tracks={topTracks?.results.slice(0, 5)} isLoading={load}/>
               </TitleShowAll>
             </>
           )}

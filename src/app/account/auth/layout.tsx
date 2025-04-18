@@ -17,7 +17,7 @@ export default function Layout({
         />
       </header>
       <div className="w-full h-full bg-black flex items-start justify-center">
-        <div className="mx-auto max-w-xs sm:max-w-sm space-y-6">
+        <div className="mx-auto min-h-[70dvh] max-w-xs sm:max-w-sm space-y-6">
           {children}
         </div>
       </div>

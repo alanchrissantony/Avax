@@ -10,7 +10,6 @@ import {useDispatch} from "react-redux";
 import {useRouter} from "next/navigation";
 import {logout as setLogout} from "@/lib/features/auth/authSlice";
 import {Skeleton} from "@/components/ui/skeleton";
-import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {accountMyProfileArtistUrl, accountMySettingsUrl, accountMyUrl, profileMyUrl} from "@/utils/consts";
 import {useAppSelector} from "@/lib/hooks";
@@ -23,8 +22,8 @@ export default function ProfileDropdownMenu() {
   const router = useRouter();
   const {data: user, isLoading, isFetching, isError} = useRetrieveUserMeQuery({}, {skip: !isAuthenticated})
 
-  if (isLoadingLogout) return <FullScreenSpinner/>
-  if (isLoading || isFetching || !user) return <Skeleton className="h-12 w-12 rounded-full"/>
+  if (isLoadingLogout) return <Skeleton className="h-8 w-8 rounded-full"/>
+  if (isLoading || isFetching || !user) return <Skeleton className="h-8 w-8 rounded-full"/>
   if (isError) return <h1>Error...</h1>
 
   const handleLogout = () => {

@@ -13,10 +13,10 @@ import {useState} from "react";
 import {usePathname} from "next/navigation";
 import {useListUserPlaylistLikedQuery} from "@/lib/features/playlists/playlistApiSlice";
 import {useListUserTracksLikedQuery} from "@/lib/features/tracks/trackApiSlice";
-import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import {useListUserAlbumLikedQuery} from "@/lib/features/albums/albumApiSlice";
 import {useListUserArtistLikedQuery} from "@/lib/features/artists/artistApiSlice";
 import {useRetrieveUserMeQuery} from "@/lib/features/auth/authApiSlice";
+import {Skeleton} from "@/components/ui/skeleton";
 
 
 export default function UserLibrary() {
@@ -73,7 +73,37 @@ export default function UserLibrary() {
     isLoading || isFetching
   )
 
-  if (load) return <FullScreenSpinner/>
+  let loader;
+  if (load) {
+    loader = (
+      <div className='flex flex-col items-stretch flex-1 max-h-full space-y-4 p-4 px-2 mt-0'>
+        <div className='flex justify-between items-center w-full'>
+          <Skeleton className="h-7 w-28 rounded-full"/>
+          <Skeleton className="h-8 w-8 rounded-full"/>
+        </div>
+        <div className='flex space-x-2'>
+          <Skeleton className="h-7 w-7 rounded-full"/>
+          <Skeleton className="h-7 w-16 rounded-full"/>
+          <Skeleton className="h-7 w-16 rounded-full"/>
+          <Skeleton className="h-7 w-16 rounded-full"/>
+        </div>
+
+        <div className='space-y-3 pt-4'>
+          {Array.from("1234").map((_, i) => (
+            <div key={i} className='flex bg-[#181818] h-16 rounded-md space-x-2 p-2'>
+              <Skeleton className="h-12 w-12 my-auto rounded-md"/>
+              <div className="my-auto space-y-2">
+                <Skeleton className="h-5 w-24 rounded-md"/>
+                <Skeleton className="h-3 w-16 rounded-md"/>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (loader) return loader;
 
 
   return (

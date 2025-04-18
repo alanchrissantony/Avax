@@ -17,6 +17,8 @@ import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
+import {useListUserTracksLikedQuery} from "@/lib/features/tracks/trackApiSlice";
+import {useAppSelector} from "@/lib/hooks";
 
 interface Props {
   params: {
@@ -25,6 +27,7 @@ interface Props {
 }
 
 export default function TracksPage({params}: Props) {
+  const {isAuthenticated} = useAppSelector(state => state.auth)
   const {data: track, isLoading, isFetching} = useRetrieveTrackQuery(params.slug)
   const genreSlug = track?.genre?.slug || null
   const artistSlug = track?.artist?.slug || null
@@ -55,10 +58,17 @@ export default function TracksPage({params}: Props) {
     isFetching: isFetchingAlbums
   } = useRetrieveAlbumQuery(albumSlug, {skip: !albumSlug})
 
+  const {
+    data: tracksFav,
+    isLoading: isLoadingTrFav,
+    isFetching: isFetchingTrFav,
+  } = useListUserTracksLikedQuery({}, {skip: !isAuthenticated || !track});
+
   const load = (
     isLoading || isFetching || isLoadingRec || isFetchingRec ||
     isLoadingArtistTracks || isFetchingArtistTracks || isLoadingA || isFetchingA ||
-    isLoadingArtists || isFetchingArtists || isLoadingAlbums || isFetchingAlbums
+    isLoadingArtists || isFetchingArtists || isLoadingAlbums || isFetchingAlbums ||
+    isLoadingTrFav || isFetchingTrFav
   )
 
   const trackAlbumBgColor = track?.album?.color || "#202020";
@@ -141,7 +151,10 @@ export default function TracksPage({params}: Props) {
           <>
             <PlayButtonAndOther
               track={track}
-              isFavorite
+              isShowFavorite={true}
+              favoriteType="track"
+              isFavorite={tracksFav?.results?.some((trackFav) => trackFav?.slug === track?.slug)}
+              slugFav={track?.slug}
             />
 
             {(recommendations?.count || 0) > 0 &&

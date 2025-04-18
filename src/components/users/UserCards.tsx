@@ -1,12 +1,16 @@
 import CardItem from "../general/CardItem";
 import CardItemGrid from "../general/CardItemGrid";
 import {ShortUser} from "@/types/types";
+import SkeletonCards from "@/components/ui/SkeletonCards";
 
 interface Props {
   users: ShortUser[] | undefined;
+  isLoading?: boolean;
 }
 
-export default function UserCards({users}: Props) {
+export default function UserCards({users, isLoading}: Props) {
+  if (isLoading) return <SkeletonCards type="artist"/>
+
   return (
     <CardItemGrid>
       {users?.map((user) => (

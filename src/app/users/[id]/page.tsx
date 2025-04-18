@@ -12,7 +12,6 @@ import UserCards from "@/components/users/UserCards";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
-import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
 import {useAppSelector} from "@/lib/hooks";
 import {
@@ -20,6 +19,10 @@ import {
   useListUserFollowingQuery,
   useRetrieveUserQuery
 } from "@/lib/features/auth/authApiSlice";
+import {useEffect} from "react";
+import {redirect} from "next/navigation";
+import {profileMyUrl} from "@/utils/consts";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 interface Props {
   params: {
@@ -28,7 +31,7 @@ interface Props {
 }
 
 export default function UserPage({params}: Props) {
-  const {isAuthenticated, user: currUser} = useAppSelector(state => state.auth)
+  const {user: currUser} = useAppSelector(state => state.auth)
   const {data: user, isLoading, isFetching} = useRetrieveUserQuery(params.id)
   const userId = user?.id || null;
   const {
@@ -59,6 +62,10 @@ export default function UserPage({params}: Props) {
   )
 
   const userBgColor = user?.color || "#202020";
+
+  useEffect(() => {
+    if (currUser?.id === userId) redirect(profileMyUrl);
+  }, [currUser?.id, userId]);
 
   return (
     <MainSection bgColor={userBgColor} bgGradient="30%">
@@ -123,7 +130,7 @@ export default function UserPage({params}: Props) {
           <>
             <PlayButtonAndOther
               isPlayButton={false}
-              isShowFollow={isAuthenticated}
+              isShowFollow={true}
               isFollowing={userFollowers?.some(follower => follower.id === currUser?.id)}
               userIdFollow={user?.id}
             />

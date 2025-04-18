@@ -1,13 +1,16 @@
 import CardItemGrid from "@/components/general/CardItemGrid";
 import CardItem from "@/components/general/CardItem";
 import {Track} from "@/types/types";
+import SkeletonCards from "@/components/ui/SkeletonCards";
 
 
 interface Props {
   tracks: Track[] | undefined;
+  isLoading?: boolean;
 }
 
-export default function TrackCards({tracks}: Props) {
+export default function TrackCards({tracks, isLoading}: Props) {
+  if (isLoading) return <SkeletonCards/>
 
   return (
     <CardItemGrid>
