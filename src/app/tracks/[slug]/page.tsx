@@ -75,7 +75,7 @@ export default function TracksPage({params}: Props) {
                   alt={track.title}
                   height={170}
                   width={170}
-                  className="aspect-square object-cover shadow-2xl rounded-sm h-44 w-44"
+                  className="aspect-square object-cover shadow-2xl rounded-sm h-24 w-24 sm:h-32 sm:w-32 md:h-36 md:w-36 lg:h-44 lg:w-44"
                   priority
                 />
               ) : (
@@ -86,7 +86,7 @@ export default function TracksPage({params}: Props) {
 
               <div className="flex flex-col gap-3">
                 <h5 className="text-xs font-bold">Song</h5>
-                <h2 className="text-6xl font-bold">{track.title}</h2>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">{track.title}</h2>
 
                 <div className="flex items-center text-sm font-normal">
                   <Image
@@ -111,8 +111,8 @@ export default function TracksPage({params}: Props) {
 
                   {track.release_date && (
                     <>
-                      <Dot/>
-                      <span>
+                      <Dot className="hidden sm:block"/>
+                      <span className="hidden sm:block">
                           {format(new Date(track.release_date), 'yyyy')}
                         </span>
                     </>

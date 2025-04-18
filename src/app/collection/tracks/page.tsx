@@ -39,7 +39,7 @@ export default function LikedTracksPage() {
           />
           <div className="flex flex-col gap-3">
             <h5 className="text-xs font-bold">Playlist</h5>
-            <h2 className="text-6xl font-extrabold xl:font-black lg:text-7xl xl:text-8xl">Liked Songs</h2>
+            <h2 className="text-4xl font-extrabold xl:font-black md:text-6xl lg:text-7xl xl:text-8xl">Liked Songs</h2>
 
             <div className="flex items-center text-sm font-medium">
               {user && (

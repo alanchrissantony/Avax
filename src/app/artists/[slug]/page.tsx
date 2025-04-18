@@ -93,7 +93,7 @@ export default function ArtistPage({params}: Props) {
                   <h1 className="text-white text-sm font-medium">Verified Artist</h1>
                 </div>
               )}
-              <h2 className="text-7xl font-bold drop-shadow-md text-white">{artist.display_name}</h2>
+              <h2 className="text-5xl sm:text-6xl xl:text-7xl font-bold drop-shadow-md text-white">{artist.display_name}</h2>
               <span className="text-base font-medium drop-shadow-md">
                 {artist.artist_listeners.toLocaleString()} listeners
               </span>

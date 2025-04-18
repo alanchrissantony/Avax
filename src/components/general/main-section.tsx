@@ -55,14 +55,15 @@ export default function MainSection({
       onLayout={handleLayoutChange}
       className="h-full items-stretch"
     >
-      <ResizablePanel defaultSize={defaultLayout?.[0] || 20} minSize={20} maxSize={45} className="min-w-60 hidden sm:block">
+      <ResizablePanel defaultSize={defaultLayout?.[0] || 20} minSize={20} maxSize={45}
+                      className="min-w-60 hidden sm:block">
         <Sidebar/>
       </ResizablePanel>
-      <ResizableHandle className="bg-black/0 hover:bg-white/40 my-4 mx-1 cursor-grab active:cursor-grabbing"/>
+      <ResizableHandle className="bg-black/0 hover:bg-white/40 hidden sm:flex my-4 mx-1 cursor-grab active:cursor-grabbing"/>
       <ResizablePanel defaultSize={defaultLayout?.[1] || 80}>
         <div className="grid grid-cols-8">
           <div
-            className="flex flex-col h-[calc(95vh-4rem)] bg-[#131313] w-auto overflow-auto col-span-8 rounded-lg mt-2 mr-2">
+            className="flex flex-col h-[calc(95vh-4rem)] bg-[#131313] w-auto overflow-auto col-span-8 rounded-lg ml-2 sm:ml-0 mt-2 mr-2">
             <main>
               <div
                 className={`h-full w-full rounded-lg ${className}`}

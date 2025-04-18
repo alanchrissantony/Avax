@@ -50,7 +50,7 @@ export default function PlaylistPage({params}: Props) {
 
   return (
     <MainSection bgColor={playlistBgColor}>
-      <div className="h-60 bg-opacity-30 bg-black">
+      <div className="h-52 md:h-60 bg-opacity-30 bg-black">
         <div className="flex items-end gap-6 p-4 pt-10">
           {playlist && (
             <>
@@ -60,7 +60,7 @@ export default function PlaylistPage({params}: Props) {
                   alt={playlist.title}
                   height={170}
                   width={170}
-                  className="aspect-square object-cover shadow-2xl rounded-sm h-44 w-44"
+                  className="aspect-square object-cover shadow-2xl rounded-sm h-24 w-24 sm:h-32 sm:w-32 md:h-44 md:w-44"
                   priority
                 />
               ) : (
@@ -71,10 +71,10 @@ export default function PlaylistPage({params}: Props) {
 
               <div className="flex flex-col gap-3">
                 <h5 className="text-xs font-bold uppercase">{playlist.genre.name}</h5>
-                <h2 className="text-6xl font-bold">{playlist.title}</h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">{playlist.title}</h2>
 
                 {playlist.description && (
-                  <p className="font-medium text-sm mt-3 whitespace-pre-line text-white/50">
+                  <p className="hidden lg:block font-medium text-sm mt-3 whitespace-pre-line text-white/50">
                     {playlist.description}
                   </p>
                 )}

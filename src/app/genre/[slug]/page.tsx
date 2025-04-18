@@ -41,7 +41,7 @@ export default function Page({params}: Props) {
         <div className="flex items-end gap-6 p-5 pb-8">
           {genre && (
             <div>
-              <h2 className="text-8xl font-bold">{genre.name}</h2>
+              <h2 className="text-6xl md:text-7xl lg:text-8xl font-bold">{genre.name}</h2>
             </div>
           )}
         </div>

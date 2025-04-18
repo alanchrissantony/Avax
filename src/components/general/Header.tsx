@@ -9,6 +9,7 @@ import {loginUrl, signupUrl} from "@/utils/consts";
 import {useAppSelector} from "@/lib/hooks";
 import ProfileDropdownMenu from "@/components/general/ProfileDropdownMenu";
 import {Skeleton} from "@/components/ui/skeleton";
+import {SidebarMobile} from "@/components/general/SiderbarMobile";
 
 
 export default function Header() {
@@ -45,12 +46,12 @@ export default function Header() {
 
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3 sm:6">
 
         {isLoading ? <Skeleton className="h-12 w-12 rounded-full"/> :
           isAuthenticated ? (
             <div className="flex items-center justify-between space-x-4 p-2">
-              <Link href={`/premium`} className="hidden sm:flex">
+              <Link href={`/premium`} className="hidden lg:flex">
                 <Button className="text-black bg-white h-8 rounded-full font-semibold"
                         size="default">
                   Explore Premium
@@ -74,6 +75,9 @@ export default function Header() {
               </Link>
             </div>
           )}
+        <div className="sm:hidden">
+          <SidebarMobile isLoading={isLoading} isAuthenticated={isAuthenticated}/>
+        </div>
       </div>
     </header>
   );
