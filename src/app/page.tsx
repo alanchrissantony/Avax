@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <MainSection bgColor={backgroundColor} bgGradient="25%">
       <ContentSection>
-        <section className="flex flex-col items-start text-2xl font-bold">
+        <section className="flex flex-col items-start space-y-8 text-2xl font-bold">
 
           {load ? <FullScreenSpinner/> : (
             <>

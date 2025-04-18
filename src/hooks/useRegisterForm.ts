@@ -1,7 +1,6 @@
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useState} from "react";
 import {useRegisterMutation} from "@/lib/features/auth/authApiSlice";
 import {useRouter} from "next/navigation";
 import {toast} from "react-toastify";
@@ -11,6 +10,7 @@ const registerFormSchema = z.object({
   email: z
     .string()
     .email("Please enter your Avax email address."),
+  type_profile: z.string(),
   password: z
     .string()
     .min(8, {
@@ -33,21 +33,19 @@ export default function useRegisterForm() {
     register,
     handleSubmit,
     formState: {errors},
+    setValue,
   } = useForm<RegisterFormValue>({
     resolver: zodResolver(registerFormSchema),
     mode: "onChange",
   });
 
-  const [typeProfile, setTypeProfile] = useState('user')
-
   const [registerUser, {isLoading}] = useRegisterMutation()
   const router = useRouter()
 
   function onSubmit(data: RegisterFormValue) {
-    registerUser({...data, "type_profile": typeProfile})
+    registerUser({...data})
       .unwrap()
       .then(() => {
-
         toast.info("Please check email to verify account.")
         router.push(loginUrl)
       })
@@ -56,5 +54,5 @@ export default function useRegisterForm() {
       })
   }
 
-  return {register, handleSubmit, errors, isLoading, onSubmit, setTypeProfile}
+  return {register, handleSubmit, errors, isLoading, onSubmit, setValue}
 }
