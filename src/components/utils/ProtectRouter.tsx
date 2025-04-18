@@ -7,12 +7,12 @@ import {loginUrl} from "@/utils/consts";
 import {useRetrieveUserMeQuery} from "@/lib/features/auth/authApiSlice";
 
 interface Props {
-  allowedRoles: string[];
+  allowedRoles?: string[];
   children: React.ReactNode;
 }
 
 
-export default function ProtectRouter({children, allowedRoles}: Props) {
+export default function ProtectRouter({children, allowedRoles=["User", "Artist"]}: Props) {
   const {isAuthenticated} = useAppSelector(state => state.auth)
   const {
     data: user,
