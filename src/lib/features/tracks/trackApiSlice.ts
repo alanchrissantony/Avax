@@ -1,5 +1,5 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {Tracks} from "@/types/types";
+import {Artist, ListDetailTracks, Tracks} from "@/types/types";
 
 
 const trackApiSlice = apiSlice.injectEndpoints({
@@ -22,6 +22,10 @@ const trackApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Track'],
     }),
+    listArtistMyTracks: builder.query<ListDetailTracks, any | void>({
+      query: ({page = 1}) => `/tracks/my/?page=${page}`,
+      providesTags: ['Track']
+    }),
   }),
 });
 
@@ -29,4 +33,5 @@ export const {
   useListUserTracksLikedQuery,
   useTrackAddFavoriteMutation,
   useTrackRemoveFavoriteMutation,
+  useListArtistMyTracksQuery,
 } = trackApiSlice

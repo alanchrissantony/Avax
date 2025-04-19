@@ -9,7 +9,7 @@ import TrackPlayerProvider from "@/providers/TrackPlayerProvider";
 import PreviewPlayer from "@/components/tracks/player/PreviewPlayer";
 import Setup from "@/components/utils/Setup";
 import {usePathname} from "next/navigation";
-import {accountUrl} from "@/utils/consts";
+import {accountAuthUrl} from "@/utils/consts";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const iAccountPage = pathname.startsWith(accountUrl);
+  const isAccountAuthPage = pathname.startsWith(accountAuthUrl);
 
 
   return (
@@ -44,8 +44,11 @@ export default function RootLayout({
         <Setup/>
 
         <TrackPlayerProvider>
-          {iAccountPage ? (
-            <main>{children}</main>
+          {isAccountAuthPage ? (
+            <main>
+              {children}
+              <PreviewPlayer/>
+            </main>
           ) : (
             <main>
               {children}

@@ -1,4 +1,5 @@
 export const accountUrl = '/account'
+export const accountAuthUrl = '/account/auth'
 export const signupUrl = '/account/auth/signup';
 export const loginUrl = '/account/auth/login';
 export const passwordResetUrl = '/account/auth/password-reset';

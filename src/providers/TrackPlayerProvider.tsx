@@ -5,7 +5,7 @@ import {useAppSelector, useAppDispatch} from "@/lib/hooks";
 import {nextSong as nextSongAction, prevSong as prevSongAction} from "@/lib/features/tracks/trackSlice";
 import {Track} from "@/types/types";
 import {usePathname} from "next/navigation";
-import {accountUrl} from "@/utils/consts";
+import {accountAuthUrl} from "@/utils/consts";
 
 interface TrackProviderState {
   currentTrackAudio: HTMLAudioElement | null;
@@ -43,7 +43,7 @@ interface Props {
 
 export default function TrackPlayerProvider({children}: Props) {
   const pathname = usePathname();
-  const isAccountPage = pathname.startsWith(accountUrl);
+  const isAccountAuthPage = pathname.startsWith(accountAuthUrl);
 
   const {activeTrack, currentIndex, currentTracks} = useAppSelector((state) => state.track);
   const dispatch = useAppDispatch();
@@ -197,10 +197,10 @@ export default function TrackPlayerProvider({children}: Props) {
   }, []);
 
   useEffect(() => {
-    if (isAccountPage && isPlaying) {
+    if (isAccountAuthPage && isPlaying) {
       pause();
     }
-  }, [isPlaying, isAccountPage, pause]);
+  }, [isPlaying, isAccountAuthPage, pause]);
 
   const value = {
     currentTrackAudio,

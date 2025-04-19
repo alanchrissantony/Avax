@@ -1,5 +1,5 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {AlbumsLiked} from "@/types/types";
+import {AlbumsLiked, DetailAlbum, ListDetailAlbums} from "@/types/types";
 
 
 const albumApiSlice = apiSlice.injectEndpoints({
@@ -22,6 +22,37 @@ const albumApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Album'],
     }),
+    listMyAlbum: builder.query<ListDetailAlbums, any | void>({
+      query: ({page = 1, search = ''}) => `/albums/my/?page=${page}&search=${search}`,
+      providesTags: ['Album']
+    }),
+    retrieveMyAlbum: builder.query<DetailAlbum, any | void>({
+      query: ({slug}) => `/albums/my/${slug}/`,
+      providesTags: ['Album']
+    }),
+    postMyAlbum: builder.mutation<DetailAlbum, any | void>({
+      query: (data) => ({
+        url: `/albums/my/`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Album'],
+    }),
+    updateMyAlbum: builder.mutation<DetailAlbum, any | void>({
+      query: ({slug, ...data}) => ({
+        url: `/albums/my/${slug}/`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Album'],
+    }),
+    deleteMyAlbum: builder.mutation({
+      query: ({slug}) => ({
+        url: `/albums/my/${slug}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Album'],
+    }),
   }),
 });
 
@@ -29,4 +60,9 @@ export const {
   useListUserAlbumLikedQuery,
   useAlbumAddFavoriteMutation,
   useAlbumRemoveFavoriteMutation,
+  useListMyAlbumQuery,
+  usePostMyAlbumMutation,
+  useRetrieveMyAlbumQuery,
+  useUpdateMyAlbumMutation,
+  useDeleteMyAlbumMutation,
 } = albumApiSlice

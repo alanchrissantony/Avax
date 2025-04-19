@@ -88,11 +88,16 @@ export interface Album extends BaseApi {
 export interface DetailAlbum extends Album {
   tracks: Track[];
   description: string;
+  album_listeners: number;
   duration: string;
 }
 
 export interface Albums extends ListBaseApi {
   results: Album[];
+}
+
+export interface ListDetailAlbums extends ListBaseApi {
+  results: DetailAlbum[];
 }
 
 export interface Track extends BaseApi {
@@ -117,19 +122,23 @@ export interface Track extends BaseApi {
 
 export interface DetailTrack extends Track {
   release_date: string;
+  download_count: number;
+  likes_count: number;
+  user_of_likes: number[];
   license: {
     id: number;
     name: string;
     text: string;
     artist: ShortArtist;
-    download_count: number;
-    likes_count: number;
-    user_of_likes: number[];
   }
 }
 
 export interface Tracks extends ListBaseApi {
   results: Track[];
+}
+
+export interface ListDetailTracks extends ListBaseApi {
+  results: DetailTrack[];
 }
 
 export interface Playlist extends BaseApi {

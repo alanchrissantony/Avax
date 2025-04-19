@@ -1,5 +1,5 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {ArtistsLiked} from "@/types/types";
+import {Artist, ArtistsLiked} from "@/types/types";
 
 
 const artistApiSlice = apiSlice.injectEndpoints({
@@ -22,6 +22,10 @@ const artistApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Artist'],
     }),
+    retrieveMeArtist: builder.query<Artist, void>({
+      query: () => `/artists/me/`,
+      providesTags: ['Artist']
+    }),
   }),
 });
 
@@ -29,4 +33,5 @@ export const {
   useListUserArtistLikedQuery,
   useArtistAddFavoriteMutation,
   useArtistRemoveFavoriteMutation,
+  useRetrieveMeArtistQuery,
 } = artistApiSlice
