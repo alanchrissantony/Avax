@@ -39,9 +39,6 @@ export function AccountForm({user}: UserFormProps) {
     handleDelete,
   } = useAccountForm(user)
 
-  console.log(user)
-
-
   return (
     <>
       <Form {...form}>

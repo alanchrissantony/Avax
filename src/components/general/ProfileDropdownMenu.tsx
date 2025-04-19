@@ -83,7 +83,7 @@ export default function ProfileDropdownMenu() {
       <DropdownMenuTrigger asChild>
         <Button size='icon' variant='outline' className="flex bg-white bg-opacity-50 h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user.image} alt={user.display_name}/>
+            <AvatarImage className="aspect-square object-cover" src={user.image} alt={user.display_name}/>
             <AvatarFallback>{user.display_name}</AvatarFallback>
           </Avatar>
         </Button>
