@@ -11,31 +11,44 @@ import {
 } from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
 import Loader from "@/components/general/Loader";
-import {Textarea} from "@/components/ui/textarea";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import getImageData from "@/utils/getImage";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {cn} from "@/lib/utils";
 import {format} from "date-fns";
-import {CalendarIcon, ImageOff} from "lucide-react";
+import {CalendarIcon, Check, ImageOff} from "lucide-react";
 import {Calendar} from "@/components/ui/calendar";
-import useAlbumEditForm from "@/hooks/useAlbumEditForm";
-import {DetailAlbum} from "@/types/types";
+import {CaretSortIcon} from "@radix-ui/react-icons";
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command";
+import {DetailTrack, Genres, License, ListDetailAlbums} from "@/types/types";
+import useTrackEditForm from "@/hooks/useTrackEditForm";
+import {useEffect, useState} from "react";
+
 
 interface Props {
-  album: DetailAlbum | undefined;
+  track: DetailTrack | undefined;
+  albums: ListDetailAlbums | undefined;
+  license: License[] | undefined;
+  genres: Genres | undefined;
 }
 
-
-export function AlbumEditForm({album}: Props) {
+export function TrackEditForm({track, albums, license, genres}: Props) {
   const {
     form,
     onSubmit,
     isLoading,
     tempImage,
     setTempImage,
-  } = useAlbumEditForm(album)
+    tempAudio,
+    setTempAudio,
+  } = useTrackEditForm(track)
+
+  const [audioKey, setAudioKey] = useState(Date.now());
+
+  useEffect(() => {
+    setAudioKey(Date.now());
+  }, [tempAudio]);
 
   return (
     <Form {...form}>
@@ -57,7 +70,7 @@ export function AlbumEditForm({album}: Props) {
                   type='file'
                   accept='image/*'
                   value={field.value?.image}
-                  className='w-56 aspect-square object-cover'
+                  className='w-56 aspect-square object-cover rounded-2xl'
                   onChange={(e) => {
                     const {files, displayUrl} = getImageData(e)
 
@@ -77,9 +90,9 @@ export function AlbumEditForm({album}: Props) {
           name="title"
           render={({field}) => (
             <FormItem>
-              <FormLabel>Album title</FormLabel>
+              <FormLabel>Track title</FormLabel>
               <FormControl>
-                <Input placeholder="My album..." {...field}/>
+                <Input placeholder="My track..." {...field}/>
               </FormControl>
               <FormMessage/>
             </FormItem>
@@ -87,13 +100,219 @@ export function AlbumEditForm({album}: Props) {
         />
         <FormField
           control={form.control}
-          name="description"
+          name="album"
           render={({field}) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
+            <FormItem className='flex flex-col'>
+              <FormLabel>Album</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-auto justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? albums?.results?.find(
+                          (album) => album.id === field.value
+                        )?.title
+                        : "Select your album"}
+                      <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[280px] md:w-[340px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search my album..."/>
+                    <CommandEmpty>No album found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandList>
+                        {albums?.results?.map((album) => (
+                          <CommandItem
+                            value={album.title}
+                            key={album.id}
+                            onSelect={() => {
+                              form.setValue("album", album.id)
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-1 h-4 w-4",
+                                album.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            <Avatar className="rounded-md">
+                              <AvatarImage src={album.image}
+                                           className="aspect-square object-cover h-8 w-8 mt-1 rounded-md "/>
+                            </Avatar>
+
+                            {album.title}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormMessage/>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="genre"
+          render={({field}) => (
+            <FormItem className='flex flex-col'>
+              <FormLabel>Genre</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-auto justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? genres?.results?.find(
+                          (genre) => genre.id === field.value
+                        )?.name
+                        : "Select your genre"}
+                      <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[280px] md:w-[340px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search my album..."/>
+                    <CommandEmpty>No genre found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandList>
+                        {genres?.results?.map((genre) => (
+                          <CommandItem
+                            value={genre.name}
+                            key={genre.id}
+                            onSelect={() => {
+                              form.setValue("genre", genre.id)
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-1 h-4 w-4",
+                                genre.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            <Avatar className="rounded-md">
+                              <AvatarImage src={genre.image}
+                                           className="aspect-square object-cover h-8 w-8 mt-1 rounded-md "/>
+                            </Avatar>
+
+                            {genre.name}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormMessage/>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="license"
+          render={({field}) => (
+            <FormItem className='flex flex-col'>
+              <FormLabel>License</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-auto justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? license?.find(
+                          (item) => item.id === field.value
+                        )?.name
+                        : "Select your license"}
+                      <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[280px] md:w-[340px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search my license..."/>
+                    <CommandEmpty>No license found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandList>
+                        {license?.map((item) => (
+                          <CommandItem
+                            value={item.name}
+                            key={item.id}
+                            onSelect={() => {
+                              form.setValue("license", item.id)
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-1 h-4 w-4",
+                                item.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {item.name}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormMessage/>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="file"
+          render={({field}) => (
+            <FormItem className="md:flex items-center md:space-x-3">
               <FormControl>
-                <Textarea placeholder='About album...' className='resize-y min-h-[150px]' {...field}/>
+                <Input
+                  {...field}
+                  type='file'
+                  accept='audio/*'
+                  value={field.value?.file}
+                  className='w-56 aspect-square object-cover rounded-2xl'
+                  onChange={(e) => {
+                    const {files, displayUrl} = getImageData(e)
+                    setTempAudio(displayUrl)
+                    field.onChange(files);
+                  }}
+                />
               </FormControl>
+              {tempAudio && (
+                <audio key={audioKey} controls className="rounded-full w-full pb-1.5">
+                  <source src={tempAudio} type="audio/mpeg"/>
+                  Your browser does not support the audio element.
+                </audio>
+              )}
               <FormMessage/>
             </FormItem>
           )}
@@ -136,7 +355,7 @@ export function AlbumEditForm({album}: Props) {
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                Date when album released.
+                Date when track released.
               </FormDescription>
               <FormMessage/>
             </FormItem>
@@ -158,7 +377,7 @@ export function AlbumEditForm({album}: Props) {
                   Is private?
                 </FormLabel>
                 <FormDescription>
-                  If true only you can see your album
+                  If true only you can see your track
                 </FormDescription>
               </div>
               <FormMessage/>
@@ -168,7 +387,7 @@ export function AlbumEditForm({album}: Props) {
         <Button type="submit" className='w-full' disabled={isLoading}>
           {isLoading
             ? <Loader/>
-            : 'Update album'
+            : 'Update track'
           }
         </Button>
       </form>
