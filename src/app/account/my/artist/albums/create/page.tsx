@@ -15,11 +15,11 @@ export default function Page() {
 
   return (
     <>
-      <Breadcrumb className=''>
+      <Breadcrumb>
         <BreadcrumbList className='text-l'>
           <BreadcrumbItem>
             <BreadcrumbLink>
-              <h1 onClick={() => router.back()}>Albums</h1>
+              <h1 onClick={() => router.replace(`/account/my/artist/albums`)}>Albums</h1>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator/>

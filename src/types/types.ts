@@ -74,6 +74,17 @@ export interface Artists extends ListBaseApi {
   results: Artist[];
 }
 
+export interface License extends BaseApi {
+  artist: ShortArtist;
+  name: string;
+  text: string;
+}
+
+export interface UpdateLicense {
+  name: string;
+  text: string;
+}
+
 export interface Album extends BaseApi {
   slug: string;
   title: string;
@@ -138,7 +149,19 @@ export interface DetailTrack extends Track {
     name: string;
     text: string;
     artist: ShortArtist;
-  }
+  };
+  is_private: boolean;
+}
+
+export interface UpdateTrack {
+  title: string;
+  image: string;
+  license: number;
+  genre: number;
+  album: number;
+  file: string;
+  is_private: boolean;
+  release_date: string;
 }
 
 export interface Tracks extends ListBaseApi {

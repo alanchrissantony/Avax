@@ -1,5 +1,5 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {Artist, ListDetailTracks, Tracks} from "@/types/types";
+import {DetailTrack, ListDetailTracks, Tracks, UpdateTrack} from "@/types/types";
 
 
 const trackApiSlice = apiSlice.injectEndpoints({
@@ -22,9 +22,36 @@ const trackApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Track'],
     }),
-    listArtistMyTracks: builder.query<ListDetailTracks, any | void>({
+    listMyTracks: builder.query<ListDetailTracks, any>({
       query: ({page = 1}) => `/tracks/my/?page=${page}`,
       providesTags: ['Track']
+    }),
+    retrieveMyTrack: builder.query<DetailTrack, any>({
+      query: ({slug}) => `/albums/my/${slug}/`,
+      providesTags: ['Track']
+    }),
+    postMyTrack: builder.mutation<DetailTrack, any>({
+      query: (data) => ({
+        url: `/tracks/my/`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Track'],
+    }),
+    updateMyTrack: builder.mutation<UpdateTrack, { slug: string | undefined, data: any }>({
+      query: ({slug, data}) => ({
+        url: `/tracks/my/${slug}/`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Track'],
+    }),
+    deleteMyTrack: builder.mutation({
+      query: ({slug}) => ({
+        url: `/tracks/my/${slug}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Track'],
     }),
   }),
 });
@@ -33,5 +60,9 @@ export const {
   useListUserTracksLikedQuery,
   useTrackAddFavoriteMutation,
   useTrackRemoveFavoriteMutation,
-  useListArtistMyTracksQuery,
+  useListMyTracksQuery,
+  usePostMyTrackMutation,
+  useUpdateMyTrackMutation,
+  useRetrieveMyTrackQuery,
+  useDeleteMyTrackMutation,
 } = trackApiSlice

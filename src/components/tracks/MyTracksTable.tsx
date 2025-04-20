@@ -15,6 +15,13 @@ import {useRouter} from "next/navigation";
 import {toast} from "react-toastify";
 import {Checkbox} from "@/components/ui/checkbox";
 import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
+import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -25,29 +32,31 @@ import {
 import * as React from "react";
 import {useState} from "react";
 import Link from "next/link";
-import {FormSubmit, ListDetailAlbums} from "@/types/types";
-import {useDeleteMyAlbumMutation} from "@/lib/features/albums/albumApiSlice";
+import {FormSubmit, License, ListDetailAlbums, ListDetailTracks} from "@/types/types";
 import Image from "next/image";
 import dayjs from "dayjs";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import {useDeleteMyTrackMutation} from "@/lib/features/tracks/trackApiSlice";
 
 
 interface Prop {
+  tracks?: ListDetailTracks | undefined;
+  license?: License[] | undefined;
   albums?: ListDetailAlbums | undefined;
   page: number;
   setPage: any;
 }
 
-export default function MyAlbumsTable({albums, page, setPage}: Prop) {
-  const pages = Math.floor((albums?.count || 0) / 10);
+export default function MyTracksTable({tracks, albums, license, page, setPage}: Prop) {
+  const pages = Math.floor((tracks?.count || 0) / 10);
 
   const [search, setSearch] = useState('')
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
 
   const router = useRouter()
 
-  const [albumDelete, {isLoading}] = useDeleteMyAlbumMutation();
+  const [trackDelete, {isLoading}] = useDeleteMyTrackMutation();
 
 
   const handleSubmit = (e: FormSubmit) => {
@@ -60,14 +69,14 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
   }
 
   function handleDelete(slug: string) {
-    alert('Are you sure you want to delete this album?');
+    alert('Are you sure you want to delete this track?');
 
-    albumDelete({slug})
+    trackDelete({slug})
       .unwrap()
       .then(() => {
-        toast.success('Deleted Album')
+        toast.success('Deleted Track')
       })
-      .catch(() => toast.error('Failed to delete Album'))
+      .catch(() => toast.error('Failed to delete Track'))
   }
 
   if (isLoading) return <FullScreenSpinner/>
@@ -105,31 +114,59 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Filter by</DropdownMenuLabel>
               <DropdownMenuSeparator/>
-              <DropdownMenuCheckboxItem onClick={(e) => handleFilterSubmit(e, "listeners")}>
-                Listeners
+              <DropdownMenuCheckboxItem onClick={(e) => handleFilterSubmit(e, "plays")}>
+                Plays count
               </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem checked onClick={(e) => handleFilterSubmit(e, "created_at")}>Created
-                at</DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem onClick={(e) => handleFilterSubmit(e, "track_count")}>
-                Track count
+              <DropdownMenuCheckboxItem checked onClick={(e) => handleFilterSubmit(e, "created_at")}>
+                Created at
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem onClick={(e) => handleFilterSubmit(e, "likes")}>
+                Likes count
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button size="sm" className="h-8 gap-1" onClick={() => router.push('albums/create')}>
-            <PlusCircle className="h-3.5 w-3.5"/>
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Add Album
+          {((albums?.count || 0) > 0 && (license?.length || 0) > 0) ?
+            <Button size="sm" className="h-8 gap-1" onClick={() => router.push('tracks/create')}>
+              <PlusCircle className="h-3.5 w-3.5"/>
+              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Add Track
               </span>
-          </Button>
+            </Button> :
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button size="sm" className="h-8 gap-1 bg-red-700 hover:bg-red-600">
+                  <PlusCircle className="h-3.5 w-3.5"/>
+                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                    Add Track
+                  </span>
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>You dont have album or license</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    In order to create track, you must create album and license
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => router.replace('/account/my/artist/album/create')}>Go to create
+                    album</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
+          }
+
         </div>
       </div>
       <TabsContent value="all">
         <Card x-chunk="dashboard-06-chunk-0" className="bg-black">
           <CardHeader>
-            <CardTitle>Albums</CardTitle>
+            <CardTitle>Tracks</CardTitle>
             <CardDescription>
-              Manage your Albums and view their details.
+              Manage your Tracks and view their details.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -139,8 +176,11 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                   <TableHead>Cover</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Release Date</TableHead>
-                  <TableHead className="hidden md:table-cell">Listeners</TableHead>
-                  <TableHead className="hidden md:table-cell">Tracks count</TableHead>
+                  <TableHead>Album</TableHead>
+                  <TableHead className="hidden md:table-cell">Genre</TableHead>
+                  <TableHead className="hidden lg:table-cell">Licence</TableHead>
+                  <TableHead className="hidden md:table-cell">Likes</TableHead>
+                  <TableHead className="hidden md:table-cell">Plays</TableHead>
                   <TableHead className="hidden lg:table-cell">Is private</TableHead>
                   <TableHead>
                     <span className="sr-only">Actions</span>
@@ -148,9 +188,9 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {albums?.results?.map((album, index) => (
+                {tracks?.results?.map((track, index) => (
                   <TableRow
-                    key={album.id}
+                    key={track.id}
                     onMouseEnter={() => {
                       setHoveredRow(index)
                     }}
@@ -159,8 +199,8 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                     <TableCell className="font-medium">
                       <div className="relative flex-shrink-0 w-12 h-12">
                         <Image
-                          src={album.image}
-                          alt={album.title}
+                          src={track.album.image}
+                          alt={track.title}
                           height={50}
                           width={50}
                           className="aspect-square object-cover shadow-md rounded-sm h-12 w-12"
@@ -169,47 +209,66 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                         {hoveredRow === index && (
                           <div
                             className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
-                            <PlayTrackButton track={album?.tracks?.[0]} lines={true} className="text-xl"/>
+                            <PlayTrackButton track={track} tracks={tracks?.results} index={index} lines={true}
+                                             className="text-xl"/>
                           </div>
                         )}
                       </div>
                     </TableCell>
 
                     <TableCell className="font-medium">
-                      <Link href={`/albums/${album.slug}`} className='hover:underline'>
-                        {album.title.slice(0, 30) + ((album.title.length - 30) > 1 ? '...' : '')}
+                      <Link href={`/tracks/${track.slug}`} className='hover:underline'>
+                        {track.title.slice(0, 30) + ((track.title.length - 30) > 1 ? '...' : '')}
                       </Link>
                     </TableCell>
 
                     <TableCell className="font-medium">
                       <span>
-                        {dayjs(album.release_date).format('D MMMM YYYY')}
+                        {dayjs(track.release_date).format('D MMMM YYYY')}
                       </span>
+                    </TableCell>
+
+                    <TableCell className="font-medium">
+                      <Link href={`/albums/${track?.album?.slug}`} className='hover:underline text-white/90'>
+                        {track?.album.title}
+                      </Link>
+                    </TableCell>
+
+                    <TableCell className="font-medium hidden md:table-cell">
+                      <Link href={`/genre/${track?.genre?.slug}`} className='hover:underline text-white/70'>
+                        {track?.genre.name}
+                      </Link>
+                    </TableCell>
+
+                    <TableCell className="font-medium hidden lg:table-cell">
+                      <Link href={`/account/my/artist/license`} className='hover:underline text-white/70'>
+                        {track?.license.name}
+                      </Link>
                     </TableCell>
 
                     <TableCell className="font-medium hidden md:table-cell">
                       <span>
-                        {album?.album_listeners > 0 ? (
-                          album?.album_listeners.toLocaleString()
+                        {track?.likes_count > 0 ? (
+                          track?.likes_count.toLocaleString()
                         ) : (
-                          "No listeners"
+                          "No likes"
                         )}
                       </span>
                     </TableCell>
 
                     <TableCell className="font-medium text-center hidden md:table-cell">
                       <span className="mr-2">
-                        {album?.tracks?.length > 0 ? (
-                          album?.tracks?.length.toLocaleString()
+                        {track?.plays_count > 0 ? (
+                          track?.plays_count.toLocaleString()
                         ) : (
-                          "No tracks"
+                          "No plays"
                         )}
                       </span>
                     </TableCell>
 
                     <TableCell className="font-medium hidden lg:table-cell">
                         <span className="ml-6">
-                          <Checkbox defaultChecked={album.is_private} disabled/>
+                          <Checkbox defaultChecked={track.is_private} disabled/>
                         </span>
                     </TableCell>
 
@@ -228,8 +287,8 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <DropdownMenuItem
-                            onClick={() => router.push(`albums/${album.slug}/edit`)}>Edit</DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDelete(album.slug)}>Delete</DropdownMenuItem>
+                            onClick={() => router.push(`tracks/${track.slug}/edit`)}>Edit</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleDelete(track.slug)}>Delete</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -279,9 +338,9 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
       <TabsContent value="private">
         <Card x-chunk="dashboard-06-chunk-0" className="bg-black">
           <CardHeader>
-            <CardTitle>Albums</CardTitle>
+            <CardTitle>Tracks</CardTitle>
             <CardDescription>
-              Manage your Albums and view their details.
+              Manage your Tracks and view their details.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -291,8 +350,11 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                   <TableHead>Cover</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Release Date</TableHead>
-                  <TableHead className="hidden md:table-cell">Listeners</TableHead>
-                  <TableHead className="hidden md:table-cell">Tracks count</TableHead>
+                  <TableHead>Album</TableHead>
+                  <TableHead className="hidden md:table-cell">Genre</TableHead>
+                  <TableHead className="hidden lg:table-cell">Licence</TableHead>
+                  <TableHead className="hidden md:table-cell">Likes</TableHead>
+                  <TableHead className="hidden md:table-cell">Plays</TableHead>
                   <TableHead className="hidden lg:table-cell">Is private</TableHead>
                   <TableHead>
                     <span className="sr-only">Actions</span>
@@ -301,9 +363,9 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
               </TableHeader>
               <TableBody>
                 {isLoading ? <FullScreenSpinner/> : (
-                  albums?.results?.filter((album) => album.is_private).map((album, index) => (
+                  tracks?.results?.filter((track) => track.is_private).map((track, index) => (
                     <TableRow
-                      key={album.id}
+                      key={track.id}
                       onMouseEnter={() => {
                         setHoveredRow(index)
                       }}
@@ -312,8 +374,8 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                       <TableCell className="font-medium">
                         <div className="relative flex-shrink-0 w-12 h-12">
                           <Image
-                            src={album.image}
-                            alt={album.title}
+                            src={track.album.image}
+                            alt={track.title}
                             height={50}
                             width={50}
                             className="aspect-square object-cover shadow-md rounded-sm h-12 w-12"
@@ -322,47 +384,66 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                           {hoveredRow === index && (
                             <div
                               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
-                              <PlayTrackButton track={album?.tracks?.[0]} lines={true} className="text-xl"/>
+                              <PlayTrackButton track={track} tracks={tracks?.results} index={index} lines={true}
+                                               className="text-xl"/>
                             </div>
                           )}
                         </div>
                       </TableCell>
 
                       <TableCell className="font-medium">
-                        <Link href={`/albums/${album.slug}`} className='hover:underline'>
-                          {album.title.slice(0, 30) + ((album.title.length - 30) > 1 ? '...' : '')}
+                        <Link href={`/tracks/${track.slug}`} className='hover:underline'>
+                          {track.title.slice(0, 30) + ((track.title.length - 30) > 1 ? '...' : '')}
                         </Link>
                       </TableCell>
 
                       <TableCell className="font-medium">
                       <span>
-                        {dayjs(album.release_date).format('D MMMM YYYY')}
+                        {dayjs(track.release_date).format('D MMMM YYYY')}
                       </span>
+                      </TableCell>
+
+                      <TableCell className="font-medium">
+                        <Link href={`/albums/${track?.album?.slug}`} className='hover:underline text-white/90'>
+                          {track?.album.title}
+                        </Link>
+                      </TableCell>
+
+                      <TableCell className="font-medium hidden md:table-cell">
+                        <Link href={`/genre/${track?.genre?.slug}`} className='hover:underline text-white/70'>
+                          {track?.genre.name}
+                        </Link>
+                      </TableCell>
+
+                      <TableCell className="font-medium hidden lg:table-cell">
+                        <Link href={`/account/my/artist/license`} className='hover:underline text-white/70'>
+                          {track?.license.name}
+                        </Link>
                       </TableCell>
 
                       <TableCell className="font-medium hidden md:table-cell">
                       <span>
-                        {album?.album_listeners > 0 ? (
-                          album?.album_listeners.toLocaleString()
+                        {track?.likes_count > 0 ? (
+                          track?.likes_count.toLocaleString()
                         ) : (
-                          "No listeners"
+                          "No likes"
                         )}
                       </span>
                       </TableCell>
 
                       <TableCell className="font-medium text-center hidden md:table-cell">
                       <span className="mr-2">
-                        {album?.tracks?.length > 0 ? (
-                          album?.tracks?.length.toLocaleString()
+                        {track?.plays_count > 0 ? (
+                          track?.plays_count.toLocaleString()
                         ) : (
-                          "No tracks"
+                          "No plays"
                         )}
                       </span>
                       </TableCell>
 
                       <TableCell className="font-medium hidden lg:table-cell">
                         <span className="ml-6">
-                          <Checkbox defaultChecked={album.is_private} disabled/>
+                          <Checkbox defaultChecked={track.is_private} disabled/>
                         </span>
                       </TableCell>
 
@@ -381,8 +462,8 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuItem
-                              onClick={() => router.push(`albums/${album.slug}/edit`)}>Edit</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleDelete(album.slug)}>Delete</DropdownMenuItem>
+                              onClick={() => router.push(`tracks/${track.slug}/edit`)}>Edit</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleDelete(track.slug)}>Delete</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
@@ -429,6 +510,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
           </CardFooter>
         </Card>
       </TabsContent>
+
     </Tabs>
   )
 }

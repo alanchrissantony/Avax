@@ -30,7 +30,7 @@ const albumApiSlice = apiSlice.injectEndpoints({
       query: ({slug}) => `/albums/my/${slug}/`,
       providesTags: ['Album']
     }),
-    postMyAlbum: builder.mutation<DetailAlbum, any | void>({
+    postMyAlbum: builder.mutation<DetailAlbum, any>({
       query: (data) => ({
         url: `/albums/my/`,
         method: 'POST',
@@ -38,7 +38,7 @@ const albumApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Album'],
     }),
-    updateMyAlbum: builder.mutation<UpdateAlbum, any | void>({
+    updateMyAlbum: builder.mutation<UpdateAlbum, {slug: string | undefined, data: any}>({
       query: ({slug, data}) => ({
         url: `/albums/my/${slug}/`,
         method: 'PUT',

@@ -1,5 +1,5 @@
 import {Separator} from "@/components/ui/separator"
-import WorkInProgress from "@/components/ui/work-in-progress";
+import {MyTracksContainer} from "@/components/tracks/MyTracksContainer";
 
 export default function Page() {
   return (
@@ -11,7 +11,7 @@ export default function Page() {
         </p>
       </div>
       <Separator/>
-      <WorkInProgress/>
+      <MyTracksContainer/>
     </div>
   )
 }

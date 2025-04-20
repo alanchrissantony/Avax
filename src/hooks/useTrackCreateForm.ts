@@ -1,11 +1,11 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "react-toastify";
-import {usePostMyAlbumMutation} from "@/lib/features/albums/albumApiSlice";
 import {z} from "zod";
 import {useState} from "react";
 import {format} from "date-fns";
 import {useRouter} from "next/navigation";
+import {usePostMyTrackMutation} from "@/lib/features/tracks/trackApiSlice";
 
 
 export const albumFormSchema = z.object({
@@ -17,9 +17,19 @@ export const albumFormSchema = z.object({
     .max(100, {
       message: "Title must not be longer than 100 characters.",
     }),
-  description: z.string()
-    .max(500, {message: 'Must not be longer than 500 characters.',}),
   image: z.any(),
+  license: z.any({
+    required_error: "Please select a license.",
+  }),
+  genre: z.any({
+    required_error: "Please select a genre.",
+  }),
+  album: z.any({
+    required_error: "Please select a album.",
+  }),
+  file: z.any({
+    required_error: "Please upload track file.",
+  }),
   release_date: z.string().refine((date) => {
     return !isNaN(Date.parse(date));
   }, {
@@ -30,9 +40,10 @@ export const albumFormSchema = z.object({
 
 export type AlbumFormValues = z.infer<typeof albumFormSchema>
 
-export default function useAlbumCreateForm() {
-  const [createAlbum, {isLoading}] = usePostMyAlbumMutation();
+export default function useTrackCreateForm() {
+  const [createTrack, {isLoading}] = usePostMyTrackMutation();
   const [tempImage, setTempImage] = useState<string>('');
+  const [tempAudio, setTempAudio] = useState<string>('');
   const router = useRouter();
 
 
@@ -41,8 +52,11 @@ export default function useAlbumCreateForm() {
 
     defaultValues: {
       title: '',
-      description: '',
       image: '',
+      album: null,
+      license: null,
+      genre: null,
+      file: '',
       release_date: format(new Date(), "yyyy-MM-dd"),
       is_private: false,
     },
@@ -58,20 +72,23 @@ export default function useAlbumCreateForm() {
       formData.append('image', data.image[0], data.image[0].name);
     }
     formData.append("title", data.title);
-    formData.append("description", data.description);
+    formData.append("file", data.file[0], data.file[0].name);
+    formData.append("album", data.album);
+    formData.append("license", data.license);
+    formData.append("genre", data.genre);
     formData.append("release_date", format(data.release_date, "yyyy-MM-dd"));
     formData.append("is_private", data.is_private.toString());
 
-    createAlbum(formData)
+    createTrack(formData)
       .unwrap()
       .then((data) => {
-        toast.success('Created Album')
-        router.replace(`/account/my/artist/albums/${data.slug}/edit`)
+        toast.success('Created Track')
+        router.replace(`/account/my/artist/tracks/${data.slug}/edit`)
       })
       .catch((err) => {
-        toast.error(err?.data?.title?.[0] || 'Failed to create Album')
+        toast.error(err?.data?.title?.[0] || 'Failed to create Track')
       });
   }
 
-  return {form, onSubmit, isLoading, tempImage, setTempImage}
+  return {form, onSubmit, isLoading, tempImage, setTempImage, tempAudio, setTempAudio}
 }
