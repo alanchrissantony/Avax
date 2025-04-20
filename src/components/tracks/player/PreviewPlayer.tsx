@@ -5,11 +5,16 @@ import MainControllers from "./MainControllers";
 import PlayerTrackInfo from "./PlayerTrackInfo";
 import {useAppSelector} from "@/lib/hooks";
 import FooterLogin from "@/components/general/FooterLogin";
+import {usePathname} from "next/navigation";
+import {accountUrl} from "@/utils/consts";
 
 export default function PreviewPlayer() {
   const {activeTrack} = useAppSelector(state => state.track);
-  const {isAuthenticated} = useAppSelector(state => state.auth)
+  const {isAuthenticated} = useAppSelector(state => state.auth);
+  const pathname = usePathname();
+  const isAccountPage = pathname.startsWith(accountUrl);
 
+  if (!activeTrack && isAccountPage) return null;
   if (!activeTrack && !isAuthenticated) return <FooterLogin/>;
 
   return (

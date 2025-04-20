@@ -1,5 +1,5 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {DetailTrack, ListDetailTracks, Tracks, UpdateTrack} from "@/types/types";
+import {DetailTrack, ListDetailTracks, Tracks} from "@/types/types";
 
 
 const trackApiSlice = apiSlice.injectEndpoints({
@@ -27,7 +27,7 @@ const trackApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Track']
     }),
     retrieveMyTrack: builder.query<DetailTrack, any>({
-      query: ({slug}) => `/albums/my/${slug}/`,
+      query: ({slug}) => `/tracks/my/${slug}/`,
       providesTags: ['Track']
     }),
     postMyTrack: builder.mutation<DetailTrack, any>({
@@ -38,10 +38,10 @@ const trackApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Track'],
     }),
-    updateMyTrack: builder.mutation<UpdateTrack, { slug: string | undefined, data: any }>({
+    updateMyTrack: builder.mutation<DetailTrack, { slug: string | undefined, data: any }>({
       query: ({slug, data}) => ({
         url: `/tracks/my/${slug}/`,
-        method: 'PUT',
+        method: 'PATCH',
         body: data,
       }),
       invalidatesTags: ['Track'],

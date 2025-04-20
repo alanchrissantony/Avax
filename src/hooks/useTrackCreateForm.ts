@@ -8,7 +8,7 @@ import {useRouter} from "next/navigation";
 import {usePostMyTrackMutation} from "@/lib/features/tracks/trackApiSlice";
 
 
-export const albumFormSchema = z.object({
+export const trackFormSchema = z.object({
   title: z
     .string()
     .min(2, {
@@ -38,7 +38,7 @@ export const albumFormSchema = z.object({
   is_private: z.boolean(),
 })
 
-export type AlbumFormValues = z.infer<typeof albumFormSchema>
+export type TrackFormValues = z.infer<typeof trackFormSchema>
 
 export default function useTrackCreateForm() {
   const [createTrack, {isLoading}] = usePostMyTrackMutation();
@@ -47,8 +47,8 @@ export default function useTrackCreateForm() {
   const router = useRouter();
 
 
-  const form = useForm<AlbumFormValues>({
-    resolver: zodResolver(albumFormSchema),
+  const form = useForm<TrackFormValues>({
+    resolver: zodResolver(trackFormSchema),
 
     defaultValues: {
       title: '',
@@ -64,7 +64,7 @@ export default function useTrackCreateForm() {
   })
 
 
-  function onSubmit(data: AlbumFormValues) {
+  function onSubmit(data: TrackFormValues) {
     console.log('Data: ', data)
 
     const formData = new FormData();

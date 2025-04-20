@@ -15,7 +15,6 @@ export default function useAlbumEditForm(album: DetailAlbum | undefined) {
 
   const form = useForm<AlbumFormValues>({
     resolver: zodResolver(albumFormSchema),
-
     defaultValues: album,
     mode: "onChange",
   })

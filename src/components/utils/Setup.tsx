@@ -13,5 +13,7 @@ export default function Setup() {
   return <ToastContainer
     position="bottom-right"
     theme={theme}
+    autoClose={2500}
+    limit={1}
   />;
 }

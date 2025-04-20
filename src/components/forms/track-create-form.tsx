@@ -82,9 +82,9 @@ export function TrackCreateForm({albums, license, genres}: Props) {
           name="title"
           render={({field}) => (
             <FormItem>
-              <FormLabel>Album title</FormLabel>
+              <FormLabel>Track title</FormLabel>
               <FormControl>
-                <Input placeholder="My album..." {...field}/>
+                <Input placeholder="My track..." {...field}/>
               </FormControl>
               <FormMessage/>
             </FormItem>

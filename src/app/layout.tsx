@@ -47,7 +47,6 @@ export default function RootLayout({
           {isAccountAuthPage ? (
             <main>
               {children}
-              <PreviewPlayer/>
             </main>
           ) : (
             <main>
