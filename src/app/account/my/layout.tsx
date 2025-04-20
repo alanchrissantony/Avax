@@ -8,8 +8,13 @@ import {Skeleton} from "@/components/ui/skeleton";
 import Header from "@/components/general/Header";
 import ContentSection from "@/components/general/content-section";
 import {
-  accountMyAnalyticsUrl, accountMyArtistAlbumsUrl, accountMyArtistTracksUrl, accountMyHelpUrl,
-  accountMyPaymentUrl, accountMyPlaylistsUrl,
+  accountMyAnalyticsUrl,
+  accountMyArtistAlbumsUrl,
+  accountMyArtistLicenseUrl,
+  accountMyArtistTracksUrl,
+  accountMyHelpUrl,
+  accountMyPaymentUrl,
+  accountMyPlaylistsUrl,
   accountMyProfileArtistUrl,
   accountMySettingsUrl,
   accountMySubscriptionUrl,
@@ -71,6 +76,10 @@ export default function SettingsLayout({children}: SettingsLayoutProps) {
       {
         title: "Artist albums",
         href: accountMyArtistAlbumsUrl,
+      },
+      {
+        title: "Artist license",
+        href: accountMyArtistLicenseUrl,
       },
       {
         title: "Playlists",

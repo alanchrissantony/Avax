@@ -42,9 +42,9 @@ const artistApiSlice = apiSlice.injectEndpoints({
       query: ({id}) => `/artists/me/license/${id}`,
       providesTags: ['Artist']
     }),
-    updateMeArtistLicense: builder.mutation<License, { body: UpdateLicense }>({
-      query: ({body}) => ({
-        url: `/artists/me/license/`,
+    updateMeArtistLicense: builder.mutation<License, { id: number | undefined, body: UpdateLicense }>({
+      query: ({id, body}) => ({
+        url: `/artists/me/license/${id}/`,
         method: 'PUT',
         body: body,
       }),
@@ -68,5 +68,6 @@ export const {
   useListMeArtistLicenseQuery,
   usePostMeArtistLicenseMutation,
   useRetrieveMeArtistLicenseQuery,
+  useUpdateMeArtistLicenseMutation,
   useDeleteMeArtistLicenseMutation,
 } = artistApiSlice

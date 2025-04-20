@@ -9,6 +9,7 @@ export const accountMySettingsUrl = '/account/my/settings';
 export const accountMyProfileArtistUrl = '/account/my/artist';
 export const accountMyArtistTracksUrl = '/account/my/artist/tracks';
 export const accountMyArtistAlbumsUrl = '/account/my/artist/albums';
+export const accountMyArtistLicenseUrl = '/account/my/artist/license';
 export const accountMyPlaylistsUrl = '/account/my/playlists';
 export const accountMySubscriptionUrl = "/account/my/subscription";
 export const accountMyPaymentUrl = "/account/my/payment";
