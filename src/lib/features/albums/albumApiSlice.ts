@@ -1,5 +1,5 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {AlbumsLiked, DetailAlbum, ListDetailAlbums} from "@/types/types";
+import {AlbumsLiked, DetailAlbum, ListDetailAlbums, UpdateAlbum} from "@/types/types";
 
 
 const albumApiSlice = apiSlice.injectEndpoints({
@@ -38,8 +38,8 @@ const albumApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Album'],
     }),
-    updateMyAlbum: builder.mutation<DetailAlbum, any | void>({
-      query: ({slug, ...data}) => ({
+    updateMyAlbum: builder.mutation<UpdateAlbum, any | void>({
+      query: ({slug, data}) => ({
         url: `/albums/my/${slug}/`,
         method: 'PUT',
         body: data,

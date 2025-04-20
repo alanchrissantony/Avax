@@ -8,9 +8,19 @@ import {
   BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import {useRouter} from "next/navigation";
-import {AlbumCreateForm} from "@/components/forms/album-create-form";
+import {AlbumEditForm} from "@/components/forms/album-edit-form";
+import {useRetrieveMyAlbumQuery} from "@/lib/features/albums/albumApiSlice";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
-export default function Page() {
+export default function Page({params}: { params: { slug: string } }) {
+  const {
+    data: myAlbum,
+    isLoading: myAlbumLoading,
+    isFetching: myAlbumFetching,
+  } = useRetrieveMyAlbumQuery({slug: params.slug})
+
+  const isLoading = (myAlbumLoading || myAlbumFetching)
+
   const router = useRouter();
 
   return (
@@ -24,17 +34,19 @@ export default function Page() {
           </BreadcrumbItem>
           <BreadcrumbSeparator/>
           <BreadcrumbItem>
-            <BreadcrumbPage>Create Album</BreadcrumbPage>
+            <BreadcrumbPage>Edit Album</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <div className="space-y-6">
         <Separator className="mt-5 mb-3"/>
         <div>
-          <h3 className="text-lg font-medium">Create Album</h3>
+          <h3 className="text-lg font-medium">Edit Album</h3>
         </div>
         <Separator/>
-        <AlbumCreateForm/>
+        {isLoading ? <FullScreenSpinner/> : (
+          <AlbumEditForm album={myAlbum}/>
+        )}
       </div>
     </>
   )

@@ -92,6 +92,14 @@ export interface DetailAlbum extends Album {
   duration: string;
 }
 
+export interface UpdateAlbum {
+  title: string;
+  image: string;
+  description: string;
+  is_private: boolean;
+  release_date: string;
+}
+
 export interface Albums extends ListBaseApi {
   results: Album[];
 }

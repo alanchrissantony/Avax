@@ -14,23 +14,28 @@ import Loader from "@/components/general/Loader";
 import {Textarea} from "@/components/ui/textarea";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import useAlbumCreateForm from "@/hooks/useAlbumCreateForm";
 import getImageData from "@/utils/getImage";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {cn} from "@/lib/utils";
 import {format} from "date-fns";
 import {CalendarIcon, ImageOff} from "lucide-react";
 import {Calendar} from "@/components/ui/calendar";
+import useAlbumEditForm from "@/hooks/useAlbumEditForm";
+import {DetailAlbum} from "@/types/types";
+
+interface Props {
+  album: DetailAlbum | undefined;
+}
 
 
-export function AlbumCreateForm() {
+export function AlbumEditForm({album}: Props) {
   const {
     form,
     onSubmit,
     isLoading,
     tempImage,
     setTempImage,
-  } = useAlbumCreateForm()
+  } = useAlbumEditForm(album)
 
   return (
     <Form {...form}>
@@ -163,7 +168,7 @@ export function AlbumCreateForm() {
         <Button type="submit" className='w-full' disabled={isLoading}>
           {isLoading
             ? <Loader/>
-            : 'Create album'
+            : 'Update album'
           }
         </Button>
       </form>
