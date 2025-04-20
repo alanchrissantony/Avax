@@ -29,7 +29,7 @@ const artistApiSlice = apiSlice.injectEndpoints({
     updateMeArtist: builder.mutation<Artist, any>({
       query: (body) => ({
         url: `/artists/me/`,
-        method: 'PUT',
+        method: 'PATCH',
         body: body,
       }),
       invalidatesTags: ['Artist'],

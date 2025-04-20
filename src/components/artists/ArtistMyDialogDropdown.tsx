@@ -9,8 +9,7 @@ import {Button} from "@/components/ui/button";
 import {Camera, Copy, Ellipsis, ImageOff, Pencil} from "lucide-react";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Input} from "@/components/ui/input";
-import {User} from "@/types/types";
-import {useUpdateUserProfileMutation} from "@/lib/features/auth/authApiSlice";
+import {Artist} from "@/types/types";
 import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
 import {z} from "zod";
@@ -19,8 +18,9 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import ErrorField from "@/components/forms/error-field";
 import React, {useState} from "react";
 import Loader from "@/components/general/Loader";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {useUpdateMeArtistMutation} from "@/lib/features/artists/artistApiSlice";
 import getImageData from "@/utils/getImage";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
 
 const profileFormSchema = z.object({
@@ -37,7 +37,7 @@ const profileFormSchema = z.object({
 
 type ProfileFormValue = z.infer<typeof profileFormSchema>
 
-export default function UserMyDialogDropdown({user}: { user: User | undefined }) {
+export default function ArtistMyDialogDropdown({artist}: { artist: Artist | undefined }) {
   const {
     register,
     handleSubmit,
@@ -46,14 +46,14 @@ export default function UserMyDialogDropdown({user}: { user: User | undefined })
   } = useForm<ProfileFormValue>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      display_name: user?.display_name,
-      image: user?.image,
+      display_name: artist?.display_name,
+      image: artist?.image,
     },
     mode: "onChange",
   });
 
-  const [updateProfile, {isLoading}] = useUpdateUserProfileMutation()
-  const [tempImage, setTempImage] = useState<string | undefined>(user?.image);
+  const [updateProfile, {isLoading}] = useUpdateMeArtistMutation()
+  const [tempImage, setTempImage] = useState<string | undefined>(artist?.image);
   const router = useRouter();
 
 
@@ -68,7 +68,7 @@ export default function UserMyDialogDropdown({user}: { user: User | undefined })
     updateProfile(formData)
       .unwrap()
       .then(() => {
-        toast.success("Updated Profile")
+        toast.success("Updated Artist Profile")
         router.refresh();
       })
       .catch(() => {
@@ -91,7 +91,7 @@ export default function UserMyDialogDropdown({user}: { user: User | undefined })
               <DialogTrigger asChild>
                 <button className="flex items-center w-full h-full text-start text-white/90">
                   <Pencil className="h-3.5 w-3.5 mr-2"/>
-                  Edit Profile
+                  Edit Artist Profile
                 </button>
               </DialogTrigger>
             </DropdownMenuItem>
@@ -104,12 +104,12 @@ export default function UserMyDialogDropdown({user}: { user: User | undefined })
       </DropdownMenu>
       <DialogContent className="sm:max-w-[520px] bg-[#242424] border-none shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold mb-1">Profile details</DialogTitle>
+          <DialogTitle className="text-2xl font-semibold mb-1">Artist Profile details</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex items-center">
             <div className="relative group">
-              {tempImage && user?.image && (
+              {tempImage && artist?.image && (
                 <Avatar className="w-44 h-44 static">
                   <AvatarImage src={tempImage} className="aspect-square object-cover"/>
                   <AvatarFallback><ImageOff className="w-16 h-16 text-[#909090]"/></AvatarFallback>
@@ -138,7 +138,7 @@ export default function UserMyDialogDropdown({user}: { user: User | undefined })
               <div className="grid gap-4 py-2 pl-4 pb-2">
                 <div className="grid grid-cols-3 items-center gap-4">
                   <Input
-                    defaultValue={user?.display_name}
+                    defaultValue={artist?.display_name}
                     className={`col-span-3 bg-[#353535] border-none shadow-md ${errors.display_name ? "border-red-800 border-2" : ""}`}
                     {...register('display_name')}
                   />

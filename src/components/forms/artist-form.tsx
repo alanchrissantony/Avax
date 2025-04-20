@@ -10,12 +10,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {Input} from "@/components/ui/input"
-import Loader from "@/components/general/Loader";
 import {Artist} from "@/types/types";
-import {ImageOff} from "lucide-react";
+import {Camera, ImageOff} from "lucide-react";
 import useArtistForm from "@/hooks/useArtistForm";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import getImageData from "@/utils/getImage";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 
 interface Props {
@@ -31,39 +31,35 @@ export function ArtistForm({artist}: Props) {
     setTempImage,
   } = useArtistForm(artist)
 
+  if (isLoadingUpdate) return <FullScreenSpinner/>
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <Avatar className="w-36 h-36 static ml-10">
-          <AvatarImage src={tempImage} className="aspect-square object-cover"/>
-          <AvatarFallback><ImageOff className="w-16 h-16 text-[#909090]"/></AvatarFallback>
-        </Avatar>
-
-        <FormField
-          control={form.control}
-          name="image"
-          render={({field}) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  {...field}
-                  type='file'
-                  accept='image/*'
-                  value={field.value?.image}
-                  className='w-56 rounded-xl'
-                  onChange={(e) => {
-                    const {files, displayUrl} = getImageData(e)
-
-                    setTempImage(displayUrl)
-
-                    field.onChange(files);
-                  }}
-                />
-              </FormControl>
-              <FormMessage/>
-            </FormItem>
-          )}
-        />
+        <div className="relative group w-56 h-56 ml-4">
+          <Avatar className="w-full h-full">
+            <AvatarImage src={tempImage} className="aspect-square object-cover"/>
+            <AvatarFallback><ImageOff className="w-16 h-16 text-[#909090]"/></AvatarFallback>
+          </Avatar>
+          <Input
+            {...form.register("image")}
+            type='file'
+            accept='image/*'
+            className='hidden'
+            id='upload-image'
+            onChange={(e) => {
+              const {files, displayUrl} = getImageData(e);
+              setTempImage(displayUrl);
+              form.setValue("image", files);
+            }}
+          />
+          <label
+            htmlFor="upload-image"
+            className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+          >
+            <Camera className="h-10 w-10 text-gray-200"/>
+          </label>
+        </div>
 
         <FormField
           control={form.control}
@@ -110,10 +106,7 @@ export function ArtistForm({artist}: Props) {
           className='w-full text-gray-100 bg-green-600'
           disabled={isLoadingUpdate}
         >
-          {isLoadingUpdate
-            ? <Loader/>
-            : 'Update artist profile'
-          }
+          Update artist profile
         </Button>
       </form>
     </Form>

@@ -17,7 +17,7 @@ import {
   accountMyProfileArtistUrl,
   accountMySettingsUrl,
   accountMySubscriptionUrl,
-  accountMyUrl
+  accountMyUrl, profileMyUrl
 } from "@/utils/consts";
 import {useAppSelector} from "@/lib/hooks";
 import {Button} from "@/components/ui/button";
@@ -38,6 +38,10 @@ export default function SettingsLayout({children}: SettingsLayoutProps) {
       {
         title: "Account",
         href: accountMyUrl,
+      },
+      {
+        title: "Profile",
+        href: profileMyUrl,
       },
       {
         title: "Manage your subscription",

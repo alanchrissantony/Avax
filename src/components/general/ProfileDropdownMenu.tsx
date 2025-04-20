@@ -11,8 +11,14 @@ import {useRouter} from "next/navigation";
 import {logout as setLogout} from "@/lib/features/auth/authSlice";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {accountMyProfileArtistUrl, accountMySettingsUrl, accountMyUrl, profileMyUrl} from "@/utils/consts";
+import {
+  accountMySettingsUrl,
+  accountMyUrl,
+  artistProfileMyUrl,
+  profileMyUrl
+} from "@/utils/consts";
 import {useAppSelector} from "@/lib/hooks";
+import {SquareArrowOutUpRight} from "lucide-react";
 
 
 export default function ProfileDropdownMenu() {
@@ -45,7 +51,10 @@ export default function ProfileDropdownMenu() {
     MenuItems = (
       <>
         <DropdownMenuItem onClick={() => router.push(accountMyUrl)}>
-          <span>Account</span>
+          <span className="flex items-center justify-between w-full">
+            Account
+            <SquareArrowOutUpRight className="h-4 w-4"/>
+          </span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(profileMyUrl)}>
           <span>Profile</span>
@@ -62,9 +71,12 @@ export default function ProfileDropdownMenu() {
     MenuItems = (
       <>
         <DropdownMenuItem onClick={() => router.push(accountMyUrl)}>
-          <span>Account</span>
+          <span className="flex items-center justify-between w-full">
+            Account
+            <SquareArrowOutUpRight className="h-4 w-4"/>
+          </span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push(accountMyProfileArtistUrl)}>
+        <DropdownMenuItem onClick={() => router.push(artistProfileMyUrl)}>
           <span>Artist profile</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push('/premium')}>

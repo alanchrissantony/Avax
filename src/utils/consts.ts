@@ -5,6 +5,7 @@ export const loginUrl = '/account/auth/login';
 export const passwordResetUrl = '/account/auth/password-reset';
 export const accountMyUrl = '/account/my';
 export const profileMyUrl = '/users/my';
+export const artistProfileMyUrl = '/artists/my';
 export const accountMySettingsUrl = '/account/my/settings';
 export const accountMyProfileArtistUrl = '/account/my/artist';
 export const accountMyArtistTracksUrl = '/account/my/artist/tracks';

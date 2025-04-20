@@ -3,7 +3,7 @@
 import {Separator} from "@/components/ui/separator"
 import {useRetrieveMeArtistQuery} from "@/lib/features/artists/artistApiSlice";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
-import {ArtistForm} from "@/components/forms/actist-form";
+import {ArtistForm} from "@/components/forms/artist-form";
 
 export default function Page() {
   const {data: artist, isLoading, isFetching} = useRetrieveMeArtistQuery()

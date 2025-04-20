@@ -208,6 +208,19 @@ export interface DetailPlaylist extends Playlist {
   duration: string;
 }
 
+export interface UpdatePlaylist {
+  title: string;
+  image: string;
+  description: string;
+  release_date: string;
+  genre: number;
+  is_private: boolean;
+}
+
+export interface ListDetailPlaylist extends ListBaseApi{
+  results: DetailPlaylist[];
+}
+
 export interface Playlists extends ListBaseApi {
   results: Playlist[];
 }

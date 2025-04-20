@@ -1,5 +1,10 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {PlaylistsLiked} from "@/types/types";
+import {
+  DetailPlaylist,
+  ListDetailPlaylist,
+  PlaylistsLiked,
+  UpdatePlaylist
+} from "@/types/types";
 
 
 const playlistApiSlice = apiSlice.injectEndpoints({
@@ -22,6 +27,37 @@ const playlistApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Playlist'],
     }),
+    listMyPlaylist: builder.query<ListDetailPlaylist, any | void>({
+      query: ({page = 1, search = ''}) => `/playlists/my/?page=${page}&search=${search}`,
+      providesTags: ['Playlist']
+    }),
+    retrieveMyPlaylist: builder.query<DetailPlaylist, any | void>({
+      query: ({slug}) => `/playlists/my/${slug}/`,
+      providesTags: ['Playlist']
+    }),
+    postMyPlaylist: builder.mutation<DetailPlaylist, any>({
+      query: (data) => ({
+        url: `/playlists/my/`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Playlist'],
+    }),
+    updateMyPlaylist: builder.mutation<UpdatePlaylist, { slug: string | undefined, data: any }>({
+      query: ({slug, data}) => ({
+        url: `/playlists/my/${slug}/`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Playlist'],
+    }),
+    deleteMyPlaylist: builder.mutation({
+      query: ({slug}) => ({
+        url: `/playlists/my/${slug}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Playlist'],
+    }),
   }),
 });
 
@@ -29,4 +65,9 @@ export const {
   useListUserPlaylistLikedQuery,
   usePlaylistAddFavoriteMutation,
   usePlaylistRemoveFavoriteMutation,
+  useListMyPlaylistQuery,
+  usePostMyPlaylistMutation,
+  useRetrieveMyPlaylistQuery,
+  useUpdateMyPlaylistMutation,
+  useDeleteMyPlaylistMutation,
 } = playlistApiSlice

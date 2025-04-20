@@ -17,7 +17,6 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
 
-
   return (
     <header
       className="sticky top-0 z-50 flex items-center h-24 sm:h-auto justify-between w-full p-2 pr-5 pl-5 bg-[#0f0f0f] bg-opacity-90 backdrop-blur-md">
