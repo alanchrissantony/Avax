@@ -21,7 +21,7 @@ export default function ImageForm({user}: { user?: User | undefined }) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} encType='multipart/form-data' className="space-y-8">
         <Avatar className="w-36 h-36 static ml-10">
-          <AvatarImage src={tempImage}/>
+          <AvatarImage src={tempImage} className="aspect-square object-cover"/>
           <AvatarFallback>{user?.display_name}</AvatarFallback>
         </Avatar>
 
@@ -36,7 +36,7 @@ export default function ImageForm({user}: { user?: User | undefined }) {
                   type='file'
                   accept='image/*'
                   value={field.value?.image}
-                  className='w-56'
+                  className='w-56 rounded-xl'
                   onChange={(e) => {
                     const {files, displayUrl} = getImageData(e)
 

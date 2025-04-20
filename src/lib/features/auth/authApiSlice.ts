@@ -1,6 +1,6 @@
 import {apiSlice} from "@/lib/services/apiSlice";
 import {finishInitialLoadUser, setUser} from "@/lib/features/auth/authSlice";
-import {ShortUser, ShortUsers, User} from "@/types/types";
+import {ShortUser, ShortUsers, User, UserProfile} from "@/types/types";
 
 interface SocialAuthArgs {
   provider: string;
@@ -38,12 +38,12 @@ const authApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['User'],
     }),
-    retrieveUserProfile: builder.query<User, any | void>({
+    retrieveUserProfile: builder.query<UserProfile, any | void>({
       query: ({}) => '/users/profiles/my/',
       keepUnusedDataFor: 5,
       providesTags: ['User']
     }),
-    updateUserProfile: builder.mutation<User, object>({
+    updateUserProfile: builder.mutation<UserProfile, object>({
       query: (data) => ({
         url: '/users/profiles/my/',
         method: 'PUT',

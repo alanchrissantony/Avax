@@ -42,7 +42,7 @@ export function AlbumEditForm({album}: Props) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
         <Avatar className="w-36 h-36 static ml-10">
-          <AvatarImage src={tempImage}/>
+          <AvatarImage src={tempImage} className="aspect-square object-cover"/>
           <AvatarFallback><ImageOff className="w-16 h-16 text-[#909090]"/></AvatarFallback>
         </Avatar>
 
@@ -57,7 +57,7 @@ export function AlbumEditForm({album}: Props) {
                   type='file'
                   accept='image/*'
                   value={field.value?.image}
-                  className='w-56 aspect-square object-cover'
+                  className='w-56 rounded-xl'
                   onChange={(e) => {
                     const {files, displayUrl} = getImageData(e)
 

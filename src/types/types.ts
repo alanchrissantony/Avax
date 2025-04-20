@@ -36,6 +36,16 @@ export interface User extends BaseApi {
   playlists_count: number;
 }
 
+export interface UserProfile extends BaseApi {
+  display_name: string;
+  type_profile: string,
+  email: string;
+  gender: string;
+  country: string;
+  image: string;
+  is_premium: boolean;
+}
+
 export interface ShortUser extends BaseApi {
   display_name: string;
   type_profile: string;

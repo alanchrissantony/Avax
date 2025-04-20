@@ -15,17 +15,19 @@ import {Label} from "@/components/ui/label";
 import {Separator} from "@/components/ui/separator";
 import Loader from "@/components/general/Loader";
 import useAccountForm from "@/hooks/useAccountForm";
-import {User} from "@/types/types";
+import {UserProfile} from "@/types/types";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {countries} from "@/utils/constForm";
-import {Check} from "lucide-react";
+import {Check, ImageOff} from "lucide-react";
 import {CaretSortIcon} from "@radix-ui/react-icons";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import getImageData from "@/utils/getImage";
 
 
 interface UserFormProps {
-  user?: User;
+  user: UserProfile | undefined;
 }
 
 export function AccountForm({user}: UserFormProps) {
@@ -37,12 +39,45 @@ export function AccountForm({user}: UserFormProps) {
     setPassword,
     onSubmit,
     handleDelete,
+    tempImage,
+    setTempImage,
   } = useAccountForm(user)
 
   return (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <Avatar className="w-36 h-36 static ml-10">
+            <AvatarImage src={tempImage} className="aspect-square object-cover"/>
+            <AvatarFallback><ImageOff className="w-16 h-16 text-[#909090]"/></AvatarFallback>
+          </Avatar>
+
+          <FormField
+            control={form.control}
+            name="image"
+            render={({field}) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type='file'
+                    accept='image/*'
+                    value={field.value?.image}
+                    className='w-56 rounded-xl'
+                    onChange={(e) => {
+                      const {files, displayUrl} = getImageData(e)
+
+                      setTempImage(displayUrl)
+
+                      field.onChange(files);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage/>
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="email"

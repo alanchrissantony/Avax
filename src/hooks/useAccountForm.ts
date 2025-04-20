@@ -11,7 +11,7 @@ import {toast} from "react-toastify";
 import {logout as setLogout} from "@/lib/features/auth/authSlice";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {User} from "@/types/types";
+import {UserProfile} from "@/types/types";
 
 
 export const accountFormSchema = z.object({
@@ -32,16 +32,18 @@ export const accountFormSchema = z.object({
   country: z.string({
     required_error: "Please select a country.",
   }),
+  image: z.any(),
 })
 
 export type AccountFormValues = z.infer<typeof accountFormSchema>
 
 
-export default function useAccountForm(user: User | undefined) {
+export default function useAccountForm(user: UserProfile | undefined) {
   const [updateUser, {isLoading: isLoadingUpdate}] = useUpdateUserProfileMutation();
   const [deleteUser, {isLoading: isLoadingDelete}] = useDeleteUserMeMutation();
   const [logout,] = useLogoutMutation();
   const [password, setPassword] = useState('')
+  const [tempImage, setTempImage] = useState<string | undefined>(user?.image);
 
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -53,9 +55,17 @@ export default function useAccountForm(user: User | undefined) {
   })
 
   function onSubmit(data: AccountFormValues) {
-    console.log(data);
 
-    updateUser(data)
+    const formData = new FormData();
+    if (data.image && data.image[0] && typeof data.image[0] !== "string") {
+      formData.append('image', data.image[0], data.image[0].name);
+    }
+    formData.append("display_name", data.display_name);
+    formData.append("email", data.email);
+    formData.append("gender", data.gender);
+    formData.append("country", data.country);
+
+    updateUser(formData)
       .unwrap()
       .then(() => {
         toast.success('Updated Account')
@@ -85,5 +95,15 @@ export default function useAccountForm(user: User | undefined) {
       })
   }
 
-  return {onSubmit, handleDelete, isLoadingDelete, isLoadingUpdate, password, setPassword, form}
+  return {
+    onSubmit,
+    handleDelete,
+    isLoadingDelete,
+    isLoadingUpdate,
+    password,
+    setPassword,
+    form,
+    tempImage,
+    setTempImage
+  }
 }
