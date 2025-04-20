@@ -74,6 +74,13 @@ export interface Artists extends ListBaseApi {
   results: Artist[];
 }
 
+export interface UpdateArtist {
+  first_name: string;
+  last_name: string;
+  display_name: string;
+  image?: string;
+}
+
 export interface License extends BaseApi {
   artist: ShortArtist;
   name: string;

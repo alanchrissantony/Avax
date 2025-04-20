@@ -1,7 +1,14 @@
+"use client";
+
 import {Separator} from "@/components/ui/separator"
-import WorkInProgress from "@/components/ui/work-in-progress";
+import {useRetrieveMeArtistQuery} from "@/lib/features/artists/artistApiSlice";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import {ArtistForm} from "@/components/forms/actist-form";
 
 export default function Page() {
+  const {data: artist, isLoading, isFetching} = useRetrieveMeArtistQuery()
+
+
   return (
     <div className="space-y-6">
       <div>
@@ -11,7 +18,9 @@ export default function Page() {
         </p>
       </div>
       <Separator/>
-      <WorkInProgress/>
+      {isLoading || isFetching ? <FullScreenSpinner/> :
+        <ArtistForm artist={artist}/>
+      }
     </div>
   )
 }

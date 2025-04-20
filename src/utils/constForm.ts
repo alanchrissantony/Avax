@@ -249,22 +249,3 @@ export const countries = [
   {label: "Zambia", value: "ZM"},
   {label: "Zimbabwe", value: "ZW"}
 ] as const;
-
-export const employOptions = [
-  {
-    id: "remote",
-    label: "Remote work",
-  },
-  {
-    id: "office",
-    label: "Office",
-  },
-  {
-    id: "part_time",
-    label: "Part-time",
-  },
-  {
-    id: "freelance",
-    label: "Freelance (one-off projects)",
-  },
-] as const

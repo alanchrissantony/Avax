@@ -26,6 +26,21 @@ const artistApiSlice = apiSlice.injectEndpoints({
       query: () => `/artists/me/`,
       providesTags: ['Artist']
     }),
+    updateMeArtist: builder.mutation<Artist, any>({
+      query: (body) => ({
+        url: `/artists/me/`,
+        method: 'PUT',
+        body: body,
+      }),
+      invalidatesTags: ['Artist'],
+    }),
+    deleteMeArtist: builder.mutation<Artist, any>({
+      query: () => ({
+        url: `/artists/me/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Artist'],
+    }),
     listMeArtistLicense: builder.query<License[], any>({
       query: ({}) => `/artists/me/license/`,
       providesTags: ['Artist']
@@ -65,6 +80,8 @@ export const {
   useArtistAddFavoriteMutation,
   useArtistRemoveFavoriteMutation,
   useRetrieveMeArtistQuery,
+  useUpdateMeArtistMutation,
+  useDeleteMeArtistMutation,
   useListMeArtistLicenseQuery,
   usePostMeArtistLicenseMutation,
   useRetrieveMeArtistLicenseQuery,
