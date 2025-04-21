@@ -17,9 +17,13 @@ import {useListUserAlbumLikedQuery} from "@/lib/features/albums/albumApiSlice";
 import {useListUserArtistLikedQuery} from "@/lib/features/artists/artistApiSlice";
 import {useRetrieveUserMeQuery} from "@/lib/features/auth/authApiSlice";
 import {Skeleton} from "@/components/ui/skeleton";
+import usePlaylistCreateForm from "@/hooks/usePlaylistCreateForm";
+import Loader from "@/components/general/Loader";
 
 
 export default function UserLibrary() {
+  const {onSubmit, isLoading: isLoadingCreate} = usePlaylistCreateForm()
+
   const {isAuthenticated} = useAppSelector(state => state.auth)
 
   const {isLoading, isFetching} = useRetrieveUserMeQuery({}, {skip: !isAuthenticated})
@@ -103,6 +107,7 @@ export default function UserLibrary() {
     )
   }
 
+
   if (loader) return loader;
 
 
@@ -126,15 +131,20 @@ export default function UserLibrary() {
           </Tooltip>
 
           <Tooltip>
-            <TooltipTrigger>
-              <Link
-                href={"/"}
-                className="gap-3 px-2 w-full text-gray-300 hover:text-white">
-                <Plus size={22}/>
-              </Link>
+            <TooltipTrigger className="py-3">
+              <Button
+                asChild
+                size="icon"
+                variant="ghost"
+                className="h-8 w-8 px-1 text-gray-300 hover:text-white"
+                onClick={() => onSubmit({title: '', description: '', is_private: false})}
+                disabled={isLoadingCreate}
+              >
+                {isLoadingCreate ? <Loader className="w-[18px] h-[18px] m-1"/> : <Plus size={22}/>}
+              </Button>
             </TooltipTrigger>
             <TooltipContent className="bg-[#161616]">
-              <p>Collapse Your Library</p>
+              <p>Create playlist</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

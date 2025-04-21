@@ -24,8 +24,8 @@ export default function useSocialAuth(authenticate: any, provider: string) {
           toast.success('Logged in')
           router.push(profileMyUrl)
         })
-        .catch(() => {
-          toast.error('Error logging')
+        .catch((error: any) => {
+          toast.error(error?.data?.detail || 'Error logging')
           router.push(loginUrl)
         });
     }

@@ -49,8 +49,8 @@ export default function useRegisterForm() {
         toast.info("Please check email to verify account.")
         router.push(loginUrl)
       })
-      .catch(() => {
-        toast.error("Uh oh! Something went wrong.")
+      .catch((error) => {
+        toast.error(error?.data?.detail || "Uh oh! Something went wrong.")
       })
   }
 

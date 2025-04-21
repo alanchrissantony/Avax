@@ -32,7 +32,7 @@ const playlistApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Playlist']
     }),
     retrieveMyPlaylist: builder.query<DetailPlaylist, any | void>({
-      query: ({slug}) => `/playlists/my/${slug}/`,
+      query: (slug) => `/playlists/my/${slug}/`,
       providesTags: ['Playlist']
     }),
     postMyPlaylist: builder.mutation<DetailPlaylist, any>({

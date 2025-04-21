@@ -53,8 +53,8 @@ export default function useLoginForm() {
         router.push(profileMyUrl)
         toast.success("Login successfully")
       })
-      .catch(() => {
-        toast.error("Failed to log in.")
+      .catch((error) => {
+        toast.error(error?.data?.detail || "Failed to log in.")
       })
   }
 

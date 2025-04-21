@@ -116,7 +116,7 @@ export default function UserMyDialogDropdown({user}: { user: User | undefined })
                 </Avatar>
               )}
               <Input
-                {...register('display_name')}
+                {...register('image')}
                 type="file"
                 accept="image/*"
                 className="hidden"

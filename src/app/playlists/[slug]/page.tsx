@@ -16,6 +16,8 @@ import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
 import {useListUserPlaylistLikedQuery} from "@/lib/features/playlists/playlistApiSlice";
+import {useEffect} from "react";
+import {redirect} from "next/navigation";
 
 interface Props {
   params: {
@@ -24,7 +26,7 @@ interface Props {
 }
 
 export default function PlaylistPage({params}: Props) {
-  const {isAuthenticated} = useAppSelector(state => state.auth)
+  const {isAuthenticated, user: currUser} = useAppSelector(state => state.auth)
   const {
     data: playlist,
     isLoading,
@@ -48,6 +50,10 @@ export default function PlaylistPage({params}: Props) {
 
   const playlistBgColor = playlist?.color || "#202020";
 
+  useEffect(() => {
+    if (currUser?.id === playlist?.user?.id) redirect(`/playlists/my/${playlist?.slug}`);
+  }, [currUser?.id, playlist?.slug, playlist?.user?.id]);
+
   return (
     <MainSection bgColor={playlistBgColor}>
       <div className="h-52 md:h-60 bg-opacity-30 bg-black">
@@ -69,56 +75,58 @@ export default function PlaylistPage({params}: Props) {
                 </div>
               )}
 
-              <div className="flex flex-col gap-3">
-                <h5 className="text-xs font-bold uppercase">{playlist.genre.name}</h5>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">{playlist.title}</h2>
+                <div className="flex flex-col gap-3">
+                  {playlist?.genre && (
+                    <h5 className="text-xs font-bold uppercase">{playlist.genre.name}</h5>
+                  )}
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">{playlist.title}</h2>
 
-                {playlist.description && (
-                  <p className="hidden lg:block font-medium text-sm mt-3 whitespace-pre-line text-white/50">
-                    {playlist.description}
-                  </p>
-                )}
-
-                <div className="flex items-center text-sm font-medium">
-                  <Image
-                    src={playlist.user.image}
-                    alt={playlist.user.display_name}
-                    height={24}
-                    width={24}
-                    className="aspect-square object-cover rounded-full mr-1 h-6 w-6"
-                    priority
-                  />
-                  {playlist.user?.artist_slug ? (
-                    <Link href={`/artists/${playlist.user.artist_slug}`}
-                          className="font-semibold hover:underline">{playlist.user.display_name}</Link>
-                  ) : (
-                    <Link href={`/users/${playlist.user.id}`}
-                          className="font-semibold hover:underline">{playlist.user.display_name}</Link>
+                  {playlist.description && (
+                    <p className="hidden lg:block font-medium text-sm mt-3 whitespace-pre-line text-white/50">
+                      {playlist.description}
+                    </p>
                   )}
 
-                  {playlist.favorite_count > 0 && (
-                    <>
-                      <Dot/>
-                      <span>
+                  <div className="flex items-center text-sm font-medium">
+                    <Image
+                      src={playlist.user.image}
+                      alt={playlist.user.display_name}
+                      height={24}
+                      width={24}
+                      className="aspect-square object-cover rounded-full mr-1 h-6 w-6"
+                      priority
+                    />
+                    {playlist.user?.artist_slug ? (
+                      <Link href={`/artists/${playlist.user.artist_slug}`}
+                            className="font-semibold hover:underline">{playlist.user.display_name}</Link>
+                    ) : (
+                      <Link href={`/users/${playlist.user.id}`}
+                            className="font-semibold hover:underline">{playlist.user.display_name}</Link>
+                    )}
+
+                    {playlist.favorite_count > 0 && (
+                      <>
+                        <Dot/>
+                        <span>
                       {playlist.favorite_count.toLocaleString()}{" "}
-                        {playlist.favorite_count > 1 ? "saves" : "save"}
+                          {playlist.favorite_count > 1 ? "saves" : "save"}
                     </span>
-                    </>
-                  )}
-                  {playlist.tracks.length > 0 && (
-                    <>
-                      <Dot/>
-                      <span>{playlist.tracks.length.toLocaleString()} {playlist.tracks.length === 1 ? "song" : "songs"}</span>
-                    </>
-                  )}
-                  {playlist?.duration && (
-                    <>
-                      <Dot/>
-                      <span className="text-white/50">{formatDuration(playlist.duration)}</span>
-                    </>
-                  )}
+                      </>
+                    )}
+                    {playlist.tracks.length > 0 && (
+                      <>
+                        <Dot/>
+                        <span>{playlist.tracks.length.toLocaleString()} {playlist.tracks.length === 1 ? "song" : "songs"}</span>
+                      </>
+                    )}
+                    {playlist?.duration && (
+                      <>
+                        <Dot/>
+                        <span className="text-white/50">{formatDuration(playlist.duration)}</span>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
             </>
           )}
         </div>

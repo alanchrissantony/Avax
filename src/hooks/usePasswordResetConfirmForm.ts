@@ -58,8 +58,8 @@ export default function usePasswordResetConfirmForm(uid: string, token: string) 
         router.push(loginUrl)
         toast.success("Request send, check your email")
       })
-      .catch(() => {
-        toast.error("Failed to send request.")
+      .catch((error) => {
+        toast.error(error?.data?.detail || "Failed to send request.")
       })
   }
 

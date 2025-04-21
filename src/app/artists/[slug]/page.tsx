@@ -20,6 +20,9 @@ import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
 import {useListUserFollowersQuery} from "@/lib/features/auth/authApiSlice";
 import {useListUserArtistLikedQuery} from "@/lib/features/artists/artistApiSlice";
+import {useEffect} from "react";
+import {redirect} from "next/navigation";
+import {artistProfileMyUrl} from "@/utils/consts";
 
 interface Props {
   params: {
@@ -73,6 +76,10 @@ export default function ArtistPage({params}: Props) {
 
   const darkenBgColor = artist?.color || "#202020";
 
+  useEffect(() => {
+    if (currUser?.id === userId) redirect(artistProfileMyUrl);
+  }, [currUser?.id, userId]);
+
   return (
     <MainSection bgColor={darkenBgColor} bgGradient="30%">
       <div
@@ -93,7 +100,8 @@ export default function ArtistPage({params}: Props) {
                   <h1 className="text-white text-sm font-medium">Verified Artist</h1>
                 </div>
               )}
-              <h2 className="text-5xl sm:text-6xl xl:text-7xl font-bold drop-shadow-md text-white">{artist.display_name}</h2>
+              <h2
+                className="text-5xl sm:text-6xl xl:text-7xl font-bold drop-shadow-md text-white">{artist.display_name}</h2>
               <span className="text-base font-medium drop-shadow-md">
                 {artist.artist_listeners.toLocaleString()} listeners
               </span>

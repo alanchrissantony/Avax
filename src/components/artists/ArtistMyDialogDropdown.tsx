@@ -116,7 +116,7 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
                 </Avatar>
               )}
               <Input
-                {...register('display_name')}
+                {...register('image')}
                 type="file"
                 accept="image/*"
                 className="hidden"
