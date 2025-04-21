@@ -10,16 +10,16 @@ import {useTrackAddFavoriteMutation, useTrackRemoveFavoriteMutation} from "@/lib
 import {loginUrl} from "@/utils/consts";
 import {useRouter} from "next/navigation";
 import {useAppSelector} from "@/lib/hooks";
-import {useState} from "react";
 
 
 interface Props {
   favoriteType?: "track" | "album" | "playlist" | "artist";
   userIdFollow?: number;
   slugFav?: string;
+  trackSlug?: string | null;
 }
 
-export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav}: Props) {
+export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, trackSlug}: Props) {
   const {isAuthenticated} = useAppSelector(state => state.auth)
   const [userFollow, {isLoading: isLoadingFollow}] = useUserFollowMutation()
   const [userUnfollow, {isLoading: isLoadingUnfollow}] = useUserUnfollowMutation()
@@ -35,7 +35,6 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav}:
   const isLoadingAddFav = (isArtistAddFavorite || isAlbumAddFavorite || isPlaylistAddFavorite || isTrackAddFavorite)
   const isLoadingRemoveFav = (isArtistRemoveFavorite || isAlbumRemoveFavorite || isPlaylistRemoveFavorite || isTrackRemoveFavorite)
 
-  const [hoveredTrackSlug, setHoveredTrackSlug] = useState<string | null>(null);
   const router = useRouter()
 
 
@@ -78,7 +77,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav}:
     }
 
     if (favoriteType === "track") {
-      trackAddFav({trackSlug: slugFav || hoveredTrackSlug})
+      trackAddFav({trackSlug: slugFav || trackSlug})
         .unwrap()
         .then((data) => {
           toast.success(data?.msg || "Track liked successfully")
@@ -128,7 +127,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav}:
     }
 
     if (favoriteType === "track") {
-      trackRemoveFav({trackSlug: slugFav || hoveredTrackSlug})
+      trackRemoveFav({trackSlug: slugFav || trackSlug})
         .unwrap()
         .then((data) => {
           toast.success(data?.msg || "Track remove from favorite successfully")
@@ -173,6 +172,5 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav}:
     isLoadingUnfollow,
     isLoadingAddFav,
     isLoadingRemoveFav,
-    setHoveredTrackSlug,
   }
 }

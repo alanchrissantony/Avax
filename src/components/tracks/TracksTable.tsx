@@ -15,9 +15,15 @@ import {
 } from "@/lib/features/tracks/trackApiSlice";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import useFavoriteFollow from "@/hooks/use-favorite-follow";
+import {Button} from "@/components/ui/button";
+import * as React from "react";
+import {toast} from "react-toastify";
+import {usePlaylistAddTrackMutation, usePlaylistRemoveTrackMutation} from "@/lib/features/playlists/playlistApiSlice";
 
 interface Props {
   tracks: Track[] | undefined;
+  tracksPlaylist?: Track[] | undefined;
+  playlistSlug?: string | undefined;
   showHeader?: boolean;
   showCardHeader?: boolean;
   showArtistCardHeader?: boolean;
@@ -26,10 +32,12 @@ interface Props {
   showPlaysCount?: boolean;
   showSubtitle?: boolean;
   showIndex?: boolean;
+  showAddToPlaylist?: boolean;
 }
 
 export default function TracksTable({
                                       tracks,
+                                      tracksPlaylist,
                                       showSubtitle = false,
                                       showCover = false,
                                       showHeader = false,
@@ -38,10 +46,17 @@ export default function TracksTable({
                                       showAlbum = false,
                                       showPlaysCount = false,
                                       showIndex = true,
+                                      showAddToPlaylist = false,
+                                      playlistSlug,
                                     }: Props) {
   const {isAuthenticated} = useAppSelector(state => state.auth)
   const {activeTrack} = useAppSelector(state => state.track)
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+  const [hoveredTrackSlug, setHoveredTrackSlug] = useState<string | null>(null);
+
+
+  const [addTrackToPlaylist, {isLoading: isLoadingAddTP}] = usePlaylistAddTrackMutation()
+  const [removeTrackFromPlaylist, {isLoading: isLoadingRemoveTP}] = usePlaylistRemoveTrackMutation()
 
   const {
     data: tracksFav,
@@ -52,13 +67,39 @@ export default function TracksTable({
   const {
     handleAddFav,
     handleRemoveFav,
-    setHoveredTrackSlug,
     isLoadingAddFav,
     isLoadingRemoveFav,
-  } = useFavoriteFollow({favoriteType: "track"})
+  } = useFavoriteFollow({favoriteType: "track", trackSlug: hoveredTrackSlug})
 
 
   const load = isLoadingTrFav || isFetchingTrFav
+
+  function handleAddToPlaylist(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+
+    addTrackToPlaylist({playlistSlug: playlistSlug, trackSlug: hoveredTrackSlug})
+      .unwrap()
+      .then((data) => {
+        toast.success(data?.msg || "Track add to playlist successfully")
+      })
+      .catch((error) => {
+        toast.error(error?.data?.msg || "Failed to added track to playlist.")
+      })
+  }
+
+  function handleRemoveFromPlaylist(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+
+    removeTrackFromPlaylist({playlistSlug: playlistSlug, trackSlug: hoveredTrackSlug})
+      .unwrap()
+      .then((data) => {
+        toast.success(data?.msg || "Track remove from playlist successfully")
+      })
+      .catch((error) => {
+        toast.error(error?.data?.msg || "Failed to removed track from playlist.")
+      })
+  }
+
 
   if (load) return <FullScreenSpinner/>
 
@@ -264,46 +305,76 @@ export default function TracksTable({
 
             <small className="flex items-center justify-center col-span-1 text-sm font-medium text-white/60 ">
               <div className="flex items-center w-full gap-3">
-                <TooltipProvider>
-                  <Tooltip>
-                    {tracksFav?.results?.some((trackFav) => trackFav.slug === track?.slug) ? (
-                      <>
-                        <TooltipTrigger
-                          onClick={handleRemoveFav}
-                          disabled={isLoadingRemoveFav && (hoveredRow === index)}
-                        >
-                          {(isLoadingRemoveFav && (hoveredRow === index)) ?
-                            <Loader className="w-[15px] h-[15px]"/> : (
-                              <CircleCheck
-                                strokeWidth={3}
+                {!showAddToPlaylist && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      {tracksFav?.results?.some((trackFav) => trackFav.slug === track?.slug) ? (
+                        <>
+                          <TooltipTrigger
+                            onClick={handleRemoveFav}
+                            disabled={isLoadingRemoveFav && (hoveredRow === index)}
+                          >
+                            {(isLoadingRemoveFav && (hoveredRow === index)) ?
+                              <Loader className="w-[15px] h-[15px]"/> : (
+                                <CircleCheck
+                                  strokeWidth={3}
+                                  size={18}
+                                  className="transition ease-in-out transform text-green-500 hover:scale-105 duration-150 hover:text-green-300"
+                                />
+                              )}
+                          </TooltipTrigger>
+                          <TooltipContent className="text-white bg-[#202020]">
+                            <p>Remove from Liked Songs</p>
+                          </TooltipContent>
+                        </>
+                      ) : (
+                        <>
+                          <TooltipTrigger onClick={handleAddFav} disabled={isLoadingAddFav && (hoveredRow === index)}>
+                            {(isLoadingAddFav && (hoveredRow === index)) ? <Loader className="w-[15px] h-[15px]"/> : (
+                              <CirclePlus
                                 size={18}
-                                className="transition ease-in-out transform text-green-500 hover:scale-105 duration-150 hover:text-green-300"
+                                className="opacity-0 group-hover/item:opacity-100 transition ease-in-out transform text-white/60 hover:scale-105 duration-150 hover:text-gray-100"
                               />
                             )}
-                        </TooltipTrigger>
-                        <TooltipContent className="text-white bg-[#202020]">
-                          <p>Remove from Liked Songs</p>
-                        </TooltipContent>
-                      </>
-                    ) : (
-                      <>
-                        <TooltipTrigger onClick={handleAddFav} disabled={isLoadingAddFav && (hoveredRow === index)}>
-                          {(isLoadingAddFav && (hoveredRow === index)) ? <Loader className="w-[15px] h-[15px]"/> : (
-                            <CirclePlus
-                              size={18}
-                              className="opacity-0 group-hover/item:opacity-100 transition ease-in-out transform text-white/60 hover:scale-105 duration-150 hover:text-gray-100"
-                            />
-                          )}
-                        </TooltipTrigger>
-                        <TooltipContent className="text-white bg-[#202020]">
-                          <p>Add to Liked Songs</p>
-                        </TooltipContent>
-                      </>
-                    )}
-                  </Tooltip>
-                </TooltipProvider>
+                          </TooltipTrigger>
+                          <TooltipContent className="text-white bg-[#202020]">
+                            <p>Add to Liked Songs</p>
+                          </TooltipContent>
+                        </>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
               </div>
-              <span className="mr-3 lg:6 xl:mr-7">{formatTime(track.duration)}</span>
+              {showAddToPlaylist ? (
+                <div>
+                  {tracksPlaylist?.some((trackPlaylist) => trackPlaylist.slug === track?.slug) ? (
+                    <Button
+                      size='sm'
+                      variant='outline'
+                      className="bg-opacity-0 text-sm w-16 h-7 text-white border-white hover:scale-105 transition duration-150 font-semibold"
+                      onClick={handleRemoveFromPlaylist}
+                    >
+                      {(isLoadingRemoveTP && (hoveredRow === index)) ? <Loader/> : (
+                        "Remove"
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      size='sm'
+                      variant='outline'
+                      className="bg-opacity-0 text-sm w-14 h-7 text-white border-white hover:scale-105 transition duration-150 font-semibold"
+                      onClick={handleAddToPlaylist}
+                    >
+                      {(isLoadingAddTP && (hoveredRow === index)) ? <Loader/> : (
+                        "Add"
+                      )}
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <span className="mr-3 lg:6 xl:mr-7">{formatTime(track.duration)}</span>
+              )}
             </small>
           </div>
         ))}

@@ -70,7 +70,7 @@ export default function PlaylistPage({params}: Props) {
                   priority
                 />
               ) : (
-                <div className="">
+                <div>
                   <Music size={160} className=" bg-paper "/>
                 </div>
               )}

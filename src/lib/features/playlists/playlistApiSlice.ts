@@ -27,6 +27,20 @@ const playlistApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Playlist'],
     }),
+    playlistAddTrack: builder.mutation({
+      query: ({playlistSlug, trackSlug}) => ({
+        url: `/playlists/${playlistSlug}/add/tracks/${trackSlug}/`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Playlist'],
+    }),
+    playlistRemoveTrack: builder.mutation({
+      query: ({playlistSlug, trackSlug}) => ({
+        url: `/playlists/${playlistSlug}/add/tracks/${trackSlug}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Playlist'],
+    }),
     listMyPlaylist: builder.query<ListDetailPlaylist, any | void>({
       query: ({page = 1, search = ''}) => `/playlists/my/?page=${page}&search=${search}`,
       providesTags: ['Playlist']
@@ -65,6 +79,8 @@ export const {
   useListUserPlaylistLikedQuery,
   usePlaylistAddFavoriteMutation,
   usePlaylistRemoveFavoriteMutation,
+  usePlaylistAddTrackMutation,
+  usePlaylistRemoveTrackMutation,
   useListMyPlaylistQuery,
   usePostMyPlaylistMutation,
   useRetrieveMyPlaylistQuery,

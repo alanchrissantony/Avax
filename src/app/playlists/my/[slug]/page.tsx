@@ -1,6 +1,6 @@
 "use client";
 
-import {Dot, Music} from "lucide-react";
+import {Dot, Music, Search} from "lucide-react";
 import Image from "next/image";
 import TracksTable from "@/components/tracks/TracksTable";
 import {useAppSelector} from "@/lib/hooks";
@@ -12,6 +12,15 @@ import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
 import {useRetrieveMyPlaylistQuery} from "@/lib/features/playlists/playlistApiSlice";
 import PlaylistMyDialogDropdown from "@/components/playlists/PlaylistMyDialogDropdown";
+import {useRouter, useSearchParams} from "next/navigation";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import * as React from "react";
+import {FormSubmit} from "@/types/types";
+import {useState} from "react";
+import {useListTrackQuery} from "@/lib/features/other/publicApiSlice";
+import TitleShowAll from "@/components/ui/title-show-all";
+import {Separator} from "@/components/ui/separator";
 
 interface Props {
   params: {
@@ -20,17 +29,39 @@ interface Props {
 }
 
 export default function Page({params}: Props) {
+  const searchParams = useSearchParams()
+  const router = useRouter();
+  const search = searchParams.get('search') || ''
+  const [searchT, setSearchT] = useState('')
+
+
   const {
     data: playlist,
     isLoading,
     isFetching,
   } = useRetrieveMyPlaylistQuery(params.slug)
+  const {
+    data: searchTracks,
+    isLoading: isLoadingT,
+    isFetching: isFetchingT
+  } = useListTrackQuery({search}, {skip: !search});
+  const genreSlug = playlist?.genre?.slug || null
+  const {
+    data: recommendations,
+    isLoading: isLoadingRec,
+    isFetching: isFetchingRec,
+  } = useListTrackQuery({genreSlug}, {skip: !genreSlug})
 
-  const load = isLoading || isFetching
+  const load = isLoading || isFetching || isLoadingT || isFetchingT || isLoadingRec || isFetchingRec
 
   const {activeTrack, currentIndex} = useAppSelector(state => state.track)
 
   const playlistBgColor = playlist?.color || "#202020";
+
+  const handleSubmit = (e: FormSubmit) => {
+    e.preventDefault()
+    router.push(`?search=${searchT}`)
+  }
 
   return (
     <MainSection bgColor={playlistBgColor}>
@@ -133,6 +164,58 @@ export default function Page({params}: Props) {
                 />
               </div>
             )}
+
+            <Separator className="bg-[#606060]"/>
+
+            <TitleShowAll
+              title="Let`s find something for your playlist"
+            >
+              <div className="relative ml-auto flex-1 py-2 md:grow-0">
+                <form onSubmit={handleSubmit} className='flex items-center space-x-2'>
+                  <Search className="absolute left-4 top-6 h-4 w-4 text-muted-foreground"/>
+                  <Input
+                    type="search"
+                    placeholder="Search..."
+                    value={searchT}
+                    onChange={(e) => setSearchT(e.target.value)}
+                    className="w-full text-md rounded-md bg-background bg-[#303030] border-none shadow-2xl pl-8 md:w-[300px] lg:w-[400px]"
+                  />
+                  <Button size='sm' type='submit' variant='outline'
+                          className="bg-white text-black font-semibold">Search</Button>
+                </form>
+              </div>
+              {(searchTracks?.count || 0) > 0 && (
+                <TracksTable
+                  tracks={searchTracks?.results}
+                  showAlbum
+                  showCover
+                  showIndex={false}
+                  showAddToPlaylist
+                  playlistSlug={playlist?.slug}
+                  tracksPlaylist={playlist?.tracks}
+                  showSubtitle
+                />
+              )}
+            </TitleShowAll>
+
+            {(recommendations?.count || 0) > 0 &&
+              <TitleShowAll
+                title="Recomended"
+                titlePB="Based on what`s in this playlist"
+                isShowAll={false}
+              >
+                <TracksTable
+                  tracks={recommendations?.results.slice(0, 10)}
+                  showAlbum
+                  showCover
+                  showSubtitle
+                  showIndex={false}
+                  showAddToPlaylist
+                  playlistSlug={playlist?.slug}
+                  tracksPlaylist={playlist?.tracks}
+                />
+              </TitleShowAll>
+            }
           </>
         )}
 
