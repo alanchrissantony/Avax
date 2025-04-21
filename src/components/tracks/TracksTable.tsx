@@ -19,6 +19,7 @@ import {Button} from "@/components/ui/button";
 import * as React from "react";
 import {toast} from "react-toastify";
 import {usePlaylistAddTrackMutation, usePlaylistRemoveTrackMutation} from "@/lib/features/playlists/playlistApiSlice";
+import TrackDialogDropdown from "@/components/tracks/TrackDialogDropdown";
 
 interface Props {
   tracks: Track[] | undefined;
@@ -33,6 +34,7 @@ interface Props {
   showSubtitle?: boolean;
   showIndex?: boolean;
   showAddToPlaylist?: boolean;
+  showRemoveTrack?: boolean;
 }
 
 export default function TracksTable({
@@ -48,12 +50,12 @@ export default function TracksTable({
                                       showIndex = true,
                                       showAddToPlaylist = false,
                                       playlistSlug,
+                                      showRemoveTrack = false,
                                     }: Props) {
   const {isAuthenticated} = useAppSelector(state => state.auth)
   const {activeTrack} = useAppSelector(state => state.track)
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [hoveredTrackSlug, setHoveredTrackSlug] = useState<string | null>(null);
-
 
   const [addTrackToPlaylist, {isLoading: isLoadingAddTP}] = usePlaylistAddTrackMutation()
   const [removeTrackFromPlaylist, {isLoading: isLoadingRemoveTP}] = usePlaylistRemoveTrackMutation()
@@ -347,7 +349,7 @@ export default function TracksTable({
                 )}
               </div>
               {showAddToPlaylist ? (
-                <div>
+                <div className="mr-2">
                   {tracksPlaylist?.some((trackPlaylist) => trackPlaylist.slug === track?.slug) ? (
                     <Button
                       size='sm'
@@ -373,8 +375,11 @@ export default function TracksTable({
                   )}
                 </div>
               ) : (
-                <span className="mr-3 lg:6 xl:mr-7">{formatTime(track.duration)}</span>
+                <span className="mx-auto w-full">{formatTime(track.duration)}</span>
               )}
+              <div>
+                <TrackDialogDropdown showRemoveTrack={showRemoveTrack} track={track} playlistSlug={playlistSlug}/>
+              </div>
             </small>
           </div>
         ))}

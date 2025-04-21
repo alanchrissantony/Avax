@@ -54,6 +54,11 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
         `/tracks/recently/user/${userId}/?page=${page}`,
       providesTags: ["Track"],
     }),
+    listRecentlyMyListenTracks: builder.query<RecentlyListenTracks, any | void>({
+      query: ({page = 1}) =>
+        `/tracks/recently/my/?page=${page}`,
+      providesTags: ["Track"],
+    }),
     listGenres: builder.query<Genres, any | void>({
       query: ({page = 1}) =>
         `/others/genres/?page=${page}`,
@@ -80,6 +85,7 @@ export const {
   useListPlaylistQuery,
   useRetrievePlaylistQuery,
   useListRecentlyListenTracksQuery,
+  useListRecentlyMyListenTracksQuery,
   useListGenresQuery,
   useRetrieveGenreQuery,
   useDownloadTrackQuery,

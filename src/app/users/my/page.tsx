@@ -2,9 +2,7 @@
 
 import {Dot, Music} from "lucide-react";
 import Image from "next/image";
-import {
-  useListPlaylistQuery, useListRecentlyListenTracksQuery,
-} from "@/lib/features/other/publicApiSlice";
+import {useListRecentlyMyListenTracksQuery} from "@/lib/features/other/publicApiSlice";
 import Link from "next/link";
 import PlaylistCards from "@/components/playlists/PlaylistCards";
 import TracksTable from "@/components/tracks/TracksTable";
@@ -16,30 +14,25 @@ import ContentSection from "@/components/general/content-section";
 import {
   useListUserFollowersQuery,
   useListUserFollowingQuery,
-  useRetrieveUserMeQuery
 } from "@/lib/features/auth/authApiSlice";
 import {useAppSelector} from "@/lib/hooks";
 import UserMyDialogDropdown from "@/components/users/UserMyDialogDropdown";
+import {useListMyPlaylistQuery} from "@/lib/features/playlists/playlistApiSlice";
 
 
 export default function Page() {
-  const {isAuthenticated} = useAppSelector(state => state.auth)
-  const {
-    data: user,
-    isLoading,
-    isFetching
-  } = useRetrieveUserMeQuery({}, {skip: !isAuthenticated});
+  const {user, isLoading} = useAppSelector(state => state.auth)
   const userId = user?.id || null;
   const {
     data: userPlaylists,
     isLoading: isLoadingP,
     isFetching: isFetchingP,
-  } = useListPlaylistQuery({userId}, {skip: !userId})
+  } = useListMyPlaylistQuery({})
   const {
     data: recentlyTracks,
     isLoading: isLoadingReTracks,
     isFetching: isFetchingReTracks,
-  } = useListRecentlyListenTracksQuery({userId}, {skip: !userId})
+  } = useListRecentlyMyListenTracksQuery({})
   const {
     data: userFollowing,
     isLoading: isLoadingFollowing,
@@ -52,9 +45,8 @@ export default function Page() {
   } = useListUserFollowersQuery({userId}, {skip: !userId})
 
   const load = (
-    isLoading || isFetching || isLoadingP || isFetchingP ||
-    isLoadingReTracks || isFetchingReTracks || isLoadingFollowers || isFetchingFollowers ||
-    isLoadingFollowing || isFetchingFollowing
+    isLoading || isLoadingP || isFetchingP || isLoadingReTracks || isFetchingReTracks ||
+    isLoadingFollowers || isFetchingFollowers || isLoadingFollowing || isFetchingFollowing
   )
 
   const userBgColor = user?.color || "#202020";
@@ -82,7 +74,8 @@ export default function Page() {
 
               <div className="flex flex-col gap-3">
                 <h5 className="text-xs font-semibold text-white/80">Profile</h5>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black drop-shadow-sm">{user.display_name}</h2>
+                <h2
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black drop-shadow-sm">{user.display_name}</h2>
 
                 <div className="flex items-center text-sm font-medium">
                   {user.playlists_count >= 0 && (

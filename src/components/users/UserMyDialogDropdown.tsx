@@ -37,7 +37,7 @@ const profileFormSchema = z.object({
 
 type ProfileFormValue = z.infer<typeof profileFormSchema>
 
-export default function UserMyDialogDropdown({user}: { user: User | undefined }) {
+export default function UserMyDialogDropdown({user}: { user: User | null }) {
   const {
     register,
     handleSubmit,

@@ -14,7 +14,6 @@ import {useRetrieveMyPlaylistQuery} from "@/lib/features/playlists/playlistApiSl
 import PlaylistMyDialogDropdown from "@/components/playlists/PlaylistMyDialogDropdown";
 import {useRouter, useSearchParams} from "next/navigation";
 import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
 import * as React from "react";
 import {FormSubmit} from "@/types/types";
 import {useState} from "react";
@@ -32,7 +31,7 @@ export default function Page({params}: Props) {
   const searchParams = useSearchParams()
   const router = useRouter();
   const search = searchParams.get('search') || ''
-  const [searchT, setSearchT] = useState('')
+  const [searchT, setSearchT] = useState(search)
 
 
   const {
@@ -161,6 +160,8 @@ export default function Page({params}: Props) {
                   showCover
                   showHeader
                   showSubtitle
+                  showRemoveTrack
+                  playlistSlug={playlist?.slug}
                 />
               </div>
             )}
@@ -180,8 +181,6 @@ export default function Page({params}: Props) {
                     onChange={(e) => setSearchT(e.target.value)}
                     className="w-full text-md rounded-md bg-background bg-[#303030] border-none shadow-2xl pl-8 md:w-[300px] lg:w-[400px]"
                   />
-                  <Button size='sm' type='submit' variant='outline'
-                          className="bg-white text-black font-semibold">Search</Button>
                 </form>
               </div>
               {(searchTracks?.count || 0) > 0 && (

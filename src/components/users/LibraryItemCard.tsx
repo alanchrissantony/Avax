@@ -19,12 +19,13 @@ export default function LibraryItemCard({type, slug, heading, image, altTitle, s
 
 
   const href = `/${type}/${slug}`;
+  const hrefMy = `/${type}/my/${slug}`;
 
   return (
     <Link
       href={href}
       className={`${
-        pathname === href ? "bg-[#303030]/50" : ""
+        (pathname === href || pathname === hrefMy) ? "bg-[#303030]/50" : ""
       } flex items-center p-2 gap-3 rounded-sm text-white cursor-pointer  hover:bg-[#404040]/20`}
     >
       <Image
