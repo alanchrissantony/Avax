@@ -6,7 +6,7 @@ import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import {ArtistForm} from "@/components/forms/artist-form";
 
 export default function Page() {
-  const {data: artist, isLoading, isFetching} = useRetrieveMeArtistQuery()
+  const {data: artist, isLoading, isFetching} = useRetrieveMeArtistQuery({})
 
 
   return (

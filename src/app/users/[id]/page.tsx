@@ -64,7 +64,7 @@ export default function UserPage({params}: Props) {
   const userBgColor = user?.color || "#202020";
 
   useEffect(() => {
-    if (currUser?.id === userId) redirect(profileMyUrl);
+    if (userId && (currUser?.id === userId)) redirect(profileMyUrl);
   }, [currUser?.id, userId]);
 
   return (

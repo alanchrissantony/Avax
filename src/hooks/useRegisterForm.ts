@@ -34,9 +34,11 @@ export default function useRegisterForm() {
     handleSubmit,
     formState: {errors},
     setValue,
+    watch,
   } = useForm<RegisterFormValue>({
     resolver: zodResolver(registerFormSchema),
     mode: "onChange",
+    defaultValues: {type_profile: "user"}
   });
 
   const [registerUser, {isLoading}] = useRegisterMutation()
@@ -54,5 +56,5 @@ export default function useRegisterForm() {
       })
   }
 
-  return {register, handleSubmit, errors, isLoading, onSubmit, setValue}
+  return {register, handleSubmit, errors, isLoading, onSubmit, setValue, watch}
 }

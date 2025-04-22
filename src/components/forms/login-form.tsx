@@ -9,7 +9,7 @@ import {useAppSelector} from "@/lib/hooks";
 import Loader from "@/components/general/Loader";
 import {continueWithGoogle} from "@/utils";
 import useLoginForm from "@/hooks/useLoginForm";
-import {profileMyUrl} from "@/utils/consts";
+import {artistProfileMyUrl, profileMyUrl} from "@/utils/consts";
 import {AppleIcon, ChromeIcon, FacebookIcon} from "lucide-react";
 import {Separator} from "@/components/ui/separator";
 import ErrorField from "@/components/forms/error-field";
@@ -25,11 +25,11 @@ export default function LoginForm() {
   } = useLoginForm();
 
 
-  const {isAuthenticated} = useAppSelector(state => state.auth);
+  const {isAuthenticated, user} = useAppSelector(state => state.auth);
 
   useEffect(() => {
-    if (isAuthenticated) redirect(profileMyUrl);
-  }, [isAuthenticated]);
+    if (isAuthenticated) redirect(user?.type_profile === "artist" ? artistProfileMyUrl : profileMyUrl);
+  }, [isAuthenticated, user?.type_profile]);
 
 
   return (

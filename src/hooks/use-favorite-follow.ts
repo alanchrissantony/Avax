@@ -140,6 +140,9 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
 
   function handleFollow(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
+
+    if (!isAuthenticated) return router.replace(loginUrl)
+
     userFollow({userId: userIdFollow})
       .unwrap()
       .then((data) => {
@@ -152,6 +155,9 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
 
   function handleUnfollow(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
+
+    if (!isAuthenticated) return router.replace(loginUrl)
+
     userUnfollow({userId: userIdFollow})
       .unwrap()
       .then((data) => {

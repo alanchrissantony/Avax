@@ -21,6 +21,7 @@ export default function RegisterForm() {
     isLoading,
     onSubmit,
     setValue,
+    watch,
   } = useRegisterForm()
 
   return (
@@ -65,9 +66,9 @@ export default function RegisterForm() {
             type="password"
             placeholder="Confirm a password"
             {...register("re_password")}
-            className={errors.re_password ? "border-red-800 border-2" : ""}
+            className={(watch("password") !== watch("re_password")) ? "border-red-800 border-2" : ""}
           />
-          {errors.re_password && <ErrorField message={errors.re_password.message}/>}
+          {(watch("password") !== watch("re_password")) && <ErrorField message="Passwords don't match"/>}
         </div>
         <Button
           type="submit"

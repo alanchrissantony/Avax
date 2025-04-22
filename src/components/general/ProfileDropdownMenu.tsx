@@ -7,18 +7,19 @@ import {
 import {Button} from "@/components/ui/button";
 import {useLogoutMutation, useRetrieveUserMeQuery} from "@/lib/features/auth/authApiSlice";
 import {useDispatch} from "react-redux";
-import {useRouter} from "next/navigation";
+import {redirect, useRouter} from "next/navigation";
 import {logout as setLogout} from "@/lib/features/auth/authSlice";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {
   accountMySettingsUrl,
   accountMyUrl,
-  artistProfileMyUrl,
+  artistProfileMyUrl, loginUrl,
   profileMyUrl
 } from "@/utils/consts";
 import {useAppSelector} from "@/lib/hooks";
 import {SquareArrowOutUpRight} from "lucide-react";
+import {useRetrieveMeArtistQuery} from "@/lib/features/artists/artistApiSlice";
 
 
 export default function ProfileDropdownMenu() {
@@ -26,11 +27,22 @@ export default function ProfileDropdownMenu() {
   const [logout, {isLoading: isLoadingLogout}] = useLogoutMutation()
   const dispatch = useDispatch();
   const router = useRouter();
-  const {data: user, isLoading, isFetching, isError} = useRetrieveUserMeQuery({}, {skip: !isAuthenticated})
+  const {
+    data: user,
+    isLoading,
+    isFetching,
+    isError
+  } = useRetrieveUserMeQuery({}, {skip: !isAuthenticated})
+  const {
+    data: artist,
+    isLoading: isLoadingArtist,
+    isFetching: isFetchingArtist,
+  } = useRetrieveMeArtistQuery({}, {skip: !user?.artist_slug || !isAuthenticated})
 
   if (isLoadingLogout) return <Skeleton className="h-8 w-8 rounded-full"/>
-  if (isLoading || isFetching || !user) return <Skeleton className="h-8 w-8 rounded-full"/>
-  if (isError) return <h1>Error...</h1>
+  if (isLoading || isFetching || isLoadingArtist || isFetchingArtist || !user)
+    return <Skeleton className="h-8 w-8 rounded-full"/>
+  if (isError) redirect(loginUrl)
 
   const handleLogout = () => {
     logout(undefined)
@@ -92,12 +104,19 @@ export default function ProfileDropdownMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size='icon' variant='outline' className="flex bg-white bg-opacity-50 h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage className="aspect-square object-cover" src={user.image} alt={user.display_name}/>
-            <AvatarFallback>{user.display_name}</AvatarFallback>
-          </Avatar>
+      <DropdownMenuTrigger asChild className="border-1 border-black">
+        <Button size='icon' variant='outline' className="bg-white bg-opacity-50 border-4 border-black h-9 w-9 rounded-full">
+          {artist ? (
+            <Avatar className="h-8 w-8 hover:scale-110 transition duration-100">
+              <AvatarImage className="aspect-square object-cover" src={artist.image} alt={artist.display_name}/>
+              <AvatarFallback>{artist.display_name}</AvatarFallback>
+            </Avatar>
+          ) : (
+            <Avatar className="h-8 w-8">
+              <AvatarImage className="aspect-square object-cover" src={user.image} alt={user.display_name}/>
+              <AvatarFallback>{user.display_name}</AvatarFallback>
+            </Avatar>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48 mr-6 bg-[#272727] rounded-sm border-none shadow-2xl">

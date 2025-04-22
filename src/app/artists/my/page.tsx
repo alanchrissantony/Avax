@@ -23,7 +23,7 @@ import ArtistMyDialogDropdown from "@/components/artists/ArtistMyDialogDropdown"
 
 
 export default function Page() {
-  const {data: artist, isLoading, isFetching} = useRetrieveMeArtistQuery()
+  const {data: artist, isLoading, isFetching} = useRetrieveMeArtistQuery({})
   const {
     data: artistTracks,
     isLoading: isLoadingTracks,

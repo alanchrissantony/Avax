@@ -47,7 +47,7 @@ export default function Header() {
 
       <div className="flex items-center gap-3 sm:6">
 
-        {isLoading ? <Skeleton className="h-12 w-12 rounded-full"/> :
+        {isLoading ? <div className="h-11 mt-2 mr-1"><Skeleton className="h-9 w-9 rounded-full"/></div> :
           isAuthenticated ? (
             <div className="flex items-center justify-between space-x-4 p-2">
               <Link href={`/premium`} className="hidden lg:flex">

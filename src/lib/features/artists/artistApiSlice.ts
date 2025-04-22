@@ -22,8 +22,8 @@ const artistApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Artist'],
     }),
-    retrieveMeArtist: builder.query<Artist, void>({
-      query: () => `/artists/me/`,
+    retrieveMeArtist: builder.query<Artist, any>({
+      query: ({}) => `/artists/me/`,
       providesTags: ['Artist']
     }),
     updateMeArtist: builder.mutation<Artist, any>({

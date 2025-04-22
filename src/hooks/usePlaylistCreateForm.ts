@@ -5,6 +5,8 @@ import {z} from "zod";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {usePostMyPlaylistMutation} from "@/lib/features/playlists/playlistApiSlice";
+import {useAppSelector} from "@/lib/hooks";
+import {loginUrl} from "@/utils/consts";
 
 
 export const playlistFormSchema = z.object({
@@ -25,6 +27,7 @@ export const playlistFormSchema = z.object({
 export type PlaylistFormValues = z.infer<typeof playlistFormSchema>
 
 export default function usePlaylistCreateForm() {
+  const {isAuthenticated} = useAppSelector(state => state.auth)
   const [createPlaylist, {isLoading}] = usePostMyPlaylistMutation();
   const [tempImage, setTempImage] = useState<string>('');
   const router = useRouter();
@@ -44,7 +47,7 @@ export default function usePlaylistCreateForm() {
 
 
   function onSubmit(data: PlaylistFormValues) {
-    console.log('Data: ', data)
+    if (!isAuthenticated) return router.replace(loginUrl)
 
     let formData
     if (data.image && data.title && data.description && data.is_private) {

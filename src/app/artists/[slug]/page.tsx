@@ -77,7 +77,7 @@ export default function ArtistPage({params}: Props) {
   const darkenBgColor = artist?.color || "#202020";
 
   useEffect(() => {
-    if (currUser?.id === userId) redirect(artistProfileMyUrl);
+    if (userId && (currUser?.id === userId)) redirect(artistProfileMyUrl);
   }, [currUser?.id, userId]);
 
   return (

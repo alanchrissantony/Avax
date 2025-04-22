@@ -21,7 +21,7 @@ import {useListMyPlaylistQuery} from "@/lib/features/playlists/playlistApiSlice"
 
 
 export default function Page() {
-  const {user, isLoading} = useAppSelector(state => state.auth)
+  const {user} = useAppSelector(state => state.auth)
   const userId = user?.id || null;
   const {
     data: userPlaylists,
@@ -45,7 +45,7 @@ export default function Page() {
   } = useListUserFollowersQuery({userId}, {skip: !userId})
 
   const load = (
-    isLoading || isLoadingP || isFetchingP || isLoadingReTracks || isFetchingReTracks ||
+    isLoadingP || isFetchingP || isLoadingReTracks || isFetchingReTracks ||
     isLoadingFollowers || isFetchingFollowers || isLoadingFollowing || isFetchingFollowing
   )
 

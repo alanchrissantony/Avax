@@ -45,7 +45,7 @@ export default function TrackDialogDropdown({track, showRemoveTrack = false, pla
       <DropdownMenuTrigger asChild>
         <Button size='icon' variant='ghost'
                 className="flex opacity-0 group-hover/item:opacity-100 ease-in-out transform text-sm text-white border-white hover:scale-105 transition h-6 w-6 rounded-full hover:bg-white/0 duration-150">
-          <Ellipsis className="h-7 w-7 text-[#afafaf]"/>
+          <Ellipsis className="h-7 w-7 text-[#afafaf] hover:text-white"/>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48 mr-4 mt-2 bg-[#272727] rounded-sm border-none shadow-2xl">
