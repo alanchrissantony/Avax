@@ -1,6 +1,6 @@
 "use client";
 
-import {useListRecentlyListenTracksQuery} from "@/lib/features/other/publicApiSlice";
+import {useListTrackQuery} from "@/lib/features/other/publicApiSlice";
 import {usePathname} from "next/navigation";
 import TracksTable from "@/components/tracks/TracksTable";
 import TitleShowAll from "@/components/ui/title-show-all";
@@ -18,7 +18,7 @@ export default function Page() {
     data: genreTracks,
     isLoading: isLoading,
     isFetching: isFetching,
-  } = useListRecentlyListenTracksQuery({genreSlug})
+  } = useListTrackQuery({genreSlug})
 
   const load = isLoading || isFetching
 

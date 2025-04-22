@@ -61,7 +61,7 @@ export default function Home() {
                         className="mt-4 ml-4">{isAuthenticated ? `Good ${getGreeting()}` : 'Top tracks'}</Link>
                 </div>
                 <TrackCardsLittle
-                  tracks={topTracks?.results.slice(0, 7)}
+                  tracks={topTracks?.results.slice(0, isAuthenticated ? 7 : 8)}
                   tracksCollection={likedTracks?.results}
                   isLoading={load}
                 />

@@ -300,7 +300,7 @@ export default function TracksTable({
             {showPlaysCount && (
               <div className="flex items-center w-10/12 col-span-4 text-sm text-white/60">
                 <h1 className="group-hover/item:text-white">
-                  {track.plays_count}
+                  {track.plays_count.toLocaleString()}
                 </h1>
               </div>
             )}

@@ -67,7 +67,7 @@ export default function AlbumsPage({params}: Props) {
               )}
 
               <div className="flex flex-col gap-3">
-                <h5 className="text-xs font-bold uppercase">Album</h5>
+                <h5 className="text-xs font-bold">{album?.tracks?.length === 1 ? "Single" : "Album"}</h5>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">{album.title}</h2>
 
                 {album.description && (

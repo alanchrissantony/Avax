@@ -217,7 +217,7 @@ export default function TracksPage({params}: Props) {
             )}
 
             {track?.release_date && (
-              <div>
+              <div className="ml-4">
                 <p className="font-normal text-sm mt-10 text-white/60">
                   {format(new Date(track.release_date), 'MMMM dd, yyyy')}
                 </p>

@@ -32,8 +32,8 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
       providesTags: ["Album"],
     }),
     listTrack: builder.query<Tracks, any | void>({
-      query: ({page = 1, search = '', artistSlug = '', genreSlug = '', albumSlug = ''}) =>
-        `/tracks/?page=${page}&search=${search}&artist__slug=${artistSlug}&genre__slug=${genreSlug}&album__slug=${albumSlug}`,
+      query: ({page = 1, search = '', artistSlug = '', genreSlug = '', albumSlug = '', ordering = '-plays_count'}) =>
+        `/tracks/?page=${page}&search=${search}&ordering=${ordering}&artist__slug=${artistSlug}&genre__slug=${genreSlug}&album__slug=${albumSlug}`,
       providesTags: ["Track"],
     }),
     retrieveTrack: builder.query<DetailTrack, string | null>({
