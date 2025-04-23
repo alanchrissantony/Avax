@@ -88,6 +88,7 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
       formData.append("genre", data.genre.toString());
     }
     formData.append("title", data.title);
+    formData.append("description", data.description)
 
     updatePlaylist({slug: playlist?.slug, data: formData})
       .unwrap()

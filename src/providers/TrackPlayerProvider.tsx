@@ -7,6 +7,7 @@ import {Track} from "@/types/types";
 import {usePathname} from "next/navigation";
 import {accountAuthUrl} from "@/utils/consts";
 
+
 interface TrackProviderState {
   currentTrackAudio: HTMLAudioElement | null;
   isPlaying: boolean;

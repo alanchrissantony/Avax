@@ -40,6 +40,20 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
       query: (slug) => `/tracks/${slug}/`,
       providesTags: ["Track"],
     }),
+    retrieveListenTrack: builder.query<any, any>({
+      query: ({slug}) => ({
+        url: `/tracks/${slug}/listen/`,
+        responseHandler: (response) => response.blob(),
+      }),
+      providesTags: ["Track"],
+      transformResponse: async (response) => {
+        // @ts-ignore
+        const text = await response.text();
+        console.log("Blob response text:", text);
+        // @ts-ignore
+        return {track_url: URL.createObjectURL(response)};
+      },
+    }),
     listPlaylist: builder.query<Playlists, any | void>({
       query: ({page = 1, search = '', userId = '', genreSlug = ''}) =>
         `/playlists/?page=${page}&search=${search}&user__id=${userId}&genre__slug=${genreSlug}`,
@@ -82,6 +96,7 @@ export const {
   useRetrieveAlbumQuery,
   useListTrackQuery,
   useRetrieveTrackQuery,
+  useRetrieveListenTrackQuery,
   useListPlaylistQuery,
   useRetrievePlaylistQuery,
   useListRecentlyListenTracksQuery,
