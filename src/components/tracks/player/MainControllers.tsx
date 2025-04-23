@@ -20,6 +20,7 @@ export default function MainControllers() {
     nextTrack,
     prevTrack,
     currentIndex,
+    currentTrackAudio,
     tracks,
   } = usePlayer();
 
@@ -52,12 +53,13 @@ export default function MainControllers() {
         </button>
 
         <button onClick={prevTrack} disabled={!hasPrevTrack}>
-          <SkipBack size={20}
+          <SkipBack size={20} strokeWidth={3}
                     className={`text-xl ${hasPrevTrack ? 'text-white/60 hover:text-gray-100' : 'text-white/20 cursor-not-allowed'}`}/>
         </button>
         <button
           onClick={togglePlay}
-          className="flex items-center justify-center w-8 h-8 p-0 text-black bg-white rounded-full hover:scale-105 duration-150"
+          className="flex items-center justify-center w-8 h-8 p-0 text-black bg-white rounded-full hover:scale-105 duration-150 disabled:cursor-not-allowed disabled:bg-white/20"
+          disabled={!currentTrackAudio}
         >
           {isPlaying ? (
             <MdPause className="text-2xl"/>
@@ -66,7 +68,7 @@ export default function MainControllers() {
           )}
         </button>
         <button onClick={nextTrack} disabled={!hasNextTrack}>
-          <SkipForward size={20}
+          <SkipForward size={20} strokeWidth={3}
                        className={`text-xl ${hasNextTrack ? 'text-white/60 hover:text-gray-100' : 'text-white/20 cursor-not-allowed'}`}/>
         </button>
         <button onClick={toggleLoop} className="flex items-center">

@@ -11,43 +11,43 @@ const playlistApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     listUserPlaylistLiked: builder.query<PlaylistsLiked, any | void>({
       query: ({page = 1,}) => `/playlists/favorite/?page=${page}`,
-      providesTags: ['Playlist']
+      providesTags: ['MyPlaylist']
     }),
     playlistAddFavorite: builder.mutation({
       query: ({playlistSlug}) => ({
         url: `/playlists/${playlistSlug}/favorite/`,
         method: 'POST',
       }),
-      invalidatesTags: ['Playlist'],
+      invalidatesTags: ['MyPlaylist'],
     }),
     playlistRemoveFavorite: builder.mutation({
       query: ({playlistSlug}) => ({
         url: `/playlists/${playlistSlug}/favorite/`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Playlist'],
+      invalidatesTags: ['MyPlaylist'],
     }),
     playlistAddTrack: builder.mutation({
       query: ({playlistSlug, trackSlug}) => ({
         url: `/playlists/${playlistSlug}/add/tracks/${trackSlug}/`,
         method: 'POST',
       }),
-      invalidatesTags: ['Playlist'],
+      invalidatesTags: ['MyPlaylist'],
     }),
     playlistRemoveTrack: builder.mutation({
       query: ({playlistSlug, trackSlug}) => ({
         url: `/playlists/${playlistSlug}/add/tracks/${trackSlug}/`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Playlist'],
+      invalidatesTags: ['MyPlaylist'],
     }),
     listMyPlaylist: builder.query<ListDetailPlaylist, any | void>({
       query: ({page = 1, search = ''}) => `/playlists/my/?page=${page}&search=${search}`,
-      providesTags: ['Playlist']
+      providesTags: ['MyPlaylist']
     }),
     retrieveMyPlaylist: builder.query<DetailPlaylist, any | void>({
       query: (slug) => `/playlists/my/${slug}/`,
-      providesTags: ['Playlist']
+      providesTags: ['MyPlaylist']
     }),
     postMyPlaylist: builder.mutation<DetailPlaylist, any>({
       query: (data) => ({
@@ -55,7 +55,7 @@ const playlistApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Playlist'],
+      invalidatesTags: ['MyPlaylist'],
     }),
     updateMyPlaylist: builder.mutation<UpdatePlaylist, { slug: string | undefined, data: any }>({
       query: ({slug, data}) => ({
@@ -63,14 +63,14 @@ const playlistApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: ['Playlist'],
+      invalidatesTags: ['MyPlaylist'],
     }),
     deleteMyPlaylist: builder.mutation({
       query: ({slug}) => ({
         url: `/playlists/my/${slug}/`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Playlist'],
+      invalidatesTags: ['MyPlaylist'],
     }),
   }),
 });

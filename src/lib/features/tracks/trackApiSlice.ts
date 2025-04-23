@@ -6,29 +6,29 @@ const trackApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     listUserTracksLiked: builder.query<Tracks, any | void>({
       query: ({page = 1, page_size = 1000}) => `/tracks/liked/?page=${page}&page_size=${page_size}`,
-      providesTags: ['Track']
+      providesTags: ['MyTrack']
     }),
     TrackAddFavorite: builder.mutation({
       query: ({trackSlug}) => ({
         url: `/tracks/${trackSlug}/like/`,
         method: 'POST',
       }),
-      invalidatesTags: ['Track'],
+      invalidatesTags: ['MyTrack'],
     }),
     TrackRemoveFavorite: builder.mutation({
       query: ({trackSlug}) => ({
         url: `/tracks/${trackSlug}/like/`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Track'],
+      invalidatesTags: ['MyTrack'],
     }),
     listMyTracks: builder.query<ListDetailTracks, any>({
       query: ({page = 1}) => `/tracks/my/?page=${page}`,
-      providesTags: ['Track']
+      providesTags: ['MyTrack']
     }),
     retrieveMyTrack: builder.query<DetailTrack, any>({
       query: ({slug}) => `/tracks/my/${slug}/`,
-      providesTags: ['Track']
+      providesTags: ['MyTrack']
     }),
     postMyTrack: builder.mutation<DetailTrack, any>({
       query: (data) => ({
@@ -36,7 +36,7 @@ const trackApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Track'],
+      invalidatesTags: ['MyTrack'],
     }),
     updateMyTrack: builder.mutation<DetailTrack, { slug: string | undefined, data: any }>({
       query: ({slug, data}) => ({
@@ -44,14 +44,14 @@ const trackApiSlice = apiSlice.injectEndpoints({
         method: 'PATCH',
         body: data,
       }),
-      invalidatesTags: ['Track'],
+      invalidatesTags: ['MyTrack'],
     }),
     deleteMyTrack: builder.mutation({
       query: ({slug}) => ({
         url: `/tracks/my/${slug}/`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Track'],
+      invalidatesTags: ['MyTrack'],
     }),
   }),
 });

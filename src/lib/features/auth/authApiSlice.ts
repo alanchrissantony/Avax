@@ -1,5 +1,5 @@
 import {apiSlice} from "@/lib/services/apiSlice";
-import {finishInitialLoadUser, setUser} from "@/lib/features/auth/authSlice";
+import {finishInitialLoadUser, setUser, startInitialLoadUser} from "@/lib/features/auth/authSlice";
 import {ShortUser, ShortUsers, User, UserProfile} from "@/types/types";
 
 interface SocialAuthArgs {
@@ -20,6 +20,7 @@ const authApiSlice = apiSlice.injectEndpoints({
       query: ({}) => '/auth/users/me/',
       keepUnusedDataFor: 5,
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
+        dispatch(startInitialLoadUser())
         try {
           const {data} = await queryFulfilled
           dispatch(setUser(data))
@@ -113,7 +114,7 @@ const authApiSlice = apiSlice.injectEndpoints({
         url: '/auth/logout/',
         method: 'POST',
       }),
-      invalidatesTags: ['User']
+      invalidatesTags: ['User', "MyAlbum", "MyTrack", "MyPlaylist", "MyArtist"]
     }),
     activation: builder.mutation({
       query: ({uid, token}) => ({

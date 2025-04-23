@@ -22,13 +22,15 @@ export default function ProtectRouter({children, allowedRoles = ["User", "Artist
   } = useRetrieveUserMeQuery({}, {skip: !isAuthenticated});
 
 
-  if (!user || isLoading || isFetching) {
+  if (isLoading || isFetching) {
     return <FullScreenSpinner/>
   }
 
   if (isError) {
     return redirect(loginUrl);
   }
+
+  if (!user && !isAuthenticated) return <FullScreenSpinner/>
 
   if (!allowedRoles.includes(user?.type_profile as string)) {
     return redirect('/');

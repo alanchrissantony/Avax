@@ -12,7 +12,7 @@ interface AuthState {
 const initialState = {
   isAuthenticated: false,
   isLoading: true,
-  isLoadingUser: true,
+  isLoadingUser: false,
   user: null,
 } as AuthState;
 
@@ -34,6 +34,9 @@ export const authSlice = createSlice({
     finishInitialLoad: state => {
       state.isLoading = false;
     },
+    startInitialLoadUser: state => {
+      state.isLoadingUser = true;
+    },
     finishInitialLoadUser: state => {
       state.isLoadingUser = false;
     }
@@ -45,6 +48,7 @@ export const {
   setUser,
   logout,
   finishInitialLoad,
+  startInitialLoadUser,
   finishInitialLoadUser,
 } = authSlice.actions;
 export default authSlice.reducer;

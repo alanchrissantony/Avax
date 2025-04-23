@@ -6,29 +6,29 @@ const albumApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     listUserAlbumLiked: builder.query<AlbumsLiked, any | void>({
       query: ({page = 1,}) => `/albums/favorite/?page=${page}`,
-      providesTags: ['Album']
+      providesTags: ['MyAlbum']
     }),
     albumAddFavorite: builder.mutation({
       query: ({albumSlug}) => ({
         url: `/albums/${albumSlug}/favorite/`,
         method: 'POST',
       }),
-      invalidatesTags: ['Album'],
+      invalidatesTags: ['MyAlbum'],
     }),
     albumRemoveFavorite: builder.mutation({
       query: ({albumSlug}) => ({
         url: `/albums/${albumSlug}/favorite/`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Album'],
+      invalidatesTags: ['MyAlbum'],
     }),
     listMyAlbum: builder.query<ListDetailAlbums, any | void>({
       query: ({page = 1, search = ''}) => `/albums/my/?page=${page}&search=${search}`,
-      providesTags: ['Album']
+      providesTags: ['MyAlbum']
     }),
     retrieveMyAlbum: builder.query<DetailAlbum, any | void>({
       query: ({slug}) => `/albums/my/${slug}/`,
-      providesTags: ['Album']
+      providesTags: ['MyAlbum']
     }),
     postMyAlbum: builder.mutation<DetailAlbum, any>({
       query: (data) => ({
@@ -36,7 +36,7 @@ const albumApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Album'],
+      invalidatesTags: ['MyAlbum'],
     }),
     updateMyAlbum: builder.mutation<UpdateAlbum, {slug: string | undefined, data: any}>({
       query: ({slug, data}) => ({
@@ -44,14 +44,14 @@ const albumApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: ['Album'],
+      invalidatesTags: ['MyAlbum'],
     }),
     deleteMyAlbum: builder.mutation({
       query: ({slug}) => ({
         url: `/albums/my/${slug}/`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Album'],
+      invalidatesTags: ['MyAlbum'],
     }),
   }),
 });

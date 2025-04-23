@@ -6,25 +6,25 @@ const artistApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     listUserArtistLiked: builder.query<ArtistsLiked, any | void>({
       query: ({page = 1,}) => `/artists/favorite/?page=${page}`,
-      providesTags: ['Artist']
+      providesTags: ['MyArtist']
     }),
     artistAddFavorite: builder.mutation({
       query: ({artistSlug}) => ({
         url: `/artists/${artistSlug}/favorite/`,
         method: 'POST',
       }),
-      invalidatesTags: ['Artist'],
+      invalidatesTags: ['MyArtist'],
     }),
     artistRemoveFavorite: builder.mutation({
       query: ({artistSlug}) => ({
         url: `/artists/${artistSlug}/favorite/`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Artist'],
+      invalidatesTags: ['MyArtist'],
     }),
     retrieveMeArtist: builder.query<Artist, any>({
       query: ({}) => `/artists/me/`,
-      providesTags: ['Artist']
+      providesTags: ['MyArtist']
     }),
     updateMeArtist: builder.mutation<Artist, any>({
       query: (body) => ({
@@ -32,18 +32,18 @@ const artistApiSlice = apiSlice.injectEndpoints({
         method: 'PATCH',
         body: body,
       }),
-      invalidatesTags: ['Artist'],
+      invalidatesTags: ['MyArtist'],
     }),
     deleteMeArtist: builder.mutation<Artist, any>({
       query: () => ({
         url: `/artists/me/`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Artist'],
+      invalidatesTags: ['MyArtist'],
     }),
     listMeArtistLicense: builder.query<License[], any>({
       query: ({}) => `/artists/me/license/`,
-      providesTags: ['Artist']
+      providesTags: ['MyArtist']
     }),
     postMeArtistLicense: builder.mutation<License, { body: UpdateLicense }>({
       query: ({body}) => ({
@@ -51,11 +51,11 @@ const artistApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: body,
       }),
-      invalidatesTags: ['Artist'],
+      invalidatesTags: ['MyArtist'],
     }),
     retrieveMeArtistLicense: builder.query<License, any>({
       query: ({id}) => `/artists/me/license/${id}`,
-      providesTags: ['Artist']
+      providesTags: ['MyArtist']
     }),
     updateMeArtistLicense: builder.mutation<License, { id: number | undefined, body: UpdateLicense }>({
       query: ({id, body}) => ({
@@ -63,14 +63,14 @@ const artistApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: body,
       }),
-      invalidatesTags: ['Artist'],
+      invalidatesTags: ['MyArtist'],
     }),
     deleteMeArtistLicense: builder.mutation<License, any>({
       query: ({id}) => ({
         url: `/artists/me/license/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Artist'],
+      invalidatesTags: ['MyArtist'],
     }),
   }),
 });
