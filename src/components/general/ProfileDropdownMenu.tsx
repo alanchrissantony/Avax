@@ -54,7 +54,7 @@ export default function ProfileDropdownMenu() {
         console.error(err);
       })
       .finally(() => {
-        router.push("/");
+        router.replace('/')
       })
   }
 
@@ -105,7 +105,8 @@ export default function ProfileDropdownMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="border-1 border-black">
-        <Button size='icon' variant='outline' className="bg-white bg-opacity-50 border-4 border-black h-9 w-9 rounded-full">
+        <Button size='icon' variant='outline'
+                className="bg-white bg-opacity-50 border-4 border-black h-9 w-9 rounded-full">
           {artist ? (
             <Avatar className="h-8 w-8 hover:scale-110 transition duration-100">
               <AvatarImage className="aspect-square object-cover" src={artist.image} alt={artist.display_name}/>

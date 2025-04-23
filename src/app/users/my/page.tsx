@@ -18,6 +18,9 @@ import {
 import {useAppSelector} from "@/lib/hooks";
 import UserMyDialogDropdown from "@/components/users/UserMyDialogDropdown";
 import {useListMyPlaylistQuery} from "@/lib/features/playlists/playlistApiSlice";
+import {useEffect} from "react";
+import {redirect} from "next/navigation";
+import {loginUrl} from "@/utils/consts";
 
 
 export default function Page() {
@@ -50,6 +53,10 @@ export default function Page() {
   )
 
   const userBgColor = user?.color || "#202020";
+
+  useEffect(() => {
+    if (!userId) redirect(loginUrl)
+  }, [userId]);
 
   return (
     <MainSection bgColor={userBgColor}>

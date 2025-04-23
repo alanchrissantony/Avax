@@ -46,8 +46,7 @@ export default function useLoginForm() {
 
     login({email, password})
       .unwrap()
-      .then((data) => {
-        console.log(data)
+      .then(() => {
         dispatch(setAuth())
 
         router.push(profileMyUrl)
