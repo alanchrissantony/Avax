@@ -28,7 +28,7 @@ export default function MainControllers() {
   const hasNextTrack = currentIndex < tracks.length - 1;
 
   return (
-    <div className="flex flex-col items-center justify-center col-span-4 sm:col-span-6 gap-3">
+    <div className="flex flex-col items-center justify-center col-span-4 sm:col-span-6 gap-2">
       <div className="flex items-center gap-5">
 
         <button onClick={toggleShuffle} className="flex items-center w-9 disabled:cursor-not-allowed"
@@ -58,7 +58,7 @@ export default function MainControllers() {
         </button>
         <button
           onClick={togglePlay}
-          className="flex items-center justify-center w-8 h-8 p-0 text-black bg-white rounded-full hover:scale-105 duration-150 disabled:cursor-not-allowed disabled:bg-white/20"
+          className="flex items-center justify-center h-8 w-8 text-black bg-white rounded-full hover:scale-105 duration-150 disabled:cursor-not-allowed disabled:bg-white/20"
           disabled={!currentTrackAudio}
         >
           {isPlaying ? (

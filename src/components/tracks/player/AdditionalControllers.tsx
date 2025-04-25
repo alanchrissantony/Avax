@@ -1,4 +1,4 @@
-import {ListMusic, Mic2, Volume, Volume1, Volume2, VolumeX, Download} from "lucide-react";
+import {ListMusic, Mic2, Volume, Volume1, Volume2, VolumeX, Download, Maximize2} from "lucide-react";
 import {Slider} from "@/components/ui/slider";
 import {usePlayer} from "@/providers/TrackPlayerProvider";
 
@@ -53,6 +53,10 @@ export default function AdditionalControllers() {
           </div>
         </div>
       </div>
+
+      <button className="hidden lg:block">
+        <Maximize2 size={16} strokeWidth={2.5} className="text-white/60 hover:text-gray-100"/>
+      </button>
     </div>
   );
 }

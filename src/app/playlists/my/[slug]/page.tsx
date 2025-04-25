@@ -65,7 +65,7 @@ export default function Page({params}: Props) {
   return (
     <MainSection bgColor={playlistBgColor}>
       <div className="h-52 md:h-60 bg-opacity-30 bg-black">
-        <div className="flex items-end gap-6 p-4 pt-10">
+        <div className="flex items-end gap-6 p-4 pt-20 sm:pt-10">
           {playlist && (
             <>
               {playlist.image.length > 0 ? (

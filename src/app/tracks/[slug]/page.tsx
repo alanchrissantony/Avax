@@ -75,7 +75,7 @@ export default function TracksPage({params}: Props) {
 
   return (
     <MainSection bgColor={trackAlbumBgColor} bgGradient="30%">
-      <div className="h-72 bg-opacity-30 bg-black">
+      <div className="h-52 sm:h-60 lg:h-72 bg-opacity-30 bg-black">
         <div className="flex items-end gap-6 p-4 pt-20">
           {track && (
             <>
@@ -135,8 +135,8 @@ export default function TracksPage({params}: Props) {
                   )}
                   {(track.plays_count >= 0) && (
                     <>
-                      <Dot/>
-                      <span>{track.plays_count.toLocaleString()}</span>
+                      <Dot className="hidden sm:block"/>
+                      <span className="hidden sm:block">{track.plays_count.toLocaleString()}</span>
                     </>
                   )}
                 </div>

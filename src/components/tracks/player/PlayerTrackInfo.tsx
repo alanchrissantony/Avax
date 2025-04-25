@@ -1,16 +1,24 @@
 import {Music} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {RxHeartFilled} from "react-icons/rx";
 import {Track} from "@/types/types";
+import PlayButtonAndOther from "@/components/ui/play-button-and-other";
+import {useListUserTracksLikedQuery} from "@/lib/features/tracks/trackApiSlice";
+import {useAppSelector} from "@/lib/hooks";
 
 interface IProps {
   activeTrack?: Track | null;
 }
 
 export default function PlayerTrackInfo({activeTrack}: IProps) {
+  const {isAuthenticated} = useAppSelector(state => state.auth)
+  const {
+    data: tracksFav,
+  } = useListUserTracksLikedQuery({}, {skip: !isAuthenticated || !activeTrack});
+
+
   return (
-    <div className="flex items-center col-span-1 sm:col-span-3 gap-3">
+    <div className="flex items-center col-span-1 sm:col-span-3 gap-3 mb-1">
       {activeTrack?.album ? (
         <Image
           src={activeTrack.album.image}
@@ -20,7 +28,7 @@ export default function PlayerTrackInfo({activeTrack}: IProps) {
           className="object-cover w-14 h-14 aspect-square rounded-md hidden sm:block"
         />
       ) : (
-        <Music size={56} className="mt-4 mb-4"/>
+        <Music size={56} className="mb-3"/>
       )}
       <div className="max-w-full hidden md:block">
         <h4 className="text-sm text-white truncate">
@@ -34,9 +42,17 @@ export default function PlayerTrackInfo({activeTrack}: IProps) {
         </Link>
       </div>
       {activeTrack &&
-        <button className="block md:hidden lg:block">
-          <RxHeartFilled className="text-xl text-white hover:text-green-500"/>
-        </button>
+        // <button className="block md:hidden lg:block">
+        //   <RxHeartFilled className="text-xl text-white hover:text-green-500"/>
+        // </button>
+        <PlayButtonAndOther
+          isPlayButton={false}
+          track={activeTrack}
+          isShowFavorite={true}
+          favoriteType="trackPlayer"
+          isFavorite={tracksFav?.results?.some((trackFav) => trackFav?.slug === activeTrack?.slug)}
+          slugFav={activeTrack?.slug}
+        />
       }
     </div>
   );

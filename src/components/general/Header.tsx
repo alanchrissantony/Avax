@@ -26,13 +26,14 @@ export default function Header({bgOpacity, bgColor = '#0f0f0f'}: HeaderProps) {
 
   return (
     <header
-      className="sticky top-0 z-50"
+      className="sticky top-0 transition-colors duration-700 rounded-t-lg ease-in-out z-50"
       style={{
         backgroundColor: `rgba(${hexToRgb(bgColor)}, ${bgOpacity})`,
         backdropFilter: `blur(${bgOpacity * 10}px)`,
       }}
     >
-      <div className="flex items-center h-24 sm:h-auto justify-between w-full p-2 pr-5 pl-5 bg-opacity-40 bg-black">
+      <div
+        className="flex items-center h-24 sm:h-auto justify-between rounded-t-lg w-full p-2 pr-5 pl-5 bg-opacity-40 bg-black">
         <div className="flex items-center gap-3 w-[32rem]">
           <div className="flex items-center gap-3">
             <Button
@@ -93,5 +94,5 @@ export default function Header({bgOpacity, bgColor = '#0f0f0f'}: HeaderProps) {
         </div>
       </div>
     </header>
-);
+  );
 }

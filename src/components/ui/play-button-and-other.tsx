@@ -12,7 +12,7 @@ interface Props {
   index?: number | null;
   isPlayButton?: boolean;
   isShowFavorite?: boolean;
-  favoriteType?: "track" | "album" | "playlist" | "artist";
+  favoriteType?: "track" | "trackPlayer" | "album" | "playlist" | "artist";
   isShowFollow?: boolean;
   isFollowing?: boolean;
   isFavorite?: boolean;
@@ -62,10 +62,12 @@ export default function PlayButtonAndOther({
             {isFavorite ? (
               <>
                 <TooltipTrigger onClick={handleRemoveFav} disabled={isLoadingRemoveFav}>
-                  {isLoadingRemoveFav ? <Loader className="w-[32px] h-[32px]"/> : (
-                    <CircleCheck strokeWidth={3} size={33}
-                                 className="text-green-500 hover:scale-105 duration-150 hover:text-green-300"/>
-                  )}
+                  {isLoadingRemoveFav ?
+                    <Loader
+                      className={`${favoriteType === "trackPlayer" ? "w-[21px] h-[21px]" : "w-[32px] h-[32px]"}`}/> : (
+                      <CircleCheck strokeWidth={3} size={favoriteType === "trackPlayer" ? 20 : 33}
+                                   className="text-green-500 hover:scale-105 duration-150 hover:text-green-300"/>
+                    )}
                 </TooltipTrigger>
                 <TooltipContent className="text-white bg-[#202020]">
                   <p>Remove from Your library</p>
@@ -74,8 +76,9 @@ export default function PlayButtonAndOther({
             ) : (
               <>
                 <TooltipTrigger onClick={handleAddFav} disabled={isLoadingAddFav}>
-                  {isLoadingAddFav ? <Loader className="w-[32px] h-[32px]"/> : (
-                    <CirclePlus size={33}
+                  {isLoadingAddFav ? <Loader
+                    className={`${favoriteType === "trackPlayer" ? "w-[21px] h-[21px]" : "w-[32px] h-[32px]"}`}/> : (
+                    <CirclePlus size={favoriteType === "trackPlayer" ? 20 : 33}
                                 className="text-[#909090] hover:scale-105 duration-150 hover:text-gray-100"/>
                   )}
                 </TooltipTrigger>

@@ -13,7 +13,7 @@ import {useAppSelector} from "@/lib/hooks";
 
 
 interface Props {
-  favoriteType?: "track" | "album" | "playlist" | "artist";
+  favoriteType?: "track" | "trackPlayer" | "album" | "playlist" | "artist";
   userIdFollow?: number;
   slugFav?: string;
   trackSlug?: string | null;
@@ -76,7 +76,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
         })
     }
 
-    if (favoriteType === "track") {
+    if (favoriteType === "track" || favoriteType === "trackPlayer") {
       trackAddFav({trackSlug: slugFav || trackSlug})
         .unwrap()
         .then((data) => {
@@ -126,7 +126,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
         })
     }
 
-    if (favoriteType === "track") {
+    if (favoriteType === "track" || favoriteType === "trackPlayer") {
       trackRemoveFav({trackSlug: slugFav || trackSlug})
         .unwrap()
         .then((data) => {
