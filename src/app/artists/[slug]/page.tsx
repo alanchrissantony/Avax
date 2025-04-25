@@ -83,7 +83,7 @@ export default function ArtistPage({params}: Props) {
   return (
     <MainSection bgColor={darkenBgColor} bgGradient="30%">
       <div
-        className="h-64 relative"
+        className="h-48 lg:h-64 relative"
         style={{
           backgroundImage: `url(${artist?.image || ''})`,
           backgroundSize: 'cover',

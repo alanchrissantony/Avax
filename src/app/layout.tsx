@@ -26,7 +26,7 @@ export default function RootLayout({
 
 
   return (
-    <html lang="en" className="scroll-auto" suppressHydrationWarning>
+    <html lang="en" className="overflow-hidden scroll-auto" suppressHydrationWarning>
     <body className={cn(
       "min-h-screen bg-background font-sans antialiased",
       fontSans.variable
@@ -44,17 +44,10 @@ export default function RootLayout({
         <Setup/>
 
         <TrackPlayerProvider>
-          {isAccountAuthPage ? (
-            <main>
-              {children}
-            </main>
-          ) : (
-            <main>
-              {children}
-              <PreviewPlayer/>
-            </main>
-
-          )}
+          <main>
+            {children}
+            {!isAccountAuthPage && <PreviewPlayer/>}
+          </main>
         </TrackPlayerProvider>
       </ReduxStoreProvider>
     </ThemeProvider>

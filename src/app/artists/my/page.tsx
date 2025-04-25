@@ -58,7 +58,7 @@ export default function Page() {
   return (
     <MainSection bgColor={artistBgColor} bgGradient="30%">
       <div
-        className="h-64 relative"
+        className="h-48 lg:h-64 relative"
         style={{
           backgroundImage: `url(${artist?.image || ''})`,
           backgroundSize: 'cover',
