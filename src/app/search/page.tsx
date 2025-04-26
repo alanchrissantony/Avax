@@ -15,7 +15,7 @@ export default function Page() {
   return (
     <MainSection bgColor="#181818">
       <ContentSection>
-        <TitleShowAll title="Browse all" isShowAll={false}>
+        <TitleShowAll title="Browse all" isShowAll={false} isLoading={load}>
           {load ? (
             <div className="grid items-stretch grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
               {[...Array(12)].map((_, index) => (

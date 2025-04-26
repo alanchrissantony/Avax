@@ -51,7 +51,6 @@ export default function Page({params}: Props) {
 
         {load ? <FullScreenSpinner/> : (
           <>
-
             {(genreTracks?.count || 0) > 0 &&
               <TitleShowAll
                 title={`Popular ${genre?.name} tracks`}

@@ -18,7 +18,7 @@ export default function PlayerTrackInfo({activeTrack}: IProps) {
 
 
   return (
-    <div className="flex items-center col-span-1 sm:col-span-3 gap-3 mb-1">
+    <div className="flex items-center col-span-1 sm:col-span-3 gap-3">
       {activeTrack?.album ? (
         <Image
           src={activeTrack.album.image}
@@ -28,7 +28,7 @@ export default function PlayerTrackInfo({activeTrack}: IProps) {
           className="object-cover w-14 h-14 aspect-square rounded-md hidden sm:block"
         />
       ) : (
-        <Music size={56} className="mb-3"/>
+        <Music size={56} className="mb-4 hidden sm:block"/>
       )}
       <div className="max-w-full hidden md:block">
         <h4 className="text-sm text-white truncate">
@@ -42,9 +42,6 @@ export default function PlayerTrackInfo({activeTrack}: IProps) {
         </Link>
       </div>
       {activeTrack &&
-        // <button className="block md:hidden lg:block">
-        //   <RxHeartFilled className="text-xl text-white hover:text-green-500"/>
-        // </button>
         <PlayButtonAndOther
           isPlayButton={false}
           track={activeTrack}

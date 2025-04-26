@@ -217,7 +217,7 @@ export interface UpdatePlaylist {
   is_private: boolean;
 }
 
-export interface ListDetailPlaylist extends ListBaseApi{
+export interface ListDetailPlaylist extends ListBaseApi {
   results: DetailPlaylist[];
 }
 
