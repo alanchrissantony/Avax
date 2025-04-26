@@ -14,12 +14,12 @@ import {hexToRgb} from "@/utils/componentUtils";
 
 
 interface HeaderProps {
-  bgOpacity: number;
-  bgOpacityBlack: number;
+  bgOpacity?: number;
+  bgOpacityBlack?: number;
   bgColor?: string;
 }
 
-export default function Header({bgOpacity, bgOpacityBlack, bgColor = '#0f0f0f'}: HeaderProps) {
+export default function Header({bgOpacity =0.9, bgOpacityBlack = 0, bgColor = '#0f0f0f'}: HeaderProps) {
   const {isAuthenticated, isLoading} = useAppSelector(state => state.auth)
   const pathname = usePathname();
   const router = useRouter();
