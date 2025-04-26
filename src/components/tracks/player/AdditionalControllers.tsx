@@ -1,6 +1,7 @@
-import {ListMusic, Mic2, Volume, Volume1, Volume2, VolumeX, Download, Maximize2} from "lucide-react";
+import {ListMusic, Mic2, Volume, Volume1, Volume2, VolumeX, Download, Maximize2, Minimize2} from "lucide-react";
 import {Slider} from "@/components/ui/slider";
 import {usePlayer} from "@/providers/TrackPlayerProvider";
+import {useEffect, useState} from "react";
 
 export default function AdditionalControllers() {
   const {
@@ -9,6 +10,36 @@ export default function AdditionalControllers() {
     isMuted,
     toggleMute,
   } = usePlayer();
+
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const handleFullscreenToggle = () => {
+    if (!isFullscreen) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fullscreenChangeHandler = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", fullscreenChangeHandler);
+    document.addEventListener("webkitfullscreenchange", fullscreenChangeHandler);
+    document.addEventListener("msfullscreenchange", fullscreenChangeHandler);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", fullscreenChangeHandler);
+      document.removeEventListener("webkitfullscreenchange", fullscreenChangeHandler);
+      document.removeEventListener("msfullscreenchange", fullscreenChangeHandler);
+    };
+  }, []);
 
   let volumeIcon = <Volume2 size={20} className="text-white/60 hover:text-gray-100"/>;
 
@@ -19,7 +50,6 @@ export default function AdditionalControllers() {
   }
 
   return (
-
     <div className="flex items-center absolute right-5 col-span-1 sm:col-span-3 gap-3">
       {/* Icons */}
       <button className="hidden lg:block">
@@ -54,8 +84,12 @@ export default function AdditionalControllers() {
         </div>
       </div>
 
-      <button className="hidden lg:block">
-        <Maximize2 size={16} strokeWidth={2.5} className="text-white/60 hover:text-gray-100"/>
+      <button className="hidden lg:block" onClick={handleFullscreenToggle}>
+        {isFullscreen ? (
+          <Minimize2 size={16} strokeWidth={2.5} className="text-white/60 hover:text-gray-100"/>
+        ) : (
+          <Maximize2 size={16} strokeWidth={2.5} className="text-white/60 hover:text-gray-100"/>
+        )}
       </button>
     </div>
   );

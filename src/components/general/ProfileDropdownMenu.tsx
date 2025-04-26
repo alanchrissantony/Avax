@@ -108,14 +108,14 @@ export default function ProfileDropdownMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="border-1 border-black">
         <Button size='icon' variant='outline'
-                className="bg-black bg-opacity-80 border-2 border-black h-[2.15rem] w-[2.15rem] rounded-full">
+                className="bg-black bg-opacity-50 h-[2.15rem] w-[2.15rem] rounded-full">
           {artist ? (
-            <Avatar className="h-7 w-7 hover:scale-125 transition duration-100">
+            <Avatar className="h-7 w-7 hover:scale-110 transition duration-150">
               <AvatarImage className="aspect-square object-cover" src={artist.image} alt={artist.display_name}/>
               <AvatarFallback>{artist.display_name}</AvatarFallback>
             </Avatar>
           ) : (
-            <Avatar className="h-7 w-7 hover:scale-125 transition duration-100">
+            <Avatar className="h-7 w-7 hover:scale-110 transition duration-150">
               <AvatarImage className="aspect-square object-cover" src={user.image} alt={user.display_name}/>
               <AvatarFallback>{user.display_name}</AvatarFallback>
             </Avatar>

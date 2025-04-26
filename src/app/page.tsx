@@ -18,6 +18,7 @@ import MainSection from "@/components/general/main-section";
 import ContentSection from "@/components/general/content-section";
 import {useListUserTracksLikedQuery} from "@/lib/features/tracks/trackApiSlice";
 import {getGreeting} from "@/utils/clientUtils";
+import {Skeleton} from "@/components/ui/skeleton";
 
 
 export default function Home() {
@@ -56,10 +57,12 @@ export default function Home() {
           {(
             <>
               <div className="w-full">
+                {load ? <Skeleton className="mt-4 ml-4 h-7 w-32 sm:w-48"/> : (
                 <div className="flex items-center">
                   <Link href={"/tracks"}
                         className="mt-4 ml-4">{isAuthenticated ? `Good ${getGreeting()}` : 'Top tracks'}</Link>
                 </div>
+                  )}
                 <TrackCardsLittle
                   tracks={topTracks?.results.slice(0, isAuthenticated ? 7 : 8)}
                   tracksCollection={likedTracks?.results}
@@ -67,19 +70,19 @@ export default function Home() {
                 />
               </div>
 
-              <TitleShowAll title="Popular artists" href="/artists">
+              <TitleShowAll title="Popular artists" href="/artists" isLoading={load}>
                 <ArtistCards artists={topArtists?.results.slice(0, 5)} isLoading={load}/>
               </TitleShowAll>
 
-              <TitleShowAll title="Popular albums" href="/albums">
+              <TitleShowAll title="Popular albums" href="/albums" isLoading={load}>
                 <AlbumCards albums={topAlbums?.results.slice(0, 5)} isLoading={load}/>
               </TitleShowAll>
 
-              <TitleShowAll title="Popular playlists" href="/playlists">
+              <TitleShowAll title="Popular playlists" href="/playlists" isLoading={load}>
                 <PlaylistCards playlists={topPlaylists?.results.slice(0, 5)} isLoading={load}/>
               </TitleShowAll>
 
-              <TitleShowAll title="Popular tracks" href="/tracks">
+              <TitleShowAll title="Popular tracks" href="/tracks" isLoading={load}>
                 <TrackCards tracks={topTracks?.results.slice(0, 5)} isLoading={load}/>
               </TitleShowAll>
             </>
