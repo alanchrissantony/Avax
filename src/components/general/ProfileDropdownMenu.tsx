@@ -20,6 +20,7 @@ import {
 import {useAppSelector} from "@/lib/hooks";
 import {SquareArrowOutUpRight} from "lucide-react";
 import {useRetrieveMeArtistQuery} from "@/lib/features/artists/artistApiSlice";
+import {apiSlice} from "@/lib/services/apiSlice";
 
 
 export default function ProfileDropdownMenu() {
@@ -49,6 +50,7 @@ export default function ProfileDropdownMenu() {
       .unwrap()
       .then(() => {
         dispatch(setLogout());
+        dispatch(apiSlice.util.resetApiState());
       })
       .catch((err) => {
         console.error(err);
@@ -106,14 +108,14 @@ export default function ProfileDropdownMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="border-1 border-black">
         <Button size='icon' variant='outline'
-                className="bg-white bg-opacity-50 border-4 border-black h-9 w-9 rounded-full">
+                className="bg-black bg-opacity-80 border-2 border-black h-[2.15rem] w-[2.15rem] rounded-full">
           {artist ? (
-            <Avatar className="h-8 w-8 hover:scale-110 transition duration-100">
+            <Avatar className="h-7 w-7 hover:scale-125 transition duration-100">
               <AvatarImage className="aspect-square object-cover" src={artist.image} alt={artist.display_name}/>
               <AvatarFallback>{artist.display_name}</AvatarFallback>
             </Avatar>
           ) : (
-            <Avatar className="h-8 w-8">
+            <Avatar className="h-7 w-7 hover:scale-125 transition duration-100">
               <AvatarImage className="aspect-square object-cover" src={user.image} alt={user.display_name}/>
               <AvatarFallback>{user.display_name}</AvatarFallback>
             </Avatar>

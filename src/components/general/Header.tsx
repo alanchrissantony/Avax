@@ -15,10 +15,11 @@ import {hexToRgb} from "@/utils/componentUtils";
 
 interface HeaderProps {
   bgOpacity: number;
+  bgOpacityBlack: number;
   bgColor?: string;
 }
 
-export default function Header({bgOpacity, bgColor = '#0f0f0f'}: HeaderProps) {
+export default function Header({bgOpacity, bgOpacityBlack, bgColor = '#0f0f0f'}: HeaderProps) {
   const {isAuthenticated, isLoading} = useAppSelector(state => state.auth)
   const pathname = usePathname();
   const router = useRouter();
@@ -33,7 +34,11 @@ export default function Header({bgOpacity, bgColor = '#0f0f0f'}: HeaderProps) {
       }}
     >
       <div
-        className="flex items-center h-24 sm:h-auto justify-between rounded-t-lg w-full p-2 pr-5 pl-5 bg-opacity-40 bg-black">
+        className="flex items-center h-24 sm:h-auto justify-between transition-colors duration-1000 rounded-t-lg ease-in-out w-full p-2 pr-5 pl-5"
+        style={{
+          backgroundColor: `rgba(${hexToRgb('#000000')}, ${bgOpacityBlack})`,
+        }}
+      >
         <div className="flex items-center gap-3 w-[32rem]">
           <div className="flex items-center gap-3">
             <Button
@@ -65,8 +70,9 @@ export default function Header({bgOpacity, bgColor = '#0f0f0f'}: HeaderProps) {
             isAuthenticated ? (
               <div className="flex items-center justify-between space-x-4 p-2">
                 <Link href={`/premium`} className="hidden lg:flex">
-                  <Button className="text-black bg-white h-8 rounded-full font-semibold"
-                          size="default">
+                  <Button
+                    className="text-black hover:scale-105 transition duration-150 bg-white h-8 rounded-full font-semibold"
+                    size="default">
                     Explore Premium
                   </Button>
                 </Link>
