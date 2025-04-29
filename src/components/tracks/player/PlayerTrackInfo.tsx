@@ -31,25 +31,25 @@ export default function PlayerTrackInfo({activeTrack}: IProps) {
         <Music size={56} className="mb-4 hidden sm:block"/>
       )}
       <div className="max-w-full hidden md:block">
-        <h4 className="text-sm text-white truncate">
+        <Link href={`/tracks/${activeTrack?.slug}`} className="text-sm text-white truncate hover:underline">
           {activeTrack?.title}
-        </h4>
+        </Link>
         <Link
-          href={`/artist/${activeTrack?.artist.slug}`}
-          className="text-xs text-white/60"
+          href={`/artists/${activeTrack?.artist.slug}`}
+          className="flex text-xs text-white/60 hover:underline hover:text-white"
         >
           {activeTrack?.artist.display_name}
         </Link>
       </div>
       {activeTrack &&
-        <PlayButtonAndOther
-          isPlayButton={false}
-          track={activeTrack}
-          isShowFavorite={true}
-          favoriteType="trackPlayer"
-          isFavorite={tracksFav?.results?.some((trackFav) => trackFav?.slug === activeTrack?.slug)}
-          slugFav={activeTrack?.slug}
-        />
+          <PlayButtonAndOther
+              isPlayButton={false}
+              track={activeTrack}
+              isShowFavorite={true}
+              favoriteType="trackPlayer"
+              isFavorite={tracksFav?.results?.some((trackFav) => trackFav?.slug === activeTrack?.slug)}
+              slugFav={activeTrack?.slug}
+          />
       }
     </div>
   );

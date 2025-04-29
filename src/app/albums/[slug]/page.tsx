@@ -134,7 +134,7 @@ export default function AlbumsPage({params}: Props) {
             </div>
 
             {album?.release_date && (
-              <div>
+              <div className="ml-4">
                 <p className="font-normal text-sm mt-10 text-white/60">
                   {format(new Date(album.release_date), 'MMMM dd, yyyy')}
                 </p>
