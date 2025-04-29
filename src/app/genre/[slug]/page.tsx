@@ -37,7 +37,7 @@ export default function Page({params}: Props) {
 
   return (
     <MainSection bgColor={genreBgColor}>
-      <div className="h-52 bg-opacity-20 bg-black flex flex-col justify-end">
+      <div className="h-52 bg-gradient-to-t from-black/20 to-black/0 flex flex-col justify-end">
         <div className="flex items-end gap-6 p-5 pb-8">
           {genre && (
             <div>
@@ -52,28 +52,28 @@ export default function Page({params}: Props) {
         {load ? <FullScreenSpinner/> : (
           <>
             {(genreTracks?.count || 0) > 0 &&
-              <TitleShowAll
-                title={`Popular ${genre?.name} tracks`}
-                href={`/genre/${params.slug}/tracks`}
-                isShowAll={(genreTracks?.count || 0) > 5}
-              >
-                <TracksTable
-                  tracks={genreTracks?.results.slice(0, 5)}
-                  showCover
-                  showPlaysCount
-                  showSubtitle
-                />
-              </TitleShowAll>
+                <TitleShowAll
+                    title={`Popular ${genre?.name} tracks`}
+                    href={`/genre/${params.slug}/tracks`}
+                    isShowAll={(genreTracks?.count || 0) > 5}
+                >
+                    <TracksTable
+                        tracks={genreTracks?.results.slice(0, 5)}
+                        showCover
+                        showPlaysCount
+                        showSubtitle
+                    />
+                </TitleShowAll>
             }
 
             {(genrePlaylists?.count || 0) > 0 &&
-              <TitleShowAll
-                title={`Popular ${genre?.name} playlists`}
-                href={`/genre/${params.slug}/playlists`}
-                isShowAll={(genrePlaylists?.count || 0) > 5}
-              >
-                <PlaylistCards playlists={genrePlaylists?.results.slice(0, 5)}/>
-              </TitleShowAll>
+                <TitleShowAll
+                    title={`Popular ${genre?.name} playlists`}
+                    href={`/genre/${params.slug}/playlists`}
+                    isShowAll={(genrePlaylists?.count || 0) > 5}
+                >
+                    <PlaylistCards playlists={genrePlaylists?.results.slice(0, 5)}/>
+                </TitleShowAll>
             }
           </>
         )}

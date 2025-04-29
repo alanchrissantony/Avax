@@ -27,7 +27,7 @@ export default function LikedTracksPage() {
 
   return (
     <MainSection bgColor={playlistBgColor}>
-      <div className="h-52 sm:h-64  bg-opacity-30 bg-black">
+      <div className="h-52 sm:h-64 bg-gradient-to-t from-black/25 to-black/0">
         <div className="flex items-end gap-6 p-4 pt-16 sm:pt-14 lg:pt-14">
           <Image
             src="/images/avax_like.png"

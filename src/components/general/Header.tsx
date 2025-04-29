@@ -81,13 +81,13 @@ export default function Header({bgOpacity =0.9, bgOpacityBlack = 0, bgColor = '#
             ) : (
               <div className="hidden sm:flex items-center justify-between space-x-2">
                 <Link href={signupUrl}>
-                  <Button variant="ghost" className="hidden md:block rounded-full font-semibold"
+                  <Button variant="ghost" className="hidden md:block rounded-full font-semibold hover:bg-black/20"
                           size="lg">
                     Sign up
                   </Button>
                 </Link>
                 <Link href={loginUrl}>
-                  <Button className="text-black bg-white rounded-full font-semibold"
+                  <Button className="text-black bg-white rounded-full font-semibold bg-white/95 hover:bg-green-500/80"
                           size="lg">
                     Log in
                   </Button>

@@ -69,7 +69,7 @@ export default function UserPage({params}: Props) {
 
   return (
     <MainSection bgColor={userBgColor} bgGradient="30%">
-      <div className="h-52 md:h-60 bg-opacity-30 bg-black">
+      <div className="h-52 md:h-60 bg-gradient-to-t from-black/25 to-black/0">
         <div className="flex items-end gap-6 p-4 pt-10">
           {user && (
             <>

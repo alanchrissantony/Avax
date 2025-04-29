@@ -47,7 +47,7 @@ export default function AlbumsPage({params}: Props) {
 
   return (
     <MainSection bgColor={AlbumBgColor}>
-      <div className="h-52 md:h-60 bg-opacity-30 bg-black">
+      <div className="h-52 md:h-60 bg-gradient-to-t from-black/25 to-black/0">
         <div className="flex items-end gap-6 p-4 pt-10">
           {album && (
             <>
@@ -146,15 +146,15 @@ export default function AlbumsPage({params}: Props) {
             )}
 
             {(artistAlbums?.count || 0) > 0 &&
-              <div className="my-8 mt-16">
-                <TitleShowAll
-                  title={`More by ${album?.artist.display_name}`}
-                  showAll="See discography"
-                  href={`/artists/${album?.artist?.slug}/discography/album`}
-                >
-                  <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
-                </TitleShowAll>
-              </div>
+                <div className="my-8 mt-16">
+                    <TitleShowAll
+                        title={`More by ${album?.artist.display_name}`}
+                        showAll="See discography"
+                        href={`/artists/${album?.artist?.slug}/discography/album`}
+                    >
+                        <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
+                    </TitleShowAll>
+                </div>
             }
           </>
         )}

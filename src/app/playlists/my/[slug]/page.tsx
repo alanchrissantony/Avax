@@ -64,7 +64,7 @@ export default function Page({params}: Props) {
 
   return (
     <MainSection bgColor={playlistBgColor}>
-      <div className="h-52 md:h-60 bg-opacity-30 bg-black">
+      <div className="h-52 md:h-60 bg-gradient-to-t from-black/20 to-black/0">
         <div className="flex items-end gap-6 p-4 pt-20 sm:pt-10">
           {playlist && (
             <>

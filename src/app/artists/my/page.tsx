@@ -65,7 +65,7 @@ export default function Page() {
           backgroundPosition: 'center',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-black/5"></div>
         <div className="flex items-end gap-6 p-4 pb-6 h-full">
           {artist && (
             <div className="flex flex-col items-start gap-3 self-end">

@@ -75,8 +75,8 @@ export default function TracksPage({params}: Props) {
 
   return (
     <MainSection bgColor={trackAlbumBgColor} bgGradient="30%">
-      <div className="h-52 sm:h-60 lg:h-72 bg-opacity-30 bg-black">
-        <div className="flex items-end gap-6 p-4 pt-20">
+      <div className="h-52 sm:h-60 lg:h-64 bg-gradient-to-t from-black/25 to-black/0">
+        <div className="flex items-end gap-6 p-4 pt-14">
           {track && (
             <>
               {track.album.image.length > 0 ? (
