@@ -15,7 +15,9 @@ export const makeStore = () => {
       other: otherReducer,
     },
     middleware: getDefaultMiddleware =>
-      getDefaultMiddleware().concat(
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }).concat(
         apiSlice.middleware,
         apiPublicSlice.middleware,
       ),

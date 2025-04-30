@@ -1,11 +1,27 @@
+"use client";
+
 import Link from "next/link";
-import {Check, CheckIcon, DownloadIcon, FileAudioIcon, Music2Icon} from "lucide-react";
+import {Check, DownloadIcon, FileAudioIcon, Music2Icon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import ContentSection from "@/components/general/content-section";
+import {useListSubscriptionQuery} from "@/lib/features/other/publicApiSlice";
+import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 
 
 export default function Page() {
+  const {
+    data: subscriptions,
+    isLoading: isLoadingS,
+    isFetching: isFetchingS,
+  } = useListSubscriptionQuery({})
+
+  console.log(subscriptions)
+
+  const load = isLoadingS || isFetchingS
+
+  if (load) return <FullScreenSpinner/>
+
   return (
     <div className="flex flex-col min-h-[100dvh]text-white">
       <main className="flex-1">
@@ -103,143 +119,141 @@ export default function Page() {
                 </div>
               </div>
               <div className="mx-auto grid max-w-5xl items-center py-12 xl:grid-cols-2 gap-8">
-                <Card className="bg-[#252525] border-none rounded-lg p-2 text-[#1DB954] shadow-xl">
-                  <CardHeader>
-                    <CardTitle>Individual</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-end gap-2 my-4">
-                      <span className="text-4xl font-bold">$9.99</span>
-                      <span className="text-sm text-muted-foreground dark:text-white/80">/month</span>
-                    </div>
-                    <ul className="space-y-2 text-muted-foreground dark:text-white/80">
-                      <li className="flex items-center gap-2">
-                        <Check className="h-5 w-5 text-[#1DB954]"/>
-                        Ad-free listening
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="h-5 w-5 text-[#1DB954]"/>
-                        Offline mode
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="h-5 w-5 text-[#1DB954]"/>
-                        High-quality audio
-                      </li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter>
-                    <Button
-                      className="inline-flex h-10 w-full items-center justify-center rounded-full bg-[#1DB954] text-white px-8 text-sm font-medium shadow transition-colors hover:bg-[#1DB954]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    >
-                      Get Individual
-                    </Button>
-                  </CardFooter>
-                </Card>
 
-                <Card className="bg-[#252525] border-none rounded-lg p-2 text-[#1DB954] shadow-xl">
-                  <CardHeader>
-                    <CardTitle>Student</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-end gap-2 my-4">
-                      <span className="text-4xl font-bold">2.49</span>
-                      <span className="text-sm text-muted-foreground dark:text-white/80">/month</span>
-                    </div>
-                    <ul className="space-y-2 text-muted-foreground dark:text-white/80">
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        Ad-free listening
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        Offline mode
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        High-quality audio
-                      </li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter>
-                    <Button
-                      className="inline-flex h-10 w-full items-center justify-center rounded-full bg-[#1DB954] text-white px-8 text-sm font-medium shadow transition-colors hover:bg-[#1DB954]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    >
-                      Get Student
-                    </Button>
-                  </CardFooter>
-                </Card>
-                <Card className="bg-[#252525] border-none rounded-lg p-2 text-[#1DB954] shadow-xl">
-                  <CardHeader>
-                    <CardTitle>Duo</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-end gap-2 my-4">
-                      <span className="text-4xl font-bold">$13.99</span>
-                      <span className="text-sm text-muted-foreground dark:text-white/80">/month</span>
-                    </div>
-                    <ul className="space-y-2 text-muted-foreground dark:text-white/80">
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        Ad-free listening
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        Offline mode
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        High-quality audio
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        2 Premium accounts
-                      </li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter>
-                    <Button
-                      className="inline-flex h-10 w-full items-center justify-center rounded-full bg-[#1DB954] text-white px-8 text-sm font-medium shadow transition-colors hover:bg-[#1DB954]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    >
-                      Get Duo
-                    </Button>
-                  </CardFooter>
-                </Card>
-                <Card className="bg-[#252525] border-none rounded-lg p-2 text-[#1DB954] shadow-xl">
-                  <CardHeader>
-                    <CardTitle>Family</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-end gap-2 my-4">
-                      <span className="text-4xl font-bold">$15.99</span>
-                      <span className="text-sm text-muted-foreground dark:text-white/80">/month</span>
-                    </div>
-                    <ul className="space-y-2 text-muted-foreground dark:text-white/80">
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        Ad-free listening
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        Offline mode
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        High-quality audio
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>
-                        6 Premium accounts
-                      </li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter>
-                    <Button
-                      className="inline-flex h-10 w-full items-center justify-center rounded-full bg-[#1DB954] text-white px-8 text-sm font-medium shadow transition-colors hover:bg-[#1DB954]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    >
-                      Get Family
-                    </Button>
-                  </CardFooter>
-                </Card>
+                {subscriptions?.map(subscription => (
+                  <Card key={subscription.id}
+                        className="bg-[#252525] border-none rounded-lg min-h-[21rem] p-2 text-[#1DB954] shadow-xl">
+                    <CardHeader>
+                      <CardTitle>{subscription.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-end gap-2 my-4">
+                        <span className="text-4xl font-bold">${subscription.price}</span>
+                        <span className="text-sm text-muted-foreground dark:text-white/80">/month</span>
+                      </div>
+                      <ul className="space-y-2 text-muted-foreground dark:text-white/80">
+                        {subscription.feature.map((feature) => (
+                          <li key={feature.id} className="flex items-center gap-2">
+                            <Check className="h-5 w-5 text-[#1DB954]"/>
+                            {feature.name}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        className="inline-flex h-10 w-full items-center justify-center rounded-full bg-[#1DB954] text-white px-8 text-sm font-medium shadow transition-colors hover:bg-[#1DB954]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      >
+                        Get {subscription.name}
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+
+                {/*<Card className="bg-[#252525] border-none rounded-lg p-2 text-[#1DB954] shadow-xl">*/}
+                {/*  <CardHeader>*/}
+                {/*    <CardTitle>Student</CardTitle>*/}
+                {/*  </CardHeader>*/}
+                {/*  <CardContent>*/}
+                {/*    <div className="flex items-end gap-2 my-4">*/}
+                {/*      <span className="text-4xl font-bold">2.49</span>*/}
+                {/*      <span className="text-sm text-muted-foreground dark:text-white/80">/month</span>*/}
+                {/*    </div>*/}
+                {/*    <ul className="space-y-2 text-muted-foreground dark:text-white/80">*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        Ad-free listening*/}
+                {/*      </li>*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        Offline mode*/}
+                {/*      </li>*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        High-quality audio*/}
+                {/*      </li>*/}
+                {/*    </ul>*/}
+                {/*  </CardContent>*/}
+                {/*  <CardFooter>*/}
+                {/*    <Button*/}
+                {/*      className="inline-flex h-10 w-full items-center justify-center rounded-full bg-[#1DB954] text-white px-8 text-sm font-medium shadow transition-colors hover:bg-[#1DB954]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"*/}
+                {/*    >*/}
+                {/*      Get Student*/}
+                {/*    </Button>*/}
+                {/*  </CardFooter>*/}
+                {/*</Card>*/}
+                {/*<Card className="bg-[#252525] border-none rounded-lg p-2 text-[#1DB954] shadow-xl">*/}
+                {/*  <CardHeader>*/}
+                {/*    <CardTitle>Duo</CardTitle>*/}
+                {/*  </CardHeader>*/}
+                {/*  <CardContent>*/}
+                {/*    <div className="flex items-end gap-2 my-4">*/}
+                {/*      <span className="text-4xl font-bold">$13.99</span>*/}
+                {/*      <span className="text-sm text-muted-foreground dark:text-white/80">/month</span>*/}
+                {/*    </div>*/}
+                {/*    <ul className="space-y-2 text-muted-foreground dark:text-white/80">*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        Ad-free listening*/}
+                {/*      </li>*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        Offline mode*/}
+                {/*      </li>*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        High-quality audio*/}
+                {/*      </li>*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        2 Premium accounts*/}
+                {/*      </li>*/}
+                {/*    </ul>*/}
+                {/*  </CardContent>*/}
+                {/*  <CardFooter>*/}
+                {/*    <Button*/}
+                {/*      className="inline-flex h-10 w-full items-center justify-center rounded-full bg-[#1DB954] text-white px-8 text-sm font-medium shadow transition-colors hover:bg-[#1DB954]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"*/}
+                {/*    >*/}
+                {/*      Get Duo*/}
+                {/*    </Button>*/}
+                {/*  </CardFooter>*/}
+                {/*</Card>*/}
+                {/*<Card className="bg-[#252525] border-none rounded-lg p-2 text-[#1DB954] shadow-xl">*/}
+                {/*  <CardHeader>*/}
+                {/*    <CardTitle>Family</CardTitle>*/}
+                {/*  </CardHeader>*/}
+                {/*  <CardContent>*/}
+                {/*    <div className="flex items-end gap-2 my-4">*/}
+                {/*      <span className="text-4xl font-bold">$15.99</span>*/}
+                {/*      <span className="text-sm text-muted-foreground dark:text-white/80">/month</span>*/}
+                {/*    </div>*/}
+                {/*    <ul className="space-y-2 text-muted-foreground dark:text-white/80">*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        Ad-free listening*/}
+                {/*      </li>*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        Offline mode*/}
+                {/*      </li>*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        High-quality audio*/}
+                {/*      </li>*/}
+                {/*      <li className="flex items-center gap-2">*/}
+                {/*        <CheckIcon className="h-5 w-5 text-[#1DB954]"/>*/}
+                {/*        6 Premium accounts*/}
+                {/*      </li>*/}
+                {/*    </ul>*/}
+                {/*  </CardContent>*/}
+                {/*  <CardFooter>*/}
+                {/*    <Button*/}
+                {/*      className="inline-flex h-10 w-full items-center justify-center rounded-full bg-[#1DB954] text-white px-8 text-sm font-medium shadow transition-colors hover:bg-[#1DB954]/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"*/}
+                {/*    >*/}
+                {/*      Get Family*/}
+                {/*    </Button>*/}
+                {/*  </CardFooter>*/}
+                {/*</Card>*/}
               </div>
             </div>
           </section>

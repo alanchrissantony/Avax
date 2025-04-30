@@ -53,6 +53,12 @@ const trackApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['MyTrack'],
     }),
+    downloadTrack: builder.query({
+      query: (slug) => ({
+        url: `/tracks/${slug}/download/`,
+        responseHandler: (response) => response.blob(),
+      }),
+    }),
   }),
 });
 
@@ -65,4 +71,5 @@ export const {
   useUpdateMyTrackMutation,
   useRetrieveMyTrackQuery,
   useDeleteMyTrackMutation,
+  useLazyDownloadTrackQuery,
 } = trackApiSlice

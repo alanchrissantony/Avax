@@ -6,7 +6,7 @@ import {
   DetailAlbum,
   DetailPlaylist,
   DetailTrack, Genre, Genres,
-  Playlists, RecentlyListenTracks,
+  Playlists, RecentlyListenTracks, Subscription,
   Tracks,
 } from "@/types/types";
 
@@ -82,8 +82,13 @@ const publicApiSlice = apiPublicSlice.injectEndpoints({
       query: (slug) => `/others/genres/${slug}/`,
       providesTags: ["Genre"],
     }),
-    downloadTrack: builder.query<any, string>({
-      query: (slug) => `/tracks/${slug}/download/`,
+    listSubscription: builder.query<Subscription[], any | void>({
+      query: ({}) => `/subscriptions/`,
+      providesTags: ["Subscription"],
+    }),
+    retrieveSubscription: builder.query<Subscription, number>({
+      query: (id) => `/subscriptions/${id}/`,
+      providesTags: ["Subscription"],
     }),
   })
 })
@@ -103,5 +108,6 @@ export const {
   useListRecentlyMyListenTracksQuery,
   useListGenresQuery,
   useRetrieveGenreQuery,
-  useDownloadTrackQuery,
+  useListSubscriptionQuery,
+  useRetrieveSubscriptionQuery,
 } = publicApiSlice

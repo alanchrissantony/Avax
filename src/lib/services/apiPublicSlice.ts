@@ -9,7 +9,7 @@ const baseQuery = fetchBaseQuery({
 export const apiPublicSlice = createApi({
   reducerPath: 'apiPublicSlice',
   baseQuery: baseQuery,
-  tagTypes: ["User", "Artist", "Album", "Track", "Playlist", "Genre"],
+  tagTypes: ["User", "Artist", "Album", "Track", "Playlist", "Genre", "Subscription"],
   endpoints: builder => ({}),
 });
 

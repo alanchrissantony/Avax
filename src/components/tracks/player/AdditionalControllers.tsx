@@ -2,6 +2,9 @@ import {ListMusic, Mic2, Volume, Volume1, Volume2, VolumeX, Download, Maximize2,
 import {Slider} from "@/components/ui/slider";
 import {usePlayer} from "@/providers/TrackPlayerProvider";
 import {useEffect, useState} from "react";
+import {useAppSelector} from "@/lib/hooks";
+import {useLazyDownloadTrackQuery} from "@/lib/features/tracks/trackApiSlice";
+import Loader from "@/components/general/Loader";
 
 export default function AdditionalControllers() {
   const {
@@ -10,6 +13,28 @@ export default function AdditionalControllers() {
     isMuted,
     toggleMute,
   } = usePlayer();
+
+  const {user} = useAppSelector(state => state.auth);
+  const {activeTrack} = useAppSelector(state => state.track);
+
+  const [triggerDownloadTrack, {isFetching: isDownloading}] = useLazyDownloadTrackQuery();
+
+  const handleDownloadTrack = () => {
+    if (activeTrack?.slug) {
+      triggerDownloadTrack(activeTrack.slug)
+        .unwrap()
+        .then((blob) => {
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `track-${activeTrack.slug}.mp3`);
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode?.removeChild(link);
+        })
+        .catch(error => console.error('Failed to download track', error));
+    }
+  };
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -52,9 +77,15 @@ export default function AdditionalControllers() {
   return (
     <div className="flex items-center absolute right-5 col-span-1 sm:col-span-3 gap-3">
       {/* Icons */}
-      <button className="hidden lg:block">
-        <Download size={20} className="text-white/60 hover:text-gray-100"/>
-      </button>
+      {user?.is_premium && (
+        <button
+          className="hidden lg:block disabled:cursor-not-allowed"
+          onClick={handleDownloadTrack}
+          disabled={isDownloading}
+        >
+          {isDownloading ? <Loader className="w-[20px] h-[20px]"/> : <Download size={20} className="text-white/60 hover:text-gray-100"/>}
+        </button>
+      )}
       <button className="hidden md:block">
         <Mic2 size={20} className="text-white/60 hover:text-gray-100"/>
       </button>
