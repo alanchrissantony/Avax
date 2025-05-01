@@ -130,6 +130,13 @@ const authApiSlice = apiSlice.injectEndpoints({
         body: {email},
       }),
     }),
+    resendActivationCode: builder.mutation({
+      query: email => ({
+        url: '/auth/users/resend_activation/',
+        method: 'POST',
+        body: {email},
+      }),
+    }),
     resetPasswordConfirm: builder.mutation({
       query: ({uid, token, new_password, re_new_password}) => ({
         url: '/auth/users/reset_password_confirm/',
@@ -193,6 +200,7 @@ export const {
   useActivationMutation,
   useResetPasswordMutation,
   useResetPasswordConfirmMutation,
+  useResendActivationCodeMutation,
   useUserFollowMutation,
   useUserUnfollowMutation,
   useListUserFollowersQuery,

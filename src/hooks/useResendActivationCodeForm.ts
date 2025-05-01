@@ -1,23 +1,15 @@
-import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useResetPasswordMutation} from "@/lib/features/auth/authApiSlice";
+import {useResendActivationCodeMutation} from "@/lib/features/auth/authApiSlice";
 import {redirect, useRouter} from "next/navigation";
 import {useAppSelector} from "@/lib/hooks";
 import {useEffect} from "react";
 import {toast} from "react-toastify";
 import {loginUrl, profileMyUrl} from "@/utils/consts";
+import {passwordResetFormSchema, PasswordResetFormValues} from "@/hooks/usePasswordResetForm";
 
 
-export const passwordResetFormSchema = z.object({
-  email: z
-    .string()
-    .email("Please enter your Avax email address."),
-})
-
-export type PasswordResetFormValues = z.infer<typeof passwordResetFormSchema>
-
-export default function usePasswordResetForm() {
+export default function useResendActivationCodeForm() {
   const {
     register,
     handleSubmit,
@@ -27,7 +19,7 @@ export default function usePasswordResetForm() {
     mode: "onChange",
   });
 
-  const [resetPassword, {isLoading}] = useResetPasswordMutation()
+  const [resendActivationCode, {isLoading}] = useResendActivationCodeMutation()
 
   const router = useRouter()
 
@@ -39,7 +31,7 @@ export default function usePasswordResetForm() {
 
 
   function onSubmit(data: PasswordResetFormValues) {
-    resetPassword(data.email)
+    resendActivationCode(data.email)
       .unwrap()
       .then(() => {
         router.push(loginUrl)

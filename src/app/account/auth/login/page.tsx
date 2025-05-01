@@ -1,6 +1,6 @@
 import {Separator} from "@/components/ui/separator";
 import Link from "next/link";
-import {passwordResetUrl, signupUrl} from "@/utils/consts";
+import {passwordResetUrl, reSendActivationUrl, signupUrl} from "@/utils/consts";
 import LoginForm from "@/components/forms/login-form";
 
 
@@ -25,10 +25,19 @@ export default function Page() {
       <Separator className="my-8"/>
 
       <div className="flex items-center justify-center space-x-2">
-        <p className="text-sm text-white/70 font-normal">Don`t have an account?</p>
-        <Link href={signupUrl} className="hover:text-green-500 underline text-sm text-white/90 font-medium">
-          Sign up for Avax
-        </Link>
+        <p className="text-sm text-white/70 font-normal">Don`t have an account?{' '}
+          <Link href={signupUrl} className="hover:text-green-500 underline text-sm text-white/90 font-medium">
+            Sign up for Avax
+          </Link>
+        </p>
+      </div>
+
+      <div className="flex items-center justify-center text-center space-x-2">
+        <p className="text-sm text-white/70 font-normal">Haven`t received the email with the activation code?{' '}
+          <Link href={reSendActivationUrl} className="hover:text-green-500 underline text-sm text-white/90 font-medium">
+            Resend Activation Code
+          </Link>
+        </p>
       </div>
     </section>
   )
