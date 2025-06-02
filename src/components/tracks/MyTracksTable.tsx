@@ -1,6 +1,6 @@
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {ListFilter, MoreHorizontal, PlusCircle, Search} from "lucide-react";
-import {Input} from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ListFilter, MoreHorizontal, PlusCircle, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu, DropdownMenuCheckboxItem,
   DropdownMenuContent, DropdownMenuItem,
@@ -8,12 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {useRouter} from "next/navigation";
-import {toast} from "react-toastify";
-import {Checkbox} from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner"
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
   AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
@@ -30,14 +30,14 @@ import {
   PaginationPrevious
 } from "@/components/ui/pagination";
 import * as React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import Link from "next/link";
-import {FormSubmit, License, ListDetailAlbums, ListDetailTracks} from "@/types/types";
+import { FormSubmit, License, ListDetailAlbums, ListDetailTracks } from "@/types/types";
 import Image from "next/image";
 import dayjs from "dayjs";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
-import {useDeleteMyTrackMutation} from "@/lib/features/tracks/trackApiSlice";
+import { useDeleteMyTrackMutation } from "@/lib/features/tracks/trackApiSlice";
 
 
 interface Prop {
@@ -48,7 +48,7 @@ interface Prop {
   setPage: any;
 }
 
-export default function MyTracksTable({tracks, albums, license, page, setPage}: Prop) {
+export default function MyTracksTable({ tracks, albums, license, page, setPage }: Prop) {
   const pages = Math.floor((tracks?.count || 0) / 10);
 
   const [search, setSearch] = useState('')
@@ -56,7 +56,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
 
   const router = useRouter()
 
-  const [trackDelete, {isLoading}] = useDeleteMyTrackMutation();
+  const [trackDelete, { isLoading }] = useDeleteMyTrackMutation();
 
 
   const handleSubmit = (e: FormSubmit) => {
@@ -71,15 +71,21 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
   function handleDelete(slug: string) {
     alert('Are you sure you want to delete this track?');
 
-    trackDelete({slug})
+    trackDelete({ slug })
       .unwrap()
       .then(() => {
-        toast.success('Deleted Track')
+        toast.success("Deleted Track", {
+          description: "The track has been removed successfully.",
+        });
       })
-      .catch(() => toast.error('Failed to delete Track'))
+      .catch((error) => {
+        toast.error("Failed to update playlist", {
+          description: error?.data?.detail || "Something went wrong. Please try again.",
+        });
+      })
   }
 
-  if (isLoading) return <FullScreenSpinner/>
+  if (isLoading) return <FullScreenSpinner />
 
   return (
     <Tabs defaultValue="all">
@@ -90,7 +96,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
         </TabsList>
         <div className="relative ml-auto flex-1 md:grow-0">
           <form onSubmit={handleSubmit} className='flex items-center space-x-2'>
-            <Search className="absolute left-4 top-4 h-4 w-4 text-muted-foreground"/>
+            <Search className="absolute left-4 top-4 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search..."
@@ -105,7 +111,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 gap-1">
-                <ListFilter className="h-3.5 w-3.5"/>
+                <ListFilter className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                   Filter
                 </span>
@@ -113,7 +119,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-              <DropdownMenuSeparator/>
+              <DropdownMenuSeparator />
               <DropdownMenuCheckboxItem onClick={(e) => handleFilterSubmit(e, "plays")}>
                 Plays count
               </DropdownMenuCheckboxItem>
@@ -128,15 +134,15 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
 
           {((albums?.count || 0) > 0 && (license?.length || 0) > 0) ?
             <Button size="sm" className="h-8 gap-1" onClick={() => router.push('tracks/create')}>
-              <PlusCircle className="h-3.5 w-3.5"/>
+              <PlusCircle className="h-3.5 w-3.5" />
               <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                 Add Track
               </span>
             </Button> :
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button size="sm" className="h-8 gap-1 bg-red-700 hover:bg-red-600">
-                  <PlusCircle className="h-3.5 w-3.5"/>
+                <Button size="sm" className="h-8 gap-1 bg-destructive hover:bg-red-500">
+                  <PlusCircle className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                     Add Track
                   </span>
@@ -210,7 +216,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                           <div
                             className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
                             <PlayTrackButton track={track} tracks={tracks?.results} index={index} lines={true}
-                                             className="text-xl"/>
+                              className="text-xl" />
                           </div>
                         )}
                       </div>
@@ -267,9 +273,9 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                     </TableCell>
 
                     <TableCell className="font-medium hidden lg:table-cell">
-                        <span className="ml-6">
-                          <Checkbox defaultChecked={track.is_private} disabled/>
-                        </span>
+                      <span className="ml-6">
+                        <Checkbox defaultChecked={track.is_private} disabled />
+                      </span>
                     </TableCell>
 
                     <TableCell>
@@ -280,7 +286,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                             size="icon"
                             variant="ghost"
                           >
-                            <MoreHorizontal className="h-4 w-4"/>
+                            <MoreHorizontal className="h-4 w-4" />
                             <span className="sr-only">Toggle menu</span>
                           </Button>
                         </DropdownMenuTrigger>
@@ -307,7 +313,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                     onClick={() => albums?.previous && setPage(page - 1)}
                   />
                 </PaginationItem>
-                {Array.from({length: pages}).slice(0, 5).map((_, index) => (
+                {Array.from({ length: pages }).slice(0, 5).map((_, index) => (
                   <PaginationItem key={index}>
                     <PaginationLink
                       onClick={() => setPage(index + 1)}
@@ -319,7 +325,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                 ))}
                 {pages !== 0 &&
                   <PaginationItem>
-                    <PaginationEllipsis/>
+                    <PaginationEllipsis />
                   </PaginationItem>
                 }
                 <PaginationItem className='absolute right-0'>
@@ -362,7 +368,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoading ? <FullScreenSpinner/> : (
+                {isLoading ? <FullScreenSpinner /> : (
                   tracks?.results?.filter((track) => track.is_private).map((track, index) => (
                     <TableRow
                       key={track.id}
@@ -385,7 +391,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                             <div
                               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
                               <PlayTrackButton track={track} tracks={tracks?.results} index={index} lines={true}
-                                               className="text-xl"/>
+                                className="text-xl" />
                             </div>
                           )}
                         </div>
@@ -398,9 +404,9 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                       </TableCell>
 
                       <TableCell className="font-medium">
-                      <span>
-                        {dayjs(track.release_date).format('D MMMM YYYY')}
-                      </span>
+                        <span>
+                          {dayjs(track.release_date).format('D MMMM YYYY')}
+                        </span>
                       </TableCell>
 
                       <TableCell className="font-medium">
@@ -422,28 +428,28 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                       </TableCell>
 
                       <TableCell className="font-medium hidden md:table-cell">
-                      <span>
-                        {track?.likes_count > 0 ? (
-                          track?.likes_count.toLocaleString()
-                        ) : (
-                          "No likes"
-                        )}
-                      </span>
+                        <span>
+                          {track?.likes_count > 0 ? (
+                            track?.likes_count.toLocaleString()
+                          ) : (
+                            "No likes"
+                          )}
+                        </span>
                       </TableCell>
 
                       <TableCell className="font-medium text-center hidden md:table-cell">
-                      <span className="mr-2">
-                        {track?.plays_count > 0 ? (
-                          track?.plays_count.toLocaleString()
-                        ) : (
-                          "No plays"
-                        )}
-                      </span>
+                        <span className="mr-2">
+                          {track?.plays_count > 0 ? (
+                            track?.plays_count.toLocaleString()
+                          ) : (
+                            "No plays"
+                          )}
+                        </span>
                       </TableCell>
 
                       <TableCell className="font-medium hidden lg:table-cell">
                         <span className="ml-6">
-                          <Checkbox defaultChecked={track.is_private} disabled/>
+                          <Checkbox defaultChecked={track.is_private} disabled />
                         </span>
                       </TableCell>
 
@@ -455,7 +461,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                               size="icon"
                               variant="ghost"
                             >
-                              <MoreHorizontal className="h-4 w-4"/>
+                              <MoreHorizontal className="h-4 w-4" />
                               <span className="sr-only">Toggle menu</span>
                             </Button>
                           </DropdownMenuTrigger>
@@ -483,7 +489,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                     onClick={() => albums?.previous && setPage(page - 1)}
                   />
                 </PaginationItem>
-                {Array.from({length: pages}).slice(0, 5).map((_, index) => (
+                {Array.from({ length: pages }).slice(0, 5).map((_, index) => (
                   <PaginationItem key={index}>
                     <PaginationLink
                       onClick={() => setPage(index + 1)}
@@ -495,7 +501,7 @@ export default function MyTracksTable({tracks, albums, license, page, setPage}: 
                 ))}
                 {pages !== 0 &&
                   <PaginationItem>
-                    <PaginationEllipsis/>
+                    <PaginationEllipsis />
                   </PaginationItem>
                 }
                 <PaginationItem className='absolute right-0'>

@@ -14,7 +14,7 @@ export default function FooterLogin() {
         </p>
         </div>
         <Link href={signupUrl}>
-        <Button className="text-black bg-white rounded-full font-bold mr-4" size="lg">Sign up free</Button>
+        <Button className="text-black hover:text-white bg-white rounded-full font-bold mr-4" size="lg">Sign up free</Button>
         </Link>
       </div>
     </footer>

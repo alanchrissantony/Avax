@@ -1,5 +1,5 @@
 """
-WSGI config for avax_API project.
+WSGI config for Avax_API project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -30,7 +30,7 @@ export default function ProtectRouter({children, allowedRoles = ["User", "Artist
     redirect(loginUrl);
   }
 
-  // if (!user && !isAuthenticated && isError) return redirect(login);
+  if (!user && !isAuthenticated) return <FullScreenSpinner/>;
 
   if (!allowedRoles.includes(user?.type_profile as string)) {
     return redirect('/');

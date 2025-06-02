@@ -30,7 +30,7 @@ export default function Page() {
             <div className="flex flex-col items-center justify-center text-center">
               <div className="flex flex-col justify-center space-y-8">
                 <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">Avax Premium</h1>
+                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">Spotify Premium</h1>
                   <p className="max-w-[600px] md:text-xl text-white/70 font-semibold">
                     Enjoy ad-free music, offline listening, and high-quality audio.
                   </p>
@@ -59,10 +59,10 @@ export default function Page() {
             <div className="container px-4 md:px-6 dark:text-white">
               <div className="flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="space-y-2">
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Upgrade to Avax Premium</h2>
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Upgrade to Spotify Premium</h2>
                   <p
                     className="max-w-[900px] text-white/60 font-semibold md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed">
-                    Unlock the full Avax experience with these premium features.
+                    Unlock the full Spotify experience with these premium features.
                   </p>
                 </div>
               </div>
@@ -111,10 +111,10 @@ export default function Page() {
             <div className="container px-4 md:px-6 text-white">
               <div className="flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="space-y-2">
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Avax Premium Plans</h2>
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Spotify Premium Plans</h2>
                   <p
                     className="max-w-[900px] text-white/60 font-semibold md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed">
-                    Choose the plan that`s right for you and start enjoying the full Avax experience.
+                    Choose the plan that`s right for you and start enjoying the full Spotify experience.
                   </p>
                 </div>
               </div>

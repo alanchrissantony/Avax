@@ -1,6 +1,6 @@
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {ListFilter, MoreHorizontal, PlusCircle, Search} from "lucide-react";
-import {Input} from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ListFilter, MoreHorizontal, PlusCircle, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu, DropdownMenuCheckboxItem,
   DropdownMenuContent, DropdownMenuItem,
@@ -8,12 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {useRouter} from "next/navigation";
-import {toast} from "react-toastify";
-import {Checkbox} from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner"
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Pagination,
   PaginationContent,
@@ -23,10 +23,10 @@ import {
   PaginationPrevious
 } from "@/components/ui/pagination";
 import * as React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import Link from "next/link";
-import {FormSubmit, ListDetailAlbums} from "@/types/types";
-import {useDeleteMyAlbumMutation} from "@/lib/features/albums/albumApiSlice";
+import { FormSubmit, ListDetailAlbums } from "@/types/types";
+import { useDeleteMyAlbumMutation } from "@/lib/features/albums/albumApiSlice";
 import Image from "next/image";
 import dayjs from "dayjs";
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
@@ -39,7 +39,7 @@ interface Prop {
   setPage: any;
 }
 
-export default function MyAlbumsTable({albums, page, setPage}: Prop) {
+export default function MyAlbumsTable({ albums, page, setPage }: Prop) {
   const pages = Math.floor((albums?.count || 0) / 10);
 
   const [search, setSearch] = useState('')
@@ -47,7 +47,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
 
   const router = useRouter()
 
-  const [albumDelete, {isLoading}] = useDeleteMyAlbumMutation();
+  const [albumDelete, { isLoading }] = useDeleteMyAlbumMutation();
 
 
   const handleSubmit = (e: FormSubmit) => {
@@ -62,15 +62,22 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
   function handleDelete(slug: string) {
     alert('Are you sure you want to delete this album?');
 
-    albumDelete({slug})
+    albumDelete({ slug })
       .unwrap()
       .then(() => {
-        toast.success('Deleted Album')
+        toast.success('Album deleted successfully', {
+          description: 'The album has been removed from your library.',
+        });
       })
-      .catch(() => toast.error('Failed to delete Album'))
+      .catch((error) => {
+        toast.error('Failed to delete album', {
+          description: error?.data?.detail || 'Something went wrong.',
+        });
+      })
+
   }
 
-  if (isLoading) return <FullScreenSpinner/>
+  if (isLoading) return <FullScreenSpinner />
 
   return (
     <Tabs defaultValue="all">
@@ -81,7 +88,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
         </TabsList>
         <div className="relative ml-auto flex-1 md:grow-0">
           <form onSubmit={handleSubmit} className='flex items-center space-x-2'>
-            <Search className="absolute left-4 top-4 h-4 w-4 text-muted-foreground"/>
+            <Search className="absolute left-4 top-4 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search..."
@@ -96,7 +103,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 gap-1">
-                <ListFilter className="h-3.5 w-3.5"/>
+                <ListFilter className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                   Filter
                 </span>
@@ -104,7 +111,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-              <DropdownMenuSeparator/>
+              <DropdownMenuSeparator />
               <DropdownMenuCheckboxItem onClick={(e) => handleFilterSubmit(e, "listeners")}>
                 Listeners
               </DropdownMenuCheckboxItem>
@@ -117,10 +124,10 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
           </DropdownMenu>
 
           <Button size="sm" className="h-8 gap-1" onClick={() => router.push('albums/create')}>
-            <PlusCircle className="h-3.5 w-3.5"/>
+            <PlusCircle className="h-3.5 w-3.5" />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Add Album
-              </span>
+              Add Album
+            </span>
           </Button>
         </div>
       </div>
@@ -169,7 +176,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                         {hoveredRow === index && (
                           <div
                             className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
-                            <PlayTrackButton track={album?.tracks?.[0]} lines={true} className="text-xl"/>
+                            <PlayTrackButton track={album?.tracks?.[0]} lines={true} className="text-xl" />
                           </div>
                         )}
                       </div>
@@ -208,9 +215,9 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                     </TableCell>
 
                     <TableCell className="font-medium hidden lg:table-cell">
-                        <span className="ml-6">
-                          <Checkbox defaultChecked={album.is_private} disabled/>
-                        </span>
+                      <span className="ml-6">
+                        <Checkbox defaultChecked={album.is_private} disabled />
+                      </span>
                     </TableCell>
 
                     <TableCell>
@@ -221,7 +228,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                             size="icon"
                             variant="ghost"
                           >
-                            <MoreHorizontal className="h-4 w-4"/>
+                            <MoreHorizontal className="h-4 w-4" />
                             <span className="sr-only">Toggle menu</span>
                           </Button>
                         </DropdownMenuTrigger>
@@ -248,7 +255,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                     onClick={() => albums?.previous && setPage(page - 1)}
                   />
                 </PaginationItem>
-                {Array.from({length: pages}).slice(0, 5).map((_, index) => (
+                {Array.from({ length: pages }).slice(0, 5).map((_, index) => (
                   <PaginationItem key={index}>
                     <PaginationLink
                       onClick={() => setPage(index + 1)}
@@ -260,7 +267,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                 ))}
                 {pages !== 0 &&
                   <PaginationItem>
-                    <PaginationEllipsis/>
+                    <PaginationEllipsis />
                   </PaginationItem>
                 }
                 <PaginationItem className='absolute right-0'>
@@ -300,7 +307,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoading ? <FullScreenSpinner/> : (
+                {isLoading ? <FullScreenSpinner /> : (
                   albums?.results?.filter((album) => album.is_private).map((album, index) => (
                     <TableRow
                       key={album.id}
@@ -322,7 +329,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                           {hoveredRow === index && (
                             <div
                               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
-                              <PlayTrackButton track={album?.tracks?.[0]} lines={true} className="text-xl"/>
+                              <PlayTrackButton track={album?.tracks?.[0]} lines={true} className="text-xl" />
                             </div>
                           )}
                         </div>
@@ -335,34 +342,34 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                       </TableCell>
 
                       <TableCell className="font-medium">
-                      <span>
-                        {dayjs(album.release_date).format('D MMMM YYYY')}
-                      </span>
+                        <span>
+                          {dayjs(album.release_date).format('D MMMM YYYY')}
+                        </span>
                       </TableCell>
 
                       <TableCell className="font-medium hidden md:table-cell">
-                      <span>
-                        {album?.album_listeners > 0 ? (
-                          album?.album_listeners.toLocaleString()
-                        ) : (
-                          "No listeners"
-                        )}
-                      </span>
+                        <span>
+                          {album?.album_listeners > 0 ? (
+                            album?.album_listeners.toLocaleString()
+                          ) : (
+                            "No listeners"
+                          )}
+                        </span>
                       </TableCell>
 
                       <TableCell className="font-medium text-center hidden md:table-cell">
-                      <span className="mr-2">
-                        {album?.tracks?.length > 0 ? (
-                          album?.tracks?.length.toLocaleString()
-                        ) : (
-                          "No tracks"
-                        )}
-                      </span>
+                        <span className="mr-2">
+                          {album?.tracks?.length > 0 ? (
+                            album?.tracks?.length.toLocaleString()
+                          ) : (
+                            "No tracks"
+                          )}
+                        </span>
                       </TableCell>
 
                       <TableCell className="font-medium hidden lg:table-cell">
                         <span className="ml-6">
-                          <Checkbox defaultChecked={album.is_private} disabled/>
+                          <Checkbox defaultChecked={album.is_private} disabled />
                         </span>
                       </TableCell>
 
@@ -374,7 +381,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                               size="icon"
                               variant="ghost"
                             >
-                              <MoreHorizontal className="h-4 w-4"/>
+                              <MoreHorizontal className="h-4 w-4" />
                               <span className="sr-only">Toggle menu</span>
                             </Button>
                           </DropdownMenuTrigger>
@@ -402,7 +409,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                     onClick={() => albums?.previous && setPage(page - 1)}
                   />
                 </PaginationItem>
-                {Array.from({length: pages}).slice(0, 5).map((_, index) => (
+                {Array.from({ length: pages }).slice(0, 5).map((_, index) => (
                   <PaginationItem key={index}>
                     <PaginationLink
                       onClick={() => setPage(index + 1)}
@@ -414,7 +421,7 @@ export default function MyAlbumsTable({albums, page, setPage}: Prop) {
                 ))}
                 {pages !== 0 &&
                   <PaginationItem>
-                    <PaginationEllipsis/>
+                    <PaginationEllipsis />
                   </PaginationItem>
                 }
                 <PaginationItem className='absolute right-0'>

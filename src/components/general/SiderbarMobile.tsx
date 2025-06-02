@@ -28,10 +28,10 @@ export function SidebarMobile({isLoading, isAuthenticated}: { isLoading: boolean
           <div className="flex flex-col items-center p-4 rounded-lg bg-[#131313] my-1 mb-2 pb-2">
             <Link href="/" className="items-stretch w-full ml-4 mt-1">
               <Image
-                src="/images/avax_full_logo_rgb_white.png"
+                src="/images/spotify_full_logo_rgb_white.png"
                 width={87}
                 height={38}
-                alt="Avax logo"
+                alt="Spotify logo"
                 priority
               />
             </Link>

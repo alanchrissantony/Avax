@@ -2,7 +2,7 @@ import type {Metadata} from "next";
 
 
 export const metadata: Metadata = {
-  title: 'Reset Activation Code - Avax'
+  title: 'Reset Activation Code - Spotify'
 }
 
 export default function Layout({

@@ -2,7 +2,7 @@ import type {Metadata} from "next";
 import ProtectRouter from "@/components/utils/ProtectRouter";
 
 export const metadata: Metadata = {
-  title: 'Account Avax | Analytics'
+  title: 'Account Spotify | Analytics'
 }
 
 export default function Layout({

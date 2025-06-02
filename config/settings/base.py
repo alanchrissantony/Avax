@@ -90,7 +90,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -100,7 +99,6 @@ DATABASES = {
 }
 
 # Password hashing
-
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
@@ -110,7 +108,6 @@ PASSWORD_HASHERS = [
 ]
 
 # Password validation
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -142,7 +139,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 DOMAIN = env("DOMAIN", default="localhost:8000")
-SITE_NAME = "avax Clone"
+SITE_NAME = "Avax"
 
 # Static files (CSS, JavaScript, Images)
 
@@ -183,8 +180,8 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 # DOC
 SPECTACULAR_SETTINGS = {
-    "TITLE": "avax Clone API",
-    "DESCRIPTION": "This is the avax-Clone-API project, which is a clone of the avax web service."
+    "TITLE": "Avax API",
+    "DESCRIPTION": "Avax is a music streaming platform."
     " This API implements a basic set of functionalities allowing users to interact with the platform.",
     "VERSION": "0.1",
     "SERVE_INCLUDE_SCHEMA": False,
@@ -192,9 +189,9 @@ SPECTACULAR_SETTINGS = {
     "SCHEMA_PATH_PREFIX": r"/api/v1/",
 }
 
+# TODO: Uncomment this line to enable JWT authentication by HttpOnly Cookie
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        # TODO: Uncomment this line to enable JWT authentication by HttpOnly Cookie
         "apps.users.authentication.CustomJWTAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
@@ -279,7 +276,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name", "last_name"]
 
 # CACHE
-
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -290,20 +286,15 @@ CACHES = {
     }
 }
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.dummy.DummyCache",
-#     }
-# }
 
 # CUSTOM ADMIN SECTION
 JAZZMIN_SETTINGS = {
-    "site_title": "avax Admin",
-    "site_header": "avax",
-    "site_brand": "avax",
+    "site_title": "Avax Admin",
+    "site_header": "Avax",
+    "site_brand": "Avax",
     "site_logo_classes": "img-circle",
-    "welcome_sign": "Welcome to avax Admin",
-    "copyright": "Copyright by avax",
+    "welcome_sign": "Welcome to Avax Admin",
+    "copyright": "Copyright by Avax",
     "show_ui_builder": True,
 }
 

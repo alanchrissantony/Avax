@@ -3,7 +3,7 @@ import ProtectRouter from "@/components/utils/ProtectRouter";
 
 
 export const metadata: Metadata = {
-  title: 'Avax - Albums'
+  title: 'Spotify - Albums'
 }
 
 export default function TracksLayout({

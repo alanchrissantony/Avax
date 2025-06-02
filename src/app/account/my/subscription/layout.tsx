@@ -2,7 +2,7 @@ import type {Metadata} from "next";
 
 
 export const metadata: Metadata = {
-  title: 'Account Avax - Subscription',
+  title: 'Account Spotify - Subscription',
 }
 
 export default function ArtistsLayout({

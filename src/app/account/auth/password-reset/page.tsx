@@ -16,7 +16,7 @@ export default function Page() {
 
       <div className="mt-4 text-center text-white/60 text-sm">
         Did you remember your password?{" "}
-        <Link href={loginUrl} className="underline hover:text-green-500 text-white/90 font-medium">
+        <Link href={loginUrl} className="underline hover:text-ring text-white/90 font-medium">
           Login
         </Link>
       </div>

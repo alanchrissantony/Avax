@@ -29,3 +29,12 @@ const Separator = React.forwardRef<
 Separator.displayName = SeparatorPrimitive.Root.displayName
 
 export { Separator }
+
+
+export const OrSeparator = ({className}: React.HTMLAttributes<HTMLSpanElement>) => {
+  return (
+    <span className={cn("relative flex items-center justify-center text-sm text-muted-foreground before:content-[''] after:content-[''] before:flex-1 after:flex-1 before:h-px after:h-px before:bg-[#4c4c52] after:bg-[#4c4c52] before:mr-4 after:ml-4", className)}>
+      or
+    </span>
+  )
+}

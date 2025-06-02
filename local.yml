@@ -11,7 +11,7 @@ services:
         depends_on:
             -   server
         networks:
-            - avax-clone-api
+            - avax
     server:
         restart: unless-stopped
         build:
@@ -31,14 +31,14 @@ services:
             - redis
 #            - rabbitmq
         networks:
-            - avax-clone-api
+            - avax
     redis:
         restart: unless-stopped
         image: redis:7.2.5-alpine
         expose:
             - "6379"
         networks:
-            - avax-clone-api
+            - avax
 #    rabbitmq:
 #        restart: unless-stopped
 #        image: rabbitmq:3.13-management-alpine
@@ -49,7 +49,7 @@ services:
 #        env_file:
 #            - ./.envs/.local/rabbitmq.env
 #        networks:
-#            - avax-clone-api
+#            - avax
     worker:
         restart: unless-stopped
         build:
@@ -64,7 +64,7 @@ services:
 #            - rabbitmq
             - redis
         networks:
-            - avax-clone-api
+            - avax
     celery-beat:
         restart: unless-stopped
         build:
@@ -80,7 +80,7 @@ services:
             - redis
             - worker
         networks:
-            - avax-clone-api
+            - avax
     flower:
         restart: unless-stopped
         image: mher/flower
@@ -97,7 +97,7 @@ services:
 #            - rabbitmq
             - redis
         networks:
-            - avax-clone-api
+            - avax
 #        healthcheck:
 #          test: [ "CMD", "curl", "-f", "http://0.0.0.0:5555" ]
 #          interval: 30s
@@ -105,7 +105,7 @@ services:
 #          retries: 5
 
 networks:
-  avax-clone-api:
+  avax:
     driver: bridge
 
 volumes:

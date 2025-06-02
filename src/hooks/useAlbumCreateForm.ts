@@ -1,11 +1,11 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {toast} from "react-toastify";
-import {usePostMyAlbumMutation} from "@/lib/features/albums/albumApiSlice";
-import {z} from "zod";
-import {useState} from "react";
-import {format} from "date-fns";
-import {useRouter} from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner"
+import { usePostMyAlbumMutation } from "@/lib/features/albums/albumApiSlice";
+import { z } from "zod";
+import { useState } from "react";
+import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 
 
 export const albumFormSchema = z.object({
@@ -18,7 +18,7 @@ export const albumFormSchema = z.object({
       message: "Title must not be longer than 100 characters.",
     }),
   description: z.string()
-    .max(500, {message: 'Must not be longer than 500 characters.',}),
+    .max(500, { message: 'Must not be longer than 500 characters.', }),
   image: z.any(),
   release_date: z.string().refine((date) => {
     return !isNaN(Date.parse(date));
@@ -31,7 +31,7 @@ export const albumFormSchema = z.object({
 export type AlbumFormValues = z.infer<typeof albumFormSchema>
 
 export default function useAlbumCreateForm() {
-  const [createAlbum, {isLoading}] = usePostMyAlbumMutation();
+  const [createAlbum, { isLoading }] = usePostMyAlbumMutation();
   const [tempImage, setTempImage] = useState<string>('');
   const router = useRouter();
 
@@ -65,13 +65,19 @@ export default function useAlbumCreateForm() {
     createAlbum(formData)
       .unwrap()
       .then((data) => {
-        toast.success('Created Album')
+        toast.success('Created Album', {
+          description: 'The album has been created successfully.',
+        });
+
         router.replace(`/account/my/artist/albums/${data.slug}/edit`)
       })
-      .catch((err) => {
-        toast.error(err?.data?.title?.[0] || 'Failed to create Album')
+      .catch((error) => {
+        toast.error('Failed to create Album', {
+          description: error?.data?.title?.[0] || 'Please try again or contact support.',
+        });
+
       });
   }
 
-  return {form, onSubmit, isLoading, tempImage, setTempImage}
+  return { form, onSubmit, isLoading, tempImage, setTempImage }
 }

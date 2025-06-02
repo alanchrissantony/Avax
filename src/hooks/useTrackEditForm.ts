@@ -1,15 +1,15 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {toast} from "react-toastify";
-import {useState} from "react";
-import {format} from "date-fns";
-import {useUpdateMyTrackMutation} from "@/lib/features/tracks/trackApiSlice";
-import {DetailTrack} from "@/types/types";
-import {trackFormSchema, TrackFormValues} from "@/hooks/useTrackCreateForm";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner"
+import { useState } from "react";
+import { format } from "date-fns";
+import { useUpdateMyTrackMutation } from "@/lib/features/tracks/trackApiSlice";
+import { DetailTrack } from "@/types/types";
+import { trackFormSchema, TrackFormValues } from "@/hooks/useTrackCreateForm";
 
 
 export default function useTrackEditForm(track: DetailTrack | undefined) {
-  const [updateTrack, {isLoading}] = useUpdateMyTrackMutation();
+  const [updateTrack, { isLoading }] = useUpdateMyTrackMutation();
   const [tempImage, setTempImage] = useState<string | undefined>(track?.image);
   const [tempAudio, setTempAudio] = useState<string | undefined>(track?.file);
 
@@ -39,15 +39,21 @@ export default function useTrackEditForm(track: DetailTrack | undefined) {
     formData.append("release_date", format(data.release_date, "yyyy-MM-dd"));
     formData.append("is_private", data.is_private.toString());
 
-    updateTrack({slug: track?.slug, data: formData})
+    updateTrack({ slug: track?.slug, data: formData })
       .unwrap()
       .then(() => {
-        toast.success('Updated Track')
+        toast.success('Updated Track', {
+          description: 'The track has been updated successfully.',
+        });
+
       })
       .catch((err) => {
-        toast.error(err?.data?.title?.[0] || 'Failed to update Track')
+        toast.error('Failed to update Track', {
+          description: err?.data?.title?.[0] || 'Please try again or contact support.',
+        });
+
       });
   }
 
-  return {form, onSubmit, isLoading, tempImage, setTempImage, tempAudio, setTempAudio}
+  return { form, onSubmit, isLoading, tempImage, setTempImage, tempAudio, setTempAudio }
 }

@@ -1,10 +1,10 @@
-import {z} from "zod";
-import {toast} from "react-toastify";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Artist} from "@/types/types";
-import {useUpdateMeArtistMutation} from "@/lib/features/artists/artistApiSlice";
-import {useState} from "react";
+import { z } from "zod";
+import { toast } from "sonner"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Artist } from "@/types/types";
+import { useUpdateMeArtistMutation } from "@/lib/features/artists/artistApiSlice";
+import { useState } from "react";
 
 
 export const artistFormSchema = z.object({
@@ -41,7 +41,7 @@ export type ArtistFormValues = z.infer<typeof artistFormSchema>
 
 
 export default function useArtistForm(artist: Artist | undefined) {
-  const [updateArtist, {isLoading: isLoadingUpdate}] = useUpdateMeArtistMutation();
+  const [updateArtist, { isLoading: isLoadingUpdate }] = useUpdateMeArtistMutation();
   const [tempImage, setTempImage] = useState<string | undefined>(artist?.image);
 
 
@@ -64,12 +64,18 @@ export default function useArtistForm(artist: Artist | undefined) {
     updateArtist(formData)
       .unwrap()
       .then(() => {
-        toast.success('Updated Artist profile')
+        toast.success('Updated Artist profile', {
+          description: 'The artist profile has been updated successfully.',
+        });
+
       })
-      .catch(() => {
-        toast.error('Failed to update Artist profile')
+      .catch((error) => {
+        toast.error('Failed to update Artist profile', {
+          description: error?.data?.detail || error?.message || 'Please try again or contact support.',
+        });
+
       });
   }
 
-  return {onSubmit, isLoadingUpdate, form, tempImage, setTempImage}
+  return { onSubmit, isLoadingUpdate, form, tempImage, setTempImage }
 }

@@ -1,16 +1,17 @@
 "use client";
 
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import Loader from "@/components/general/Loader";
 import useRegisterForm from "@/hooks/useRegisterForm";
 import ErrorField from "@/components/forms/error-field";
 import React from "react";
-import {Separator} from "@/components/ui/separator";
-import {continueWithGoogle} from "@/utils";
-import {AppleIcon, ChromeIcon, FacebookIcon} from "lucide-react";
+import { OrSeparator } from "@/components/ui/separator";
+import { continueWithGoogle } from "@/utils";
+import { Switch } from "../ui/switch";
+import { AppleIcon, FacebookIcon, GoogleIcon } from "../svg/social";
+import PasswordRequirements from "../others/PasswordRequirements";
 
 
 export default function RegisterForm() {
@@ -24,85 +25,90 @@ export default function RegisterForm() {
     watch,
   } = useRegisterForm()
 
+  const handleChange = (checked: boolean) => {
+    setValue("type_profile", checked ? "artist" : "user")
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="email">Email address</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="email">Email address</Label>
+            <ErrorField message={errors.email?.message} />
+          </div>
           <Input
             placeholder="name@domain.com"
-            className={errors.email ? "border-red-800 border-2" : ""}
             {...register("email")}
           />
-          {errors.email && <ErrorField message={errors.email.message}/>}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="type_profile">Select Type Profile:</Label>
-          <RadioGroup defaultValue="user" name='type_profile'
-                      onValueChange={(value: string) => setValue("type_profile", value)}>
-            <div className="flex items-center space-x-2 pb-1">
-              <RadioGroupItem value="user" id="r1"/>
-              <Label htmlFor="r1">User</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="artist" id="r2"/>
-              <Label htmlFor="r2">Artist</Label>
-            </div>
-          </RadioGroup>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Password</Label>
+            <ErrorField message={errors.password?.message} />
+          </div>
           <Input
             type="password"
             placeholder="Enter a password"
             {...register("password")}
-            className={errors.password ? "border-red-800 border-2" : ""}
           />
-          {errors.password && <ErrorField message={errors.password.message}/>}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password">Password Confirm</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Password Confirm</Label>
+            <ErrorField message={errors.re_password?.message} />
+          </div>
           <Input
             type="password"
             placeholder="Confirm a password"
             {...register("re_password")}
-            className={(watch("password") !== watch("re_password")) ? "border-red-800 border-2" : ""}
           />
-          {(watch("password") !== watch("re_password")) && <ErrorField message="Passwords don't match"/>}
+        </div>
+        <div className="py-3">
+          <PasswordRequirements password={watch("password")} re_password={watch("re_password")} />
+        </div>
+
+        <div className="pb-3 space-x-2 flex items-center">
+          <Switch defaultValue="user" name='type_profile' onCheckedChange={handleChange} />
+          <Label htmlFor="type_profile">Artist</Label>
         </div>
         <Button
           type="submit"
           size="lg"
-          className="w-full text-md rounded-full text-gray-200 font-bold bg-green-600"
+          className="w-full text-md rounded-full text-gray-200 font-bold"
           disabled={isLoading}
         >
-          {isLoading ? <Loader/> : "Sign up"}
+          {isLoading ? <Loader /> : "Sign up"}
         </Button>
       </div>
 
-      <Separator className="my-8"/>
+      <OrSeparator className="my-8" />
 
-      <div className="space-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Button
           variant="outline"
           size="lg"
           className="w-full rounded-full bg-black text-md font-medium border-white/50"
           onClick={continueWithGoogle}
         >
-          <ChromeIcon className="mr-2 h-5 w-5"/>
-          Sign up with Google
+          <GoogleIcon />
         </Button>
-        <Button variant="outline" size="lg"
-                className="w-full rounded-full bg-black text-md font-medium border-white/50">
-          <FacebookIcon className="mr-2 h-5 w-5"/>
-          Sign up with Facebook
+        <Button
+          variant="outline"
+          size="lg"
+          className="w-full rounded-full bg-black text-md font-medium border-white/50"
+        >
+          <FacebookIcon />
         </Button>
-        <Button variant="outline" size="lg"
-                className="w-full rounded-full bg-black text-md font-medium border-white/50">
-          <AppleIcon className="mr-2 h-5 w-5"/>
-          Sign up with Apple
+        <Button
+          variant="outline"
+          size="lg"
+          className="w-full rounded-full bg-black text-md font-medium border-white/50"
+        >
+          <AppleIcon />
         </Button>
       </div>
+
     </form>
   )
 }

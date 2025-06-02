@@ -19,7 +19,7 @@ export default function SearchInput() {
 
   return (
     <form
-      className="flex items-center justify-between w-full gap-3 px-3 py-3 bg-[#242424] shadow-sm rounded-full hover:bg-[#282828]"
+      className="flex items-center justify-between w-full gap-3 px-3 py-3 border border-primary bg-[#242424] shadow-sm rounded-lg hover:bg-[#282828]"
       onSubmit={handleSubmit}
     >
       <Search className="text-white/60"/>

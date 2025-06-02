@@ -1,6 +1,6 @@
 # pull official base image
 FROM python:3.11-alpine3.15 as builder
-LABEL maintainer="Mafan"
+LABEL maintainer="Alan Chris Antony"
 
 RUN apk update && apk add python3-dev gcc libc-dev
 

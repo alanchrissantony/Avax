@@ -1,24 +1,24 @@
 "use client";
 
-import {Track} from "@/types/types";
-import {CircleCheck, CirclePlus, Clock3, Music} from "lucide-react";
+import { Track } from "@/types/types";
+import { Clock3, Music, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {useState} from "react";
+import { useState } from "react";
 import PlayTrackButton from "./PlayTrackButton";
-import {useAppSelector} from "@/lib/hooks";
-import {formatTime} from "@/utils/clientUtils";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import { useAppSelector } from "@/lib/hooks";
+import { formatTime } from "@/utils/clientUtils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import Loader from "@/components/general/Loader";
 import {
   useListUserTracksLikedQuery,
 } from "@/lib/features/tracks/trackApiSlice";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import useFavoriteFollow from "@/hooks/use-favorite-follow";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import * as React from "react";
-import {toast} from "react-toastify";
-import {usePlaylistAddTrackMutation, usePlaylistRemoveTrackMutation} from "@/lib/features/playlists/playlistApiSlice";
+import { toast } from "sonner"
+import { usePlaylistAddTrackMutation, usePlaylistRemoveTrackMutation } from "@/lib/features/playlists/playlistApiSlice";
 import TrackDialogDropdown from "@/components/tracks/TrackDialogDropdown";
 
 interface Props {
@@ -38,40 +38,40 @@ interface Props {
 }
 
 export default function TracksTable({
-                                      tracks,
-                                      tracksPlaylist,
-                                      showSubtitle = false,
-                                      showCover = false,
-                                      showHeader = false,
-                                      showCardHeader = false,
-                                      showArtistCardHeader = false,
-                                      showAlbum = false,
-                                      showPlaysCount = false,
-                                      showIndex = true,
-                                      showAddToPlaylist = false,
-                                      playlistSlug,
-                                      showRemoveTrack = false,
-                                    }: Props) {
-  const {isAuthenticated} = useAppSelector(state => state.auth)
-  const {activeTrack} = useAppSelector(state => state.track)
+  tracks,
+  tracksPlaylist,
+  showSubtitle = false,
+  showCover = false,
+  showHeader = false,
+  showCardHeader = false,
+  showArtistCardHeader = false,
+  showAlbum = false,
+  showPlaysCount = false,
+  showIndex = true,
+  showAddToPlaylist = false,
+  playlistSlug,
+  showRemoveTrack = false,
+}: Props) {
+  const { isAuthenticated } = useAppSelector(state => state.auth)
+  const { activeTrack } = useAppSelector(state => state.track)
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [hoveredTrackSlug, setHoveredTrackSlug] = useState<string | null>(null);
 
-  const [addTrackToPlaylist, {isLoading: isLoadingAddTP}] = usePlaylistAddTrackMutation()
-  const [removeTrackFromPlaylist, {isLoading: isLoadingRemoveTP}] = usePlaylistRemoveTrackMutation()
+  const [addTrackToPlaylist, { isLoading: isLoadingAddTP }] = usePlaylistAddTrackMutation()
+  const [removeTrackFromPlaylist, { isLoading: isLoadingRemoveTP }] = usePlaylistRemoveTrackMutation()
 
   const {
     data: tracksFav,
     isLoading: isLoadingTrFav,
     isFetching: isFetchingTrFav,
-  } = useListUserTracksLikedQuery({}, {skip: !isAuthenticated || !tracks});
+  } = useListUserTracksLikedQuery({}, { skip: !isAuthenticated || !tracks });
 
   const {
     handleAddFav,
     handleRemoveFav,
     isLoadingAddFav,
     isLoadingRemoveFav,
-  } = useFavoriteFollow({favoriteType: "track", trackSlug: hoveredTrackSlug})
+  } = useFavoriteFollow({ favoriteType: "track", trackSlug: hoveredTrackSlug })
 
 
   const load = isLoadingTrFav || isFetchingTrFav
@@ -79,7 +79,7 @@ export default function TracksTable({
   function handleAddToPlaylist(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
 
-    addTrackToPlaylist({playlistSlug: playlistSlug, trackSlug: hoveredTrackSlug})
+    addTrackToPlaylist({ playlistSlug: playlistSlug, trackSlug: hoveredTrackSlug })
       .unwrap()
       .then((data) => {
         toast.success(data?.msg || "Track add to playlist successfully")
@@ -92,18 +92,23 @@ export default function TracksTable({
   function handleRemoveFromPlaylist(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
 
-    removeTrackFromPlaylist({playlistSlug: playlistSlug, trackSlug: hoveredTrackSlug})
+    removeTrackFromPlaylist({ playlistSlug: playlistSlug, trackSlug: hoveredTrackSlug })
       .unwrap()
       .then((data) => {
-        toast.success(data?.msg || "Track remove from playlist successfully")
+        toast.success("Track removed from playlist successfully", {
+          description: data?.msg || "You can undo this action from your playlist.",
+        });
       })
       .catch((error) => {
-        toast.error(error?.data?.msg || "Failed to removed track from playlist.")
+        toast.error("Failed to remove track from playlist.", {
+          description: error?.data?.msg || "Please try again or contact support.",
+        });
+
       })
   }
 
 
-  if (load) return <FullScreenSpinner/>
+  if (load) return <FullScreenSpinner />
 
 
   return (
@@ -125,7 +130,7 @@ export default function TracksTable({
                 />
               ) : (
                 <div>
-                  <Music size={80}/>
+                  <Music size={80} />
                 </div>
               )}
               <div>
@@ -154,7 +159,7 @@ export default function TracksTable({
                 />
               ) : (
                 <div>
-                  <Music size={80}/>
+                  <Music size={80} />
                 </div>
               )}
               <div>
@@ -195,7 +200,7 @@ export default function TracksTable({
             )}
 
             <div className="col-span-1 ml-2 flex justify-center">
-              <Clock3 size={16}/>
+              <Clock3 size={16} />
             </div>
           </header>
 
@@ -209,9 +214,8 @@ export default function TracksTable({
       <div className="w-full col-span-12">
         {tracks?.map((track, index) => (
           <div
-            className={`grid py-2 px-4 rounded-md grid-cols-12 group/item ${
-              hoveredRow === index ? "bg-white/10 duration-300 transition" : "bg-transparent"
-            }`}
+            className={`grid py-2 px-4 rounded-md grid-cols-12 group/item ${hoveredRow === index ? "bg-white/10 duration-300 transition" : "bg-transparent"
+              }`}
             key={track.id}
             onMouseEnter={() => {
               setHoveredTrackSlug(track.slug)
@@ -222,7 +226,7 @@ export default function TracksTable({
             {showIndex && (
               <span className="flex items-center col-span-1 text-sm text-white/60">
                 {hoveredRow === index || activeTrack?.slug === track.slug ? (
-                  <PlayTrackButton track={track} tracks={tracks} index={index} lines={true} className="text-xl w-1/2"/>
+                  <PlayTrackButton track={track} tracks={tracks} index={index} lines={true} className="text-xl w-1/2" />
                 ) : (
                   <span className="ml-1">{index + 1}</span>
                 )}
@@ -235,9 +239,9 @@ export default function TracksTable({
               <div className="flex items-center w-full gap-3">
                 {showCover && (
                   <div className="relative flex-shrink-0 w-10 h-10">
-                    {track.album.image && track.album.image.length > 0 ? (
+                    {track.image && track.image.length > 0 ? (
                       <Image
-                        src={track.album.image}
+                        src={track.image}
                         alt={track.title}
                         height={40}
                         width={40}
@@ -251,7 +255,7 @@ export default function TracksTable({
                     )}
                     {!showIndex && hoveredRow === index && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
-                        <PlayTrackButton track={track} tracks={tracks} index={index} lines={true} className="text-xl"/>
+                        <PlayTrackButton track={track} tracks={tracks} index={index} lines={true} className="text-xl" />
                       </div>
                     )}
                   </div>
@@ -261,8 +265,7 @@ export default function TracksTable({
                   <div>
                     <Link
                       href={`/tracks/${track.slug}`}
-                      className={`w-10/12 text-sm font-medium truncate cursor-pointer hover:underline ${
-                        activeTrack?.slug === track.slug && "text-green-500"}`}
+                      className={`w-10/12 text-sm font-medium truncate cursor-pointer hover:underline ${activeTrack?.slug === track.slug && "text-primary"}`}
                     >
                       {track.title}
                     </Link>
@@ -270,7 +273,7 @@ export default function TracksTable({
                     {showSubtitle && (
                       <div
                         className="flex flex-wrap items-center w-full gap-1 pr-3 text-sm text-white/60 group-hover/item:text-white">
-                      <span className="truncate">
+                        <span className="truncate">
                           <Link
                             key={track.artist.id + track.id}
                             href={`/artists/${track.artist.slug}`}
@@ -278,7 +281,7 @@ export default function TracksTable({
                           >
                             {track.artist.display_name}
                           </Link>
-                      </span>
+                        </span>
                       </div>
                     )}
                   </div>
@@ -317,11 +320,10 @@ export default function TracksTable({
                             disabled={isLoadingRemoveFav && (hoveredRow === index)}
                           >
                             {(isLoadingRemoveFav && (hoveredRow === index)) ?
-                              <Loader className="w-[15px] h-[15px]"/> : (
-                                <CircleCheck
-                                  strokeWidth={3}
+                              <Loader className="w-[15px] h-[15px]" /> : (
+                                <Star
                                   size={18}
-                                  className="transition ease-in-out transform text-green-500 hover:scale-105 duration-150 hover:text-green-300"
+                                  className="transition ease-in-out transform text-primary fill-primary hover:scale-105 duration-150"
                                 />
                               )}
                           </TooltipTrigger>
@@ -332,8 +334,8 @@ export default function TracksTable({
                       ) : (
                         <>
                           <TooltipTrigger onClick={handleAddFav} disabled={isLoadingAddFav && (hoveredRow === index)}>
-                            {(isLoadingAddFav && (hoveredRow === index)) ? <Loader className="w-[15px] h-[15px]"/> : (
-                              <CirclePlus
+                            {(isLoadingAddFav && (hoveredRow === index)) ? <Loader className="w-[15px] h-[15px]" /> : (
+                              <Star
                                 size={18}
                                 className="opacity-0 group-hover/item:opacity-100 transition ease-in-out transform text-white/60 hover:scale-105 duration-150 hover:text-gray-100"
                               />
@@ -357,7 +359,7 @@ export default function TracksTable({
                       className="bg-opacity-0 text-sm w-16 h-7 text-white border-white hover:scale-105 transition duration-150 font-semibold"
                       onClick={handleRemoveFromPlaylist}
                     >
-                      {(isLoadingRemoveTP && (hoveredRow === index)) ? <Loader/> : (
+                      {(isLoadingRemoveTP && (hoveredRow === index)) ? <Loader /> : (
                         "Remove"
                       )}
                     </Button>
@@ -368,7 +370,7 @@ export default function TracksTable({
                       className="bg-opacity-0 text-sm w-14 h-7 text-white border-white hover:scale-105 transition duration-150 font-semibold"
                       onClick={handleAddToPlaylist}
                     >
-                      {(isLoadingAddTP && (hoveredRow === index)) ? <Loader/> : (
+                      {(isLoadingAddTP && (hoveredRow === index)) ? <Loader /> : (
                         "Add"
                       )}
                     </Button>
@@ -378,7 +380,7 @@ export default function TracksTable({
                 <span className="mx-auto w-full">{formatTime(track.duration)}</span>
               )}
               <div>
-                <TrackDialogDropdown showRemoveTrack={showRemoveTrack} track={track} playlistSlug={playlistSlug}/>
+                <TrackDialogDropdown showRemoveTrack={showRemoveTrack} track={track} playlistSlug={playlistSlug} />
               </div>
             </small>
           </div>

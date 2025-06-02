@@ -1,5 +1,5 @@
 """
-ASGI config for avax_API project.
+ASGI config for Avax_API project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

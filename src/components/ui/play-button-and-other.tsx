@@ -1,12 +1,13 @@
 import PlayTrackButton from "@/components/tracks/PlayTrackButton";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import {CircleCheck, CirclePlus} from "lucide-react";
-import {Track} from "@/types/types";
-import {Button} from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Star } from "lucide-react";
+import { Track } from "@/types/types";
+import { Button } from "@/components/ui/button";
 import Loader from "@/components/general/Loader";
 import useFavoriteFollow from "@/hooks/use-favorite-follow";
 
 interface Props {
+  className?: string;
   track?: Track | undefined;
   tracks?: Track[] | undefined;
   index?: number | null;
@@ -18,22 +19,27 @@ interface Props {
   isFavorite?: boolean;
   userIdFollow?: number;
   slugFav?: string;
+  variant?: "simple" | "filled" | "classic";
+  bgColor?: string
 }
 
 
 export default function PlayButtonAndOther({
-                                             track,
-                                             tracks,
-                                             index,
-                                             isPlayButton = true,
-                                             isShowFollow = false,
-                                             isFollowing = false,
-                                             isShowFavorite = false,
-                                             favoriteType,
-                                             isFavorite = false,
-                                             userIdFollow,
-                                             slugFav,
-                                           }: Props) {
+  className="w-14 h-14 text-4xl",
+  track,
+  tracks,
+  index,
+  isPlayButton = true,
+  isShowFollow = false,
+  isFollowing = false,
+  isShowFavorite = false,
+  favoriteType,
+  isFavorite = false,
+  userIdFollow,
+  slugFav,
+  variant = "filled",
+  bgColor
+}: Props) {
   const {
     handleFollow,
     handleUnfollow,
@@ -43,7 +49,7 @@ export default function PlayButtonAndOther({
     isLoadingUnfollow,
     isLoadingAddFav,
     isLoadingRemoveFav,
-  } = useFavoriteFollow({favoriteType, userIdFollow, slugFav})
+  } = useFavoriteFollow({ favoriteType, userIdFollow, slugFav })
 
   return (
     <div className="flex items-center space-x-6 ml-4">
@@ -52,8 +58,9 @@ export default function PlayButtonAndOther({
           track={track}
           tracks={tracks}
           index={index}
-          variant="filled"
-          className="w-14 h-14 text-4xl"
+          variant={variant}
+          className={className}
+          bgColor={bgColor}
         />
       )}
       {isShowFavorite && (
@@ -64,9 +71,9 @@ export default function PlayButtonAndOther({
                 <TooltipTrigger onClick={handleRemoveFav} disabled={isLoadingRemoveFav}>
                   {isLoadingRemoveFav ?
                     <Loader
-                      className={`${favoriteType === "trackPlayer" ? "w-[21px] h-[21px]" : "w-[32px] h-[32px]"}`}/> : (
-                      <CircleCheck strokeWidth={3} size={favoriteType === "trackPlayer" ? 20 : 33}
-                                   className="text-green-500 hover:scale-105 duration-150 hover:text-green-300"/>
+                      className={`${favoriteType === "trackPlayer" ? "w-[21px] h-[21px]" : "w-[32px] h-[32px]"}`} /> : (
+                      <Star size={favoriteType === "trackPlayer" ? 20 : 33}
+                        className="text-primary fill-primary hover:scale-105 duration-150" />
                     )}
                 </TooltipTrigger>
                 <TooltipContent className="text-white bg-[#202020]">
@@ -77,9 +84,9 @@ export default function PlayButtonAndOther({
               <>
                 <TooltipTrigger onClick={handleAddFav} disabled={isLoadingAddFav}>
                   {isLoadingAddFav ? <Loader
-                    className={`${favoriteType === "trackPlayer" ? "w-[21px] h-[21px]" : "w-[32px] h-[32px]"}`}/> : (
-                    <CirclePlus size={favoriteType === "trackPlayer" ? 20 : 33}
-                                className="text-[#909090] hover:scale-105 duration-150 hover:text-gray-100"/>
+                    className={`${favoriteType === "trackPlayer" ? "w-[21px] h-[21px]" : "w-[32px] h-[32px]"}`} /> : (
+                    <Star size={favoriteType === "trackPlayer" ? 20 : 33}
+                      className="text-[#909090] hover:scale-105 duration-150 hover:text-gray-100" />
                   )}
                 </TooltipTrigger>
                 <TooltipContent className="text-white bg-[#202020]">
@@ -99,7 +106,7 @@ export default function PlayButtonAndOther({
             variant="ghost"
             className="rounded-full border border-white/30 h-8 w-19 hover:bg-inherit hover:border-white font-semibold hover:scale-105 duration-150"
           >
-            {isLoadingUnfollow ? <Loader/> : "Following"}
+            {isLoadingUnfollow ? <Loader /> : "Following"}
           </Button>
         ) : (
           <Button
@@ -108,7 +115,7 @@ export default function PlayButtonAndOther({
             variant="ghost"
             className="rounded-full border border-white/30 h-8 w-19 hover:bg-inherit hover:border-white font-semibold hover:scale-105 duration-150"
           >
-            {isLoadingFollow ? <Loader/> : "Follow"}
+            {isLoadingFollow ? <Loader /> : "Follow"}
           </Button>
         )
       )}

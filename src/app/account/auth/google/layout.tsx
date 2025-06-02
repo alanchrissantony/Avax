@@ -3,7 +3,7 @@ import {Suspense} from "react";
 
 
 export const metadata: Metadata = {
-  title: 'Avax - Google oAuth2'
+  title: 'Spotify - Google oAuth2'
 }
 
 export default function Layout({

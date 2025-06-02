@@ -73,9 +73,6 @@ export default function ProfileDropdownMenu() {
         <DropdownMenuItem onClick={() => router.push(profileMyUrl)}>
           <span>Profile</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push('/premium')}>
-          <span>Upgrade to Premium</span>
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(accountMySettingsUrl)}>
           <span>Settings</span>
         </DropdownMenuItem>

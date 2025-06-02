@@ -1,13 +1,12 @@
-import {toast} from "react-toastify";
+import { toast } from "sonner"
 
 
 export default async function continueWithSocialAuth(provider: string, redirect: string) {
   try {
-    const url = `${process.env.NEXT_PUBLIC_HOST}/api/v1/auth/o/${provider}/?redirect_uri=${
-      process.env.NODE_ENV === 'production'
+    const url = `${process.env.NEXT_PUBLIC_HOST}/api/v1/auth/o/${provider}/?redirect_uri=${process.env.NODE_ENV === 'production'
         ? process.env.NEXT_PUBLIC_REDIRECT_URL
         : 'http://localhost:3000/account/auth'
-    }/${redirect}`;
+      }/${redirect}`;
 
     const res = await fetch(url, {
       method: "GET",
@@ -23,10 +22,16 @@ export default async function continueWithSocialAuth(provider: string, redirect:
     if (res.status === 200 && typeof window !== "undefined") {
       window.location.replace(data.authorization_url);
     } else {
-      toast.error(`Failed to continue with ${provider} social auth nested`)
+      toast.error(`Failed to continue with ${provider} social auth nested`, {
+        description: 'Please try again or contact support.',
+      });
+
     }
 
   } catch (err) {
-    toast.error(`Failed to continue with ${provider} social auth`)
+    toast.error(`Failed to continue with ${provider} social auth`, {
+      description: 'Please try again or contact support.',
+    });
+
   }
 }

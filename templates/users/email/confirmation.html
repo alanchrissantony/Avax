@@ -1,21 +1,77 @@
 {% load i18n %}
 
 {% block subject %}
-{% blocktrans %}{{ site_name }} - Your account has been successfully created and activated!{% endblocktrans %}
+{% blocktrans %}{{ site_name }} – Welcome to the music!{% endblocktrans %}
 {% endblock %}
 
-{% block text_body %}
-{% trans "Your account has been created and is ready to use!" %}
-
-{% trans "Thanks for using our site!" %}
-
-{% blocktrans %}The {{ site_name }} team{% endblocktrans %}
-{% endblock text_body %}
-
 {% block html_body %}
-<p>{% trans "Your account has been created and is ready to use!" %}</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        background-color: #191414;
+        color: #FFFFFF;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        padding: 0;
+        margin: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 40px 20px;
+        background-color: #121212;
+      }
+      .logo {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .logo img {
+        width: 120px;
+      }
+      h1 {
+        color: #00AFF0;
+        font-size: 24px;
+      }
+      p {
+        font-size: 16px;
+        line-height: 3;
+        color: #636363;
+      }
+      .cta-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 24px;
+        background-color: #00AFF0;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: bold;
+      }
+      .footer {
+        margin-top: 40px;
+        font-size: 13px;
+        color: #aaaaaa;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img src="https://raw.githubusercontent.com/alanchrissantony/test/refs/heads/main/avax/assets/avax.png" alt="{{ site_name }} logo" />
+      </div>
+      <h1>{% trans "Welcome to" %} {{ site_name }}!</h1>
+      <p>{% trans "Your account has been successfully created and is ready to use." %}</p>
+      <p>{% trans "Let the music journey begin!" %}</p>
+      <a href="{{ login_url }}" class="cta-button">{% trans "Start Listening" %}</a>
 
-<p>{% trans "Thanks for using our site!" %}</p>
-
-<p>{% blocktrans %}The {{ site_name }} team{% endblocktrans %}</p>
+      <div class="footer">
+        {% blocktrans %}The {{ site_name }} team{% endblocktrans %}
+      </div>
+    </div>
+  </body>
+</html>
 {% endblock html_body %}
+

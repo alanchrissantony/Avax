@@ -1,29 +1,29 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useResendActivationCodeMutation} from "@/lib/features/auth/authApiSlice";
-import {redirect, useRouter} from "next/navigation";
-import {useAppSelector} from "@/lib/hooks";
-import {useEffect} from "react";
-import {toast} from "react-toastify";
-import {loginUrl, profileMyUrl} from "@/utils/consts";
-import {passwordResetFormSchema, PasswordResetFormValues} from "@/hooks/usePasswordResetForm";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useResendActivationCodeMutation } from "@/lib/features/auth/authApiSlice";
+import { redirect, useRouter } from "next/navigation";
+import { useAppSelector } from "@/lib/hooks";
+import { useEffect } from "react";
+import { toast } from "sonner"
+import { loginUrl, profileMyUrl } from "@/utils/consts";
+import { passwordResetFormSchema, PasswordResetFormValues } from "@/hooks/usePasswordResetForm";
 
 
 export default function useResendActivationCodeForm() {
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<PasswordResetFormValues>({
     resolver: zodResolver(passwordResetFormSchema),
     mode: "onChange",
   });
 
-  const [resendActivationCode, {isLoading}] = useResendActivationCodeMutation()
+  const [resendActivationCode, { isLoading }] = useResendActivationCodeMutation()
 
   const router = useRouter()
 
-  const {isAuthenticated} = useAppSelector(state => state.auth);
+  const { isAuthenticated } = useAppSelector(state => state.auth);
 
   useEffect(() => {
     if (isAuthenticated) redirect(profileMyUrl);
@@ -35,12 +35,18 @@ export default function useResendActivationCodeForm() {
       .unwrap()
       .then(() => {
         router.push(loginUrl)
-        toast.success("Request send, check your email")
+        toast.success("Request sent, check your email", {
+          description: "Please follow the instructions sent to your email to proceed.",
+        });
+
       })
       .catch((error) => {
-        toast.error(error?.data?.detail || "Failed to send request.")
+        toast.error("Failed to send request.", {
+          description: error?.data?.detail || "Please try again or contact support.",
+        });
+
       })
   }
 
-  return {handleSubmit, register, onSubmit, errors, isLoading}
+  return { handleSubmit, register, onSubmit, errors, isLoading }
 }

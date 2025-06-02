@@ -122,7 +122,7 @@ export default function UserLibrary() {
                 href={"/"}
                 className="flex gap-3 px-2 text-gray-300 hover:text-white">
                 <Layers size={25}/>
-                <span className="font-semibold text-s">Your Library</span>
+                <span className="font-semibold text-s">Playlists</span>
               </Link>
             </TooltipTrigger>
             <TooltipContent className="bg-[#161616]">
@@ -169,9 +169,9 @@ export default function UserLibrary() {
 
       {isAuthenticated && (
         <>
-          <div className="flex flex-wrap items-center gap-2 pb-4 text-xs font-semibold">
+          <div className="flex flex-wrap items-center gap-1 pb-4 text-xs font-semibold">
             {libraryType !== "all" ? (
-              <Button onClick={handleResetType} size="icon" variant="ghost" className="h-6 w-6">
+              <Button onClick={handleResetType} size="icon" variant="ghost" className="h-5 w-5">
                 <CircleX className="text-[#606060]"/>
               </Button>
             ) : ""}
@@ -207,7 +207,7 @@ export default function UserLibrary() {
                   } flex items-center p-2 gap-3 rounded-sm text-white cursor-pointer hover:bg-[#404040]/20`}
                 >
                   <Image
-                    src="/images/avax_like.png"
+                    src="/images/liked_cover.png"
                     height={50}
                     width={50}
                     className="rounded-md"

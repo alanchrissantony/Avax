@@ -50,7 +50,7 @@ volume:
 	docker volume inspect local_postgres_data
 
 avax-db:
-	docker compose -f local.yml exec postgres psql --username=mafan --dbname=avax-live
+	docker compose -f local.yml exec postgres psql --username=avax --dbname=avax-live
 
 cov:
 	coverage run --source='.' --omit='*/migrations/*.py,*/asgi.py,*/wsgi.py,*/manage.py' manage.py test

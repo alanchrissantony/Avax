@@ -16,7 +16,7 @@ export default function Page() {
       <div className="space-y-2 text-center">
         <Link
           href={passwordResetUrl}
-          className="hover:text-green-500 underline text-sm text-white/90 font-medium"
+          className="hover:text-ring underline text-sm text-white/90 font-medium"
         >
           Forgot your password?
         </Link>
@@ -26,7 +26,7 @@ export default function Page() {
 
       <div className="flex items-center justify-center space-x-2">
         <p className="text-sm text-white/70 font-normal">Don`t have an account?{' '}
-          <Link href={signupUrl} className="hover:text-green-500 underline text-sm text-white/90 font-medium">
+          <Link href={signupUrl} className="hover:text-ring underline text-sm text-white/90 font-medium">
             Sign up for Avax
           </Link>
         </p>
@@ -34,7 +34,7 @@ export default function Page() {
 
       <div className="flex items-center justify-center text-center space-x-2">
         <p className="text-sm text-white/70 font-normal">Haven`t received the email with the activation code?{' '}
-          <Link href={reSendActivationUrl} className="hover:text-green-500 underline text-sm text-white/90 font-medium">
+          <Link href={reSendActivationUrl} className="hover:text-ring underline text-sm text-white/90 font-medium">
             Resend Activation Code
           </Link>
         </p>

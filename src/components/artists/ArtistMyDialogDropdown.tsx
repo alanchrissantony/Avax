@@ -5,22 +5,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {Camera, Copy, Ellipsis, ImageOff, Pencil} from "lucide-react";
-import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {Input} from "@/components/ui/input";
-import {Artist} from "@/types/types";
-import {toast} from "react-toastify";
-import {useRouter} from "next/navigation";
-import {z} from "zod";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { Camera, Copy, Ellipsis, ImageOff, Pencil } from "lucide-react";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Artist } from "@/types/types";
+import { toast } from "sonner"
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorField from "@/components/forms/error-field";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Loader from "@/components/general/Loader";
-import {useUpdateMeArtistMutation} from "@/lib/features/artists/artistApiSlice";
+import { useUpdateMeArtistMutation } from "@/lib/features/artists/artistApiSlice";
 import getImageData from "@/utils/getImage";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 
 const profileFormSchema = z.object({
@@ -37,11 +37,11 @@ const profileFormSchema = z.object({
 
 type ProfileFormValue = z.infer<typeof profileFormSchema>
 
-export default function ArtistMyDialogDropdown({artist}: { artist: Artist | undefined }) {
+export default function ArtistMyDialogDropdown({ artist }: { artist: Artist | undefined }) {
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
     setValue,
   } = useForm<ProfileFormValue>({
     resolver: zodResolver(profileFormSchema),
@@ -52,7 +52,7 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
     mode: "onChange",
   });
 
-  const [updateProfile, {isLoading}] = useUpdateMeArtistMutation()
+  const [updateProfile, { isLoading }] = useUpdateMeArtistMutation()
   const [tempImage, setTempImage] = useState<string | undefined>(artist?.image);
   const router = useRouter();
 
@@ -68,11 +68,17 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
     updateProfile(formData)
       .unwrap()
       .then(() => {
-        toast.success("Updated Artist Profile")
+        toast.success("Artist profile updated", {
+          description: "Your changes have been saved successfully.",
+        });
+
         router.refresh();
       })
-      .catch(() => {
-        toast.error("Uh oh! Something went wrong.")
+      .catch((error) => {
+        toast.error("Failed to update artist profile", {
+          description: error?.data?.detail || "Something went wrong.",
+        });
+
       })
   }
 
@@ -81,8 +87,8 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size='icon' variant='ghost'
-                  className="flex bg-opacity-50 h-8 w-8 rounded-full hover:bg-white/0 hover:scale-110 duration-200">
-            <Ellipsis className="h-7 w-7 text-[#afafaf]"/>
+            className="flex bg-opacity-50 h-8 w-8 rounded-full hover:bg-white/0 hover:scale-110 duration-200">
+            <Ellipsis className="h-7 w-7 text-[#afafaf]" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48 ml-36 mt-2 bg-[#272727] rounded-sm border-none shadow-2xl">
@@ -90,13 +96,13 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
             <DropdownMenuItem>
               <DialogTrigger asChild>
                 <button className="flex items-center w-full h-full text-start text-white/90">
-                  <Pencil className="h-3.5 w-3.5 mr-2"/>
+                  <Pencil className="h-3.5 w-3.5 mr-2" />
                   Edit Artist Profile
                 </button>
               </DialogTrigger>
             </DropdownMenuItem>
             <DropdownMenuItem className="text-white/90">
-              <Copy className="h-3.5 w-3.5 mr-2"/>
+              <Copy className="h-3.5 w-3.5 mr-2" />
               <span>Copy link to profile</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -111,8 +117,8 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
             <div className="relative group">
               {tempImage && artist?.image && (
                 <Avatar className="w-44 h-44 static">
-                  <AvatarImage src={tempImage} className="aspect-square object-cover"/>
-                  <AvatarFallback><ImageOff className="w-16 h-16 text-[#909090]"/></AvatarFallback>
+                  <AvatarImage src={tempImage} className="aspect-square object-cover" />
+                  <AvatarFallback><ImageOff className="w-16 h-16 text-[#909090]" /></AvatarFallback>
                 </Avatar>
               )}
               <Input
@@ -122,7 +128,7 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
                 className="hidden"
                 id="upload-image"
                 onChange={e => {
-                  const {files, displayUrl} = getImageData(e)
+                  const { files, displayUrl } = getImageData(e)
                   setTempImage(displayUrl)
                   setValue("image", files)
                 }}
@@ -131,7 +137,7 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
                 htmlFor="upload-image"
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
               >
-                <Camera className="h-8 w-8 text-white"/>
+                <Camera className="h-8 w-8 text-white" />
               </label>
             </div>
             <div className="w-full">
@@ -143,7 +149,7 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
                     {...register('display_name')}
                   />
                 </div>
-                {errors.display_name && <ErrorField message={errors.display_name.message}/>}
+                {errors.display_name && <ErrorField message={errors.display_name.message} />}
               </div>
               <div className="w-full text-right">
                 <Button
@@ -151,14 +157,14 @@ export default function ArtistMyDialogDropdown({artist}: { artist: Artist | unde
                   size="lg"
                   className="bg-white text-black font-semibold text-base"
                 >
-                  {isLoading ? <Loader/> : "Save"}
+                  {isLoading ? <Loader /> : "Save"}
                 </Button>
               </div>
             </div>
           </div>
         </form>
         <DialogFooter className="text-xs font-semibold text-white/90">
-          By proceeding, you agree to give Avax access to the image you choose to upload. Please make sure
+          By proceeding, you agree to give Spotify access to the image you choose to upload. Please make sure
           you have the right to upload the image.
         </DialogFooter>
       </DialogContent>

@@ -1,10 +1,10 @@
-import {z} from "zod";
-import {useState} from "react";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {toast} from "react-toastify";
-import {useUpdateUserProfileImageMutation} from "@/lib/features/auth/authApiSlice";
-import {User} from "@/types/types";
+import { z } from "zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner"
+import { useUpdateUserProfileImageMutation } from "@/lib/features/auth/authApiSlice";
+import { User } from "@/types/types";
 
 
 const imageFormSchema = z.object({
@@ -14,12 +14,12 @@ const imageFormSchema = z.object({
 type ImageFormValues = z.infer<typeof imageFormSchema>
 
 export default function useImageForm(user: User | undefined) {
-  const [updateImage, {isLoading}] = useUpdateUserProfileImageMutation();
+  const [updateImage, { isLoading }] = useUpdateUserProfileImageMutation();
   const [tempImage, setTempImage] = useState(user?.image);
 
   const form = useForm<ImageFormValues>({
     resolver: zodResolver(imageFormSchema),
-    defaultValues: {image: user?.image},
+    defaultValues: { image: user?.image },
     mode: "onChange",
   })
 
@@ -31,15 +31,24 @@ export default function useImageForm(user: User | undefined) {
       updateImage(formData)
         .unwrap()
         .then(() => {
-          toast.success('Updated image')
+          toast.success('Updated image', {
+            description: 'The image has been updated successfully.',
+          });
+
         })
-        .catch(() => {
-          toast.error('Failed to update image')
+        .catch((error) => {
+          toast.error('Failed to update image', {
+            description: error?.data?.detail || error?.message || 'Please try again or contact support.',
+          });
+
         });
     } else {
-      toast.warning('Not Uploaded Image')
+      toast.warning('Not Uploaded Image', {
+        description: 'Please upload a valid image to proceed.',
+      });
+
     }
   }
 
-  return {form, onSubmit, isLoading, tempImage, setTempImage}
+  return { form, onSubmit, isLoading, tempImage, setTempImage }
 }

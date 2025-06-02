@@ -189,7 +189,7 @@ export function AccountForm({user}: UserFormProps) {
 
           <Button
             type="submit"
-            className='w-full text-gray-100 bg-green-600'
+            className='w-full text-gray-100'
             disabled={isLoadingUpdate}
           >
             Update profile

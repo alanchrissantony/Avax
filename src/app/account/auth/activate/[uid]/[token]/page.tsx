@@ -1,9 +1,9 @@
 "use client";
-import {useActivationMutation} from "@/lib/features/auth/authApiSlice";
-import {useEffect} from "react";
-import {useRouter} from "next/navigation";
-import {toast} from "react-toastify";
-import {loginUrl} from "@/utils/consts";
+import { useActivationMutation } from "@/lib/features/auth/authApiSlice";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner"
+import { loginUrl } from "@/utils/consts";
 
 interface Props {
   params: {
@@ -13,20 +13,25 @@ interface Props {
 }
 
 
-export default function Page({params}: Props) {
+export default function Page({ params }: Props) {
   const router = useRouter();
   const [activation] = useActivationMutation()
 
   useEffect(() => {
-    const {uid, token} = params
+    const { uid, token } = params
 
-    activation({uid, token})
+    activation({ uid, token })
       .unwrap()
       .then(() => {
-        toast.success("Account activated.")
+        toast.success('Success', {
+          description: 'Account activated.',
+        });
       })
       .catch((error) => {
-        toast.error(error?.data?.detail || "Failed to activate account")
+        toast.error('Activation failed', {
+          description: error?.data?.detail || 'Failed to activate account.',
+        });
+
       })
       .finally(() => {
         router.push(loginUrl)
@@ -38,7 +43,7 @@ export default function Page({params}: Props) {
     <section className="my-10">
       <div className="text-center space-y-4">
         <div className="space-y-2">
-          <h1 className="text-4xl font-extrabold text-green-600 tracking-tighter sm:text-5xl">
+          <h1 className="text-4xl font-extrabold text-primary tracking-tighter sm:text-5xl">
             Activating your account...
           </h1>
           <p

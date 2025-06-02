@@ -1,17 +1,17 @@
-import {z} from "zod";
+import { z } from "zod";
 import {
   useDeleteUserMeMutation,
   useLogoutMutation,
   useUpdateUserProfileMutation
 } from "@/lib/features/auth/authApiSlice";
-import {FormEvent, useState} from "react";
-import {useRouter} from "next/navigation";
-import {useAppDispatch} from "@/lib/hooks";
-import {toast} from "react-toastify";
-import {logout as setLogout} from "@/lib/features/auth/authSlice";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {UserProfile} from "@/types/types";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/lib/hooks";
+import { toast } from "sonner"
+import { logout as setLogout } from "@/lib/features/auth/authSlice";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserProfile } from "@/types/types";
 
 
 export const accountFormSchema = z.object({
@@ -39,8 +39,8 @@ export type AccountFormValues = z.infer<typeof accountFormSchema>
 
 
 export default function useAccountForm(user: UserProfile | undefined) {
-  const [updateUser, {isLoading: isLoadingUpdate}] = useUpdateUserProfileMutation();
-  const [deleteUser, {isLoading: isLoadingDelete}] = useDeleteUserMeMutation();
+  const [updateUser, { isLoading: isLoadingUpdate }] = useUpdateUserProfileMutation();
+  const [deleteUser, { isLoading: isLoadingDelete }] = useDeleteUserMeMutation();
   const [logout,] = useLogoutMutation();
   const [password, setPassword] = useState('')
   const [tempImage, setTempImage] = useState<string | undefined>(user?.image);
@@ -68,17 +68,23 @@ export default function useAccountForm(user: UserProfile | undefined) {
     updateUser(formData)
       .unwrap()
       .then(() => {
-        toast.success('Updated Account')
+        toast.success('Updated Account', {
+          description: 'Your account details have been updated successfully.',
+        });
+
       })
-      .catch(() => {
-        toast.error('Failed to update Account')
+      .catch((error) => {
+        toast.error('Operation failed', {
+          description: error?.data?.detail || 'Please try again or contact support.',
+        });
+
       });
   }
 
   function handleDelete(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    deleteUser({current_password: password})
+    deleteUser({ current_password: password })
       .unwrap()
       .then(() => {
         toast.success('Deleted Account')

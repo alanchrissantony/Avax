@@ -19,7 +19,7 @@ export default function WorkInProgress() {
         </div>
         <Button
           size="lg"
-          className="bg-white text-black text-base font-semibold hover:scale-105 transition duration-150"
+          className="text-white text-base font-semibold hover:scale-105 transition duration-150"
           onClick={() => router.back()}
         >
           Go Back

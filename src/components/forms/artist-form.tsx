@@ -103,7 +103,7 @@ export function ArtistForm({artist}: Props) {
 
         <Button
           type="submit"
-          className='w-full text-gray-100 bg-green-600'
+          className='w-full'
           disabled={isLoadingUpdate}
         >
           Update artist profile

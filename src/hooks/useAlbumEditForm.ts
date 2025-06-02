@@ -1,15 +1,15 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {toast} from "react-toastify";
-import {useUpdateMyAlbumMutation} from "@/lib/features/albums/albumApiSlice";
-import {useState} from "react";
-import {format} from "date-fns";
-import {DetailAlbum} from "@/types/types";
-import {albumFormSchema, AlbumFormValues} from "@/hooks/useAlbumCreateForm";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner"
+import { useUpdateMyAlbumMutation } from "@/lib/features/albums/albumApiSlice";
+import { useState } from "react";
+import { format } from "date-fns";
+import { DetailAlbum } from "@/types/types";
+import { albumFormSchema, AlbumFormValues } from "@/hooks/useAlbumCreateForm";
 
 
 export default function useAlbumEditForm(album: DetailAlbum | undefined) {
-  const [updateAlbum, {isLoading}] = useUpdateMyAlbumMutation();
+  const [updateAlbum, { isLoading }] = useUpdateMyAlbumMutation();
   const [tempImage, setTempImage] = useState<string | undefined>(album?.image);
 
 
@@ -32,15 +32,21 @@ export default function useAlbumEditForm(album: DetailAlbum | undefined) {
     formData.append("release_date", format(data.release_date, "yyyy-MM-dd"));
     formData.append("is_private", data.is_private.toString());
 
-    updateAlbum({slug: album?.slug, data: formData})
+    updateAlbum({ slug: album?.slug, data: formData })
       .unwrap()
       .then(() => {
-        toast.success('Updated Album')
+        toast.success('Updated Album', {
+          description: 'The album has been updated successfully.',
+        });
+
       })
-      .catch((err) => {
-        toast.error(err?.data?.title?.[0] || 'Failed to update Album')
+      .catch((error) => {
+        toast.error('Failed to update Album', {
+          description: error?.data?.title?.[0] || 'Please try again or contact support.',
+        });
+
       });
   }
 
-  return {form, onSubmit, isLoading, tempImage, setTempImage}
+  return { form, onSubmit, isLoading, tempImage, setTempImage }
 }

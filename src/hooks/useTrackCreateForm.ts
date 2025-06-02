@@ -1,11 +1,11 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {toast} from "react-toastify";
-import {z} from "zod";
-import {useState} from "react";
-import {format} from "date-fns";
-import {useRouter} from "next/navigation";
-import {usePostMyTrackMutation} from "@/lib/features/tracks/trackApiSlice";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner"
+import { z } from "zod";
+import { useState } from "react";
+import { format } from "date-fns";
+import { useRouter } from "next/navigation";
+import { usePostMyTrackMutation } from "@/lib/features/tracks/trackApiSlice";
 
 
 export const trackFormSchema = z.object({
@@ -41,7 +41,7 @@ export const trackFormSchema = z.object({
 export type TrackFormValues = z.infer<typeof trackFormSchema>
 
 export default function useTrackCreateForm() {
-  const [createTrack, {isLoading}] = usePostMyTrackMutation();
+  const [createTrack, { isLoading }] = usePostMyTrackMutation();
   const [tempImage, setTempImage] = useState<string>('');
   const [tempAudio, setTempAudio] = useState<string>('');
   const router = useRouter();
@@ -82,13 +82,18 @@ export default function useTrackCreateForm() {
     createTrack(formData)
       .unwrap()
       .then((data) => {
-        toast.success('Created Track')
+        toast.success('Created Track', {
+          description: 'The track has been created successfully.',
+        });
         router.replace(`/account/my/artist/tracks/${data.slug}/edit`)
       })
       .catch((err) => {
-        toast.error(err?.data?.title?.[0] || 'Failed to create Track')
+        toast.error('Failed to create Track', {
+          description: err?.data?.title?.[0] || 'Please try again or contact support.',
+        });
+
       });
   }
 
-  return {form, onSubmit, isLoading, tempImage, setTempImage, tempAudio, setTempAudio}
+  return { form, onSubmit, isLoading, tempImage, setTempImage, tempAudio, setTempAudio }
 }

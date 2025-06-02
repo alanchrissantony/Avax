@@ -5,28 +5,28 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {Camera, Check, CircleMinus, Copy, Ellipsis, ImageOff, Pencil} from "lucide-react";
-import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {Input} from "@/components/ui/input";
-import {DetailPlaylist} from "@/types/types";
-import {toast} from "react-toastify";
-import {z} from "zod";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { Camera, Check, CircleMinus, Copy, Ellipsis, ImageOff, Pencil } from "lucide-react";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { DetailPlaylist } from "@/types/types";
+import { toast } from "sonner"
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorField from "@/components/forms/error-field";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Loader from "@/components/general/Loader";
 import getImageData from "@/utils/getImage";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {useDeleteMyPlaylistMutation, useUpdateMyPlaylistMutation} from "@/lib/features/playlists/playlistApiSlice";
-import {Textarea} from "@/components/ui/textarea";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {cn} from "@/lib/utils";
-import {CaretSortIcon} from "@radix-ui/react-icons";
-import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command";
-import {useListGenresQuery} from "@/lib/features/other/publicApiSlice";
-import {useRouter} from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useDeleteMyPlaylistMutation, useUpdateMyPlaylistMutation } from "@/lib/features/playlists/playlistApiSlice";
+import { Textarea } from "@/components/ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CaretSortIcon } from "@radix-ui/react-icons";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { useListGenresQuery } from "@/lib/features/other/publicApiSlice";
+import { useRouter } from "next/navigation";
 
 const playlistFormSchema = z.object({
   title: z
@@ -38,7 +38,7 @@ const playlistFormSchema = z.object({
       message: "Title must not be longer than 100 characters.",
     }),
   description: z.string()
-    .max(500, {message: 'Must not be longer than 500 characters.',}),
+    .max(500, { message: 'Must not be longer than 500 characters.', }),
   genre: z.number().optional(),
   image: z.any().optional(),
   is_private: z.boolean(),
@@ -46,11 +46,11 @@ const playlistFormSchema = z.object({
 
 type PlaylistFormValue = z.infer<typeof playlistFormSchema>
 
-export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailPlaylist | undefined }) {
+export default function PlaylistMyDialogDropdown({ playlist }: { playlist: DetailPlaylist | undefined }) {
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
     setValue,
     watch,
   } = useForm<PlaylistFormValue>({
@@ -70,8 +70,8 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
     isLoading: isLoadingG,
     isFetching: isFetchingG,
   } = useListGenresQuery({})
-  const [updatePlaylist, {isLoading: isLoadingUpdate}] = useUpdateMyPlaylistMutation()
-  const [deletePlaylist, {isLoading: isLoadingDelete}] = useDeleteMyPlaylistMutation()
+  const [updatePlaylist, { isLoading: isLoadingUpdate }] = useUpdateMyPlaylistMutation()
+  const [deletePlaylist, { isLoading: isLoadingDelete }] = useDeleteMyPlaylistMutation()
   const [tempImage, setTempImage] = useState<string | undefined>(playlist?.image);
   const router = useRouter();
 
@@ -90,13 +90,19 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
     formData.append("title", data.title);
     formData.append("description", data.description)
 
-    updatePlaylist({slug: playlist?.slug, data: formData})
+    updatePlaylist({ slug: playlist?.slug, data: formData })
       .unwrap()
       .then(() => {
-        toast.success("Updated Playlist")
+        toast.success("Playlist updated successfully", {
+          description: "Your changes have been saved.",
+        });
+
       })
-      .catch(() => {
-        toast.error("Uh oh! Something went wrong.")
+      .catch((error) => {
+        toast.error("Failed to update playlist", {
+          description: error?.data?.detail || "Something went wrong. Please try again.",
+        });
+
       })
   }
 
@@ -104,7 +110,7 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
     alert("Are you sure you want delete your playlist?")
     e.preventDefault()
 
-    deletePlaylist({slug: playlist?.slug})
+    deletePlaylist({ slug: playlist?.slug })
       .unwrap()
       .then(() => {
         toast.success("Deleted Playlist")
@@ -115,15 +121,15 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
       })
   }
 
-  if (isLoading) return <Loader/>
+  if (isLoading) return <Loader />
 
   return (
     <Dialog>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size='icon' variant='ghost'
-                  className="flex bg-opacity-50 h-8 w-8 rounded-full hover:bg-white/0 hover:scale-110 duration-200">
-            <Ellipsis className="h-7 w-7 text-[#afafaf]"/>
+            className="flex bg-opacity-50 h-8 w-8 rounded-full hover:bg-white/0 hover:scale-110 duration-200">
+            <Ellipsis className="h-7 w-7 text-[#afafaf]" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48 ml-36 mt-2 bg-[#272727] rounded-sm border-none shadow-2xl">
@@ -131,7 +137,7 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
             <DropdownMenuItem>
               <DialogTrigger asChild>
                 <button className="flex items-center w-full h-full text-start text-white/90">
-                  <Pencil className="h-3.5 w-3.5 mr-2"/>
+                  <Pencil className="h-3.5 w-3.5 mr-2" />
                   Edit details
                 </button>
               </DialogTrigger>
@@ -139,13 +145,13 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
             <DropdownMenuItem>
               <DialogTrigger asChild onClick={handleDelete}>
                 <button className="flex items-center w-full h-full text-start text-white/90">
-                  <CircleMinus className="h-3.5 w-3.5 mr-2"/>
+                  <CircleMinus className="h-3.5 w-3.5 mr-2" />
                   Delete
                 </button>
               </DialogTrigger>
             </DropdownMenuItem>
             <DropdownMenuItem className="text-white/90">
-              <Copy className="h-3.5 w-3.5 mr-2"/>
+              <Copy className="h-3.5 w-3.5 mr-2" />
               <span>Copy link to playlist</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -160,8 +166,8 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
             <div className="relative group gap-4">
               {tempImage && playlist?.image && (
                 <Avatar className="w-44 h-44 static rounded-md">
-                  <AvatarImage src={tempImage} className="aspect-square object-cover"/>
-                  <AvatarFallback><ImageOff className="w-16 h-16 text-[#909090]"/></AvatarFallback>
+                  <AvatarImage src={tempImage} className="aspect-square object-cover" />
+                  <AvatarFallback><ImageOff className="w-16 h-16 text-[#909090]" /></AvatarFallback>
                 </Avatar>
               )}
               <Input
@@ -171,7 +177,7 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
                 className="hidden"
                 id="upload-image"
                 onChange={e => {
-                  const {files, displayUrl} = getImageData(e)
+                  const { files, displayUrl } = getImageData(e)
                   setTempImage(displayUrl)
                   setValue("image", files)
                 }}
@@ -180,7 +186,7 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
                 htmlFor="upload-image"
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
               >
-                <Camera className="h-8 w-8 text-white"/>
+                <Camera className="h-8 w-8 text-white" />
               </label>
             </div>
             <div className="w-full">
@@ -193,7 +199,7 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
                     {...register('title')}
                   />
                 </div>
-                {errors.title && <ErrorField message={errors.title.message}/>}
+                {errors.title && <ErrorField message={errors.title.message} />}
               </div>
               <div className="grid gap-4 py-2 pl-4 pb-2">
                 <div className="grid grid-cols-3 items-center gap-4">
@@ -204,7 +210,7 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
                     {...register('description')}
                   />
                 </div>
-                {errors.description && <ErrorField message={errors.description.message}/>}
+                {errors.description && <ErrorField message={errors.description.message} />}
               </div>
             </div>
           </div>
@@ -224,12 +230,12 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
                       (genre) => genre.id === selectedGenre
                     )?.name
                     : "Select your genre"}
-                  <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                  <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[280px] md:w-[340px] p-0">
                 <Command>
-                  <CommandInput placeholder="Search my album..."/>
+                  <CommandInput placeholder="Search my album..." />
                   <CommandEmpty>No genre found.</CommandEmpty>
                   <CommandGroup>
                     <CommandList>
@@ -251,7 +257,7 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
                           />
                           <Avatar className="rounded-md">
                             <AvatarImage src={genre.image}
-                                         className="aspect-square object-cover h-8 w-8 mt-1 rounded-md "/>
+                              className="aspect-square object-cover h-8 w-8 mt-1 rounded-md " />
                           </Avatar>
 
                           {genre.name}
@@ -262,7 +268,7 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
                 </Command>
               </PopoverContent>
             </Popover>
-            {errors.genre && <ErrorField message={errors.genre.message}/>}
+            {errors.genre && <ErrorField message={errors.genre.message} />}
           </div>
           <div className="w-full text-right">
             <Button
@@ -270,12 +276,12 @@ export default function PlaylistMyDialogDropdown({playlist}: { playlist: DetailP
               size="lg"
               className="bg-white text-black font-semibold text-base"
             >
-              {isLoadingUpdate ? <Loader/> : "Save"}
+              {isLoadingUpdate ? <Loader /> : "Save"}
             </Button>
           </div>
         </form>
         <DialogFooter className="text-xs font-semibold text-white/90">
-          By proceeding, you agree to give Avax access to the image you choose to upload. Please make sure
+          By proceeding, you agree to give Spotify access to the image you choose to upload. Please make sure
           you have the right to upload the image.
         </DialogFooter>
       </DialogContent>

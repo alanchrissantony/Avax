@@ -1,22 +1,22 @@
 "use client";
 
-import {Dot, Music} from "lucide-react";
+import { Dot, Music } from "lucide-react";
 import Image from "next/image";
 import {
   useListAlbumQuery, useRetrieveAlbumQuery,
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
-import {useAppSelector} from "@/lib/hooks";
+import { useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
-import {formatDuration} from "@/utils/clientUtils";
+import { formatDuration } from "@/utils/clientUtils";
 import AlbumCards from "@/components/albums/AlbumCards";
-import {format} from "date-fns";
+import { format } from "date-fns";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
-import {useListUserAlbumLikedQuery} from "@/lib/features/albums/albumApiSlice";
+import { useListUserAlbumLikedQuery } from "@/lib/features/albums/albumApiSlice";
 
 interface Props {
   params: {
@@ -24,24 +24,24 @@ interface Props {
   };
 }
 
-export default function AlbumsPage({params}: Props) {
-  const {isAuthenticated} = useAppSelector(state => state.auth)
-  const {data: album, isLoading, isFetching} = useRetrieveAlbumQuery(params.slug)
+export default function AlbumsPage({ params }: Props) {
+  const { isAuthenticated } = useAppSelector(state => state.auth)
+  const { data: album, isLoading, isFetching } = useRetrieveAlbumQuery(params.slug)
   const artistSlug = album?.artist?.slug || null;
   const {
     data: artistAlbums,
     isLoading: isLoadingA,
     isFetching: isFetchingA,
-  } = useListAlbumQuery({artistSlug}, {skip: !artistSlug})
+  } = useListAlbumQuery({ artistSlug }, { skip: !artistSlug })
   const {
     data: albumsFav,
     isLoading: isLoadingAlFav,
     isFetching: isFetchingAlFav,
-  } = useListUserAlbumLikedQuery({}, {skip: !isAuthenticated || !artistSlug});
+  } = useListUserAlbumLikedQuery({}, { skip: !isAuthenticated || !artistSlug });
 
   const load = isLoading || isFetching || isLoadingA || isFetchingA || isLoadingAlFav || isFetchingAlFav
 
-  const {activeTrack, currentIndex} = useAppSelector(state => state.track)
+  const { activeTrack, currentIndex } = useAppSelector(state => state.track)
 
   const AlbumBgColor = album?.color || "#202020";
 
@@ -62,7 +62,7 @@ export default function AlbumsPage({params}: Props) {
                 />
               ) : (
                 <div className="">
-                  <Music size={160} className=" bg-paper "/>
+                  <Music size={160} className=" bg-paper " />
                 </div>
               )}
 
@@ -71,7 +71,7 @@ export default function AlbumsPage({params}: Props) {
                 <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">{album.title}</h2>
 
                 {album.description && (
-                  <p className="font-medium text-sm mt-3 whitespace-pre-line text-white/50">
+                  <p className="font-medium text-sm mt-3 whitespace-pre-line text-white/50 line-clamp-2">
                     {album.description}
                   </p>
                 )}
@@ -86,22 +86,22 @@ export default function AlbumsPage({params}: Props) {
                     priority
                   />
                   <Link href={`/artists/${album.artist.slug}`}
-                        className="font-semibold hover:underline">{album.artist.display_name}</Link>
+                    className="font-semibold hover:underline">{album.artist.display_name}</Link>
                   {album.release_date && (
                     <>
-                      <Dot/>
+                      <Dot />
                       <span>{format(new Date(album.release_date), 'yyyy')}</span>
                     </>
                   )}
                   {album.tracks.length > 0 && (
                     <>
-                      <Dot/>
+                      <Dot />
                       <span>{album.tracks.length.toLocaleString()} {album.tracks.length === 1 ? "song" : "songs"}</span>
                     </>
                   )}
                   {album?.duration && (
                     <>
-                      <Dot/>
+                      <Dot />
                       <span className="text-white/50">{formatDuration(album.duration)}</span>
                     </>
                   )}
@@ -113,7 +113,7 @@ export default function AlbumsPage({params}: Props) {
       </div>
 
       <ContentSection>
-        {load ? <FullScreenSpinner/> : (
+        {load ? <FullScreenSpinner /> : (
           <>
             <PlayButtonAndOther
               track={album?.tracks?.[currentIndex] || (activeTrack || undefined)}
@@ -140,21 +140,20 @@ export default function AlbumsPage({params}: Props) {
                 </p>
                 <div className="font-normal text-xs text-white/50">
                   <p>© {format(new Date(album.release_date), 'yyyy')} {album?.artist?.display_name}</p>
-                  <p>℗ {format(new Date(album.release_date), 'yyyy')} {album?.artist?.display_name}</p>
                 </div>
               </div>
             )}
 
             {(artistAlbums?.count || 0) > 0 &&
-                <div className="my-8 mt-16">
-                    <TitleShowAll
-                        title={`More by ${album?.artist.display_name}`}
-                        showAll="See discography"
-                        href={`/artists/${album?.artist?.slug}/discography/album`}
-                    >
-                        <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
-                    </TitleShowAll>
-                </div>
+              <div className="my-8 mt-16">
+                <TitleShowAll
+                  title={`More by ${album?.artist.display_name}`}
+                  showAll="See discography"
+                  href={`/artists/${album?.artist?.slug}/discography/album`}
+                >
+                  <AlbumCards albums={artistAlbums?.results.slice(0, 5)} />
+                </TitleShowAll>
+              </div>
             }
           </>
         )}

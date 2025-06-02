@@ -1,8 +1,8 @@
 "use client";
 
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {Label} from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import Loader from "@/components/general/Loader";
 import usePasswordResetForm from "@/hooks/usePasswordResetForm";
 import ErrorField from "@/components/forms/error-field";
@@ -23,22 +23,23 @@ export default function PasswordResetForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="email">Email address</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="email">Email address</Label>
+            <ErrorField message={errors.email?.message} />
+          </div>
           <Input
             placeholder="Enter a email"
-            className={errors.email ? "border-red-800 border-2" : ""}
             {...register("email")}
           />
-          {errors.email && <ErrorField message={errors.email.message}/>}
         </div>
 
         <Button
           type="submit"
           size="lg"
-          className="w-full text-md rounded-full text-gray-200 font-bold bg-green-600"
+          className="w-full text-md rounded-full text-gray-200 font-bold"
           disabled={isLoading}
         >
-          {isLoading ? <Loader/> : "Send Link"}
+          {isLoading ? <Loader /> : "Send Link"}
         </Button>
       </div>
     </form>

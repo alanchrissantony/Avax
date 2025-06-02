@@ -25,7 +25,7 @@ export default function NotFound() {
             <div className="mt-4">
               <Button
                 onClick={() => router.refresh()}
-                className="uppercase rounded-full text-black text-lg font-semibold" size="lg"
+                className="uppercase rounded-full hover:text-white text-lg font-semibold" size="lg"
               >
                 Reload page
               </Button>

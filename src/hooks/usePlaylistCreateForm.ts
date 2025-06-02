@@ -1,12 +1,12 @@
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {toast} from "react-toastify";
-import {z} from "zod";
-import {useState} from "react";
-import {useRouter} from "next/navigation";
-import {usePostMyPlaylistMutation} from "@/lib/features/playlists/playlistApiSlice";
-import {useAppSelector} from "@/lib/hooks";
-import {loginUrl} from "@/utils/consts";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner"
+import { z } from "zod";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { usePostMyPlaylistMutation } from "@/lib/features/playlists/playlistApiSlice";
+import { useAppSelector } from "@/lib/hooks";
+import { loginUrl } from "@/utils/consts";
 
 
 export const playlistFormSchema = z.object({
@@ -19,7 +19,7 @@ export const playlistFormSchema = z.object({
       message: "Title must not be longer than 100 characters.",
     }),
   description: z.string()
-    .max(500, {message: 'Must not be longer than 500 characters.',}),
+    .max(500, { message: 'Must not be longer than 500 characters.', }),
   image: z.any().optional(),
   is_private: z.boolean(),
 })
@@ -27,8 +27,8 @@ export const playlistFormSchema = z.object({
 export type PlaylistFormValues = z.infer<typeof playlistFormSchema>
 
 export default function usePlaylistCreateForm() {
-  const {isAuthenticated} = useAppSelector(state => state.auth)
-  const [createPlaylist, {isLoading}] = usePostMyPlaylistMutation();
+  const { isAuthenticated } = useAppSelector(state => state.auth)
+  const [createPlaylist, { isLoading }] = usePostMyPlaylistMutation();
   const [tempImage, setTempImage] = useState<string>('');
   const router = useRouter();
 
@@ -63,13 +63,19 @@ export default function usePlaylistCreateForm() {
     createPlaylist(formData || data)
       .unwrap()
       .then((data) => {
-        toast.success('Created Playlist')
+        toast.success('Created Playlist', {
+          description: 'Your playlist has been created successfully.',
+        });
+
         router.replace(`/playlists/my/${data.slug}`)
       })
       .catch((err) => {
-        toast.error(err?.data?.title?.[0] || 'Failed to create Playlist')
+        toast.error('Failed to create Playlist', {
+          description: err?.data?.title?.[0] || 'Please try again or contact support.',
+        });
+
       });
   }
 
-  return {form, onSubmit, isLoading, tempImage, setTempImage}
+  return { form, onSubmit, isLoading, tempImage, setTempImage }
 }

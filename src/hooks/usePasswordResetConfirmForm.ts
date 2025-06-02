@@ -1,23 +1,22 @@
-import {z} from "zod";
-import {useResetPasswordConfirmMutation} from "@/lib/features/auth/authApiSlice";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {redirect, useRouter} from "next/navigation";
-import {useAppSelector} from "@/lib/hooks";
-import {useEffect} from "react";
-import {toast} from "react-toastify";
-import {loginUrl, profileMyUrl} from "@/utils/consts";
+import { z } from "zod";
+import { useResetPasswordConfirmMutation } from "@/lib/features/auth/authApiSlice";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect, useRouter } from "next/navigation";
+import { useAppSelector } from "@/lib/hooks";
+import { useEffect } from "react";
+import { toast } from "sonner"
+import { loginUrl, profileMyUrl } from "@/utils/consts";
 
 
 const passwordResetConfirmFormSchema = z.object({
   new_password: z
     .string()
     .min(8, {
-      message: "Password must be at least 8 characters"
+      message: "At least 8 characters"
     })
-    .max(40, {
-      message: "Password must not be longer then 40 characters"
-    }),
+    .regex(/[0-9]/, { message: "At least one number" })
+    .regex(/[^A-Za-z0-9]/, { message: "one special character" }),
   re_new_password: z
     .string(),
 }).refine((data) => data.new_password === data.re_new_password, {
@@ -29,12 +28,12 @@ type PasswordResetConfirmFormValues = z.infer<typeof passwordResetConfirmFormSch
 
 
 export default function usePasswordResetConfirmForm(uid: string, token: string) {
-  const [resetPasswordConfirm, {isLoading}] = useResetPasswordConfirmMutation()
+  const [resetPasswordConfirm, { isLoading }] = useResetPasswordConfirmMutation()
 
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<PasswordResetConfirmFormValues>({
     resolver: zodResolver(passwordResetConfirmFormSchema),
     mode: "onChange",
@@ -42,7 +41,7 @@ export default function usePasswordResetConfirmForm(uid: string, token: string) 
 
   const router = useRouter()
 
-  const {isAuthenticated} = useAppSelector(state => state.auth);
+  const { isAuthenticated } = useAppSelector(state => state.auth);
 
   useEffect(() => {
     if (isAuthenticated) redirect(profileMyUrl);
@@ -50,18 +49,24 @@ export default function usePasswordResetConfirmForm(uid: string, token: string) 
 
 
   function onSubmit(data: PasswordResetConfirmFormValues) {
-    const {new_password, re_new_password} = data
+    const { new_password, re_new_password } = data
 
-    resetPasswordConfirm({uid, token, new_password, re_new_password})
+    resetPasswordConfirm({ uid, token, new_password, re_new_password })
       .unwrap()
       .then(() => {
         router.push(loginUrl)
-        toast.success("Request send, check your email")
+        toast.success("Request sent, check your email", {
+          description: "Please follow the instructions sent to your email to proceed.",
+        });
+
       })
       .catch((error) => {
-        toast.error(error?.data?.detail || "Failed to send request.")
+        toast.error("Failed to send request.", {
+          description: error?.data?.detail || "Please try again or contact support.",
+        });
+
       })
   }
 
-  return {errors, isLoading, onSubmit, register, handleSubmit}
+  return { errors, isLoading, onSubmit, register, handleSubmit }
 }

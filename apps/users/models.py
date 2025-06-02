@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     country = CountryField(
         verbose_name=_("country"),
         blank_label="Select Country",
-        default="UA",
+        default="IN",
     )
     subscription_plan = models.ForeignKey(
         SubscriptionPlan,

@@ -1,6 +1,6 @@
 "use client";
 
-import {Dot, Music} from "lucide-react";
+import { Dot, Music } from "lucide-react";
 import Image from "next/image";
 import {
   useListAlbumQuery, useListArtistQuery,
@@ -8,17 +8,17 @@ import {
 } from "@/lib/features/other/publicApiSlice";
 import TracksTable from "@/components/tracks/TracksTable";
 import Link from "next/link";
-import {formatTime} from "@/utils/clientUtils";
+import { formatTime } from "@/utils/clientUtils";
 import AlbumCards from "@/components/albums/AlbumCards";
-import {format} from "date-fns";
+import { format } from "date-fns";
 import ArtistCards from "@/components/artists/ArtistCards";
 import TitleShowAll from "@/components/ui/title-show-all";
 import PlayButtonAndOther from "@/components/ui/play-button-and-other";
 import MainSection from "@/components/general/main-section";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
 import ContentSection from "@/components/general/content-section";
-import {useListUserTracksLikedQuery} from "@/lib/features/tracks/trackApiSlice";
-import {useAppSelector} from "@/lib/hooks";
+import { useListUserTracksLikedQuery } from "@/lib/features/tracks/trackApiSlice";
+import { useAppSelector } from "@/lib/hooks";
 
 interface Props {
   params: {
@@ -26,9 +26,9 @@ interface Props {
   };
 }
 
-export default function TracksPage({params}: Props) {
-  const {isAuthenticated} = useAppSelector(state => state.auth)
-  const {data: track, isLoading, isFetching} = useRetrieveTrackQuery(params.slug)
+export default function TracksPage({ params }: Props) {
+  const { isAuthenticated } = useAppSelector(state => state.auth)
+  const { data: track, isLoading, isFetching } = useRetrieveTrackQuery(params.slug)
   const genreSlug = track?.genre?.slug || null
   const artistSlug = track?.artist?.slug || null
   const albumSlug = track?.album?.slug || null
@@ -36,17 +36,17 @@ export default function TracksPage({params}: Props) {
     data: recommendations,
     isLoading: isLoadingRec,
     isFetching: isFetchingRec,
-  } = useListTrackQuery({genreSlug}, {skip: !genreSlug})
+  } = useListTrackQuery({ genreSlug }, { skip: !genreSlug })
   const {
     data: artistTracks,
     isLoading: isLoadingArtistTracks,
     isFetching: isFetchingArtistTracks,
-  } = useListTrackQuery({artistSlug}, {skip: !artistSlug})
+  } = useListTrackQuery({ artistSlug }, { skip: !artistSlug })
   const {
     data: artistAlbums,
     isLoading: isLoadingA,
     isFetching: isFetchingA,
-  } = useListAlbumQuery({artistSlug}, {skip: !artistSlug})
+  } = useListAlbumQuery({ artistSlug }, { skip: !artistSlug })
   const {
     data: relatedArtists,
     isLoading: isLoadingArtists,
@@ -56,13 +56,13 @@ export default function TracksPage({params}: Props) {
     data: trackAlbum,
     isLoading: isLoadingAlbums,
     isFetching: isFetchingAlbums
-  } = useRetrieveAlbumQuery(albumSlug, {skip: !albumSlug})
+  } = useRetrieveAlbumQuery(albumSlug, { skip: !albumSlug })
 
   const {
     data: tracksFav,
     isLoading: isLoadingTrFav,
     isFetching: isFetchingTrFav,
-  } = useListUserTracksLikedQuery({}, {skip: !isAuthenticated || !track});
+  } = useListUserTracksLikedQuery({}, { skip: !isAuthenticated || !track });
 
   const load = (
     isLoading || isFetching || isLoadingRec || isFetchingRec ||
@@ -71,7 +71,7 @@ export default function TracksPage({params}: Props) {
     isLoadingTrFav || isFetchingTrFav
   )
 
-  const trackAlbumBgColor = track?.album?.color || "#202020";
+  const trackAlbumBgColor = track?.color || "#202020";
 
   return (
     <MainSection bgColor={trackAlbumBgColor} bgGradient="30%">
@@ -79,9 +79,9 @@ export default function TracksPage({params}: Props) {
         <div className="flex items-end gap-6 p-4 pt-14">
           {track && (
             <>
-              {track.album.image.length > 0 ? (
+              {track.image.length > 0 ? (
                 <Image
-                  src={track.album.image}
+                  src={track.image}
                   alt={track.title}
                   height={170}
                   width={170}
@@ -90,7 +90,7 @@ export default function TracksPage({params}: Props) {
                 />
               ) : (
                 <div>
-                  <Music size={160}/>
+                  <Music size={160} />
                 </div>
               )}
 
@@ -112,7 +112,7 @@ export default function TracksPage({params}: Props) {
                   </Link>
                   {track.album.title && (
                     <>
-                      <Dot/>
+                      <Dot />
                       <Link href={`/albums/${track.album.slug}`} className="hover:underline">
                         {track.album.title}
                       </Link>
@@ -121,25 +121,35 @@ export default function TracksPage({params}: Props) {
 
                   {track.release_date && (
                     <>
-                      <Dot className="hidden sm:block"/>
+                      <Dot className="hidden sm:block" />
                       <span className="hidden sm:block">
-                          {format(new Date(track.release_date), 'yyyy')}
-                        </span>
+                        {format(new Date(track.release_date), 'yyyy')}
+                      </span>
                     </>
                   )}
                   {track.duration && (
                     <>
-                      <Dot/>
+                      <Dot />
                       <span>{formatTime(track.duration)}</span>
                     </>
                   )}
                   {(track.plays_count >= 0) && (
                     <>
-                      <Dot className="hidden sm:block"/>
+                      <Dot className="hidden sm:block" />
                       <span className="hidden sm:block">{track.plays_count.toLocaleString()}</span>
                     </>
                   )}
                 </div>
+                <PlayButtonAndOther
+                  track={track}
+                  isShowFavorite={true}
+                  favoriteType="track"
+                  isFavorite={tracksFav?.results?.some((trackFav) => trackFav?.slug === track?.slug)}
+                  slugFav={track?.slug}
+                  variant="classic"
+                  className="px-5 py-2"
+                  bgColor={trackAlbumBgColor}
+                />
               </div>
             </>
           )}
@@ -147,7 +157,7 @@ export default function TracksPage({params}: Props) {
       </div>
 
       <ContentSection>
-        {load ? <FullScreenSpinner/> : (
+        {load ? <FullScreenSpinner /> : (
           <>
             <PlayButtonAndOther
               track={track}
@@ -194,7 +204,7 @@ export default function TracksPage({params}: Props) {
                 className="mt-10"
                 isShowAll={(artistAlbums?.count || 0) > 5}
               >
-                <AlbumCards albums={artistAlbums?.results.slice(0, 5)}/>
+                <AlbumCards albums={artistAlbums?.results.slice(0, 5)} />
               </TitleShowAll>
             }
 
@@ -204,7 +214,7 @@ export default function TracksPage({params}: Props) {
                 href="/artists"
                 isShowAll={(relatedArtists?.count || 0) > 5}
               >
-                <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()}/>
+                <ArtistCards artists={relatedArtists?.results.slice(0, 5).reverse()} />
               </TitleShowAll>
             )}
 

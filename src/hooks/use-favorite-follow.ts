@@ -1,15 +1,15 @@
-import {useUserFollowMutation, useUserUnfollowMutation} from "@/lib/features/auth/authApiSlice";
-import {useArtistAddFavoriteMutation, useArtistRemoveFavoriteMutation} from "@/lib/features/artists/artistApiSlice";
-import {useAlbumAddFavoriteMutation, useAlbumRemoveFavoriteMutation} from "@/lib/features/albums/albumApiSlice";
+import { useUserFollowMutation, useUserUnfollowMutation } from "@/lib/features/auth/authApiSlice";
+import { useArtistAddFavoriteMutation, useArtistRemoveFavoriteMutation } from "@/lib/features/artists/artistApiSlice";
+import { useAlbumAddFavoriteMutation, useAlbumRemoveFavoriteMutation } from "@/lib/features/albums/albumApiSlice";
 import {
   usePlaylistAddFavoriteMutation,
   usePlaylistRemoveFavoriteMutation
 } from "@/lib/features/playlists/playlistApiSlice";
-import {toast} from "react-toastify";
-import {useTrackAddFavoriteMutation, useTrackRemoveFavoriteMutation} from "@/lib/features/tracks/trackApiSlice";
-import {loginUrl} from "@/utils/consts";
-import {useRouter} from "next/navigation";
-import {useAppSelector} from "@/lib/hooks";
+import { toast } from "sonner"
+import { useTrackAddFavoriteMutation, useTrackRemoveFavoriteMutation } from "@/lib/features/tracks/trackApiSlice";
+import { loginUrl } from "@/utils/consts";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/lib/hooks";
 
 
 interface Props {
@@ -19,18 +19,18 @@ interface Props {
   trackSlug?: string | null;
 }
 
-export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, trackSlug}: Props) {
-  const {isAuthenticated} = useAppSelector(state => state.auth)
-  const [userFollow, {isLoading: isLoadingFollow}] = useUserFollowMutation()
-  const [userUnfollow, {isLoading: isLoadingUnfollow}] = useUserUnfollowMutation()
-  const [artistAddFav, {isLoading: isArtistAddFavorite}] = useArtistAddFavoriteMutation()
-  const [artistRemoveFav, {isLoading: isArtistRemoveFavorite}] = useArtistRemoveFavoriteMutation()
-  const [albumAddFav, {isLoading: isAlbumAddFavorite}] = useAlbumAddFavoriteMutation()
-  const [albumRemoveFav, {isLoading: isAlbumRemoveFavorite}] = useAlbumRemoveFavoriteMutation()
-  const [playlistAddFav, {isLoading: isPlaylistAddFavorite}] = usePlaylistAddFavoriteMutation()
-  const [playlistRemoveFav, {isLoading: isPlaylistRemoveFavorite}] = usePlaylistRemoveFavoriteMutation()
-  const [trackAddFav, {isLoading: isTrackAddFavorite}] = useTrackAddFavoriteMutation()
-  const [trackRemoveFav, {isLoading: isTrackRemoveFavorite}] = useTrackRemoveFavoriteMutation()
+export default function useFavoriteFollow({ favoriteType, userIdFollow, slugFav, trackSlug }: Props) {
+  const { isAuthenticated } = useAppSelector(state => state.auth)
+  const [userFollow, { isLoading: isLoadingFollow }] = useUserFollowMutation()
+  const [userUnfollow, { isLoading: isLoadingUnfollow }] = useUserUnfollowMutation()
+  const [artistAddFav, { isLoading: isArtistAddFavorite }] = useArtistAddFavoriteMutation()
+  const [artistRemoveFav, { isLoading: isArtistRemoveFavorite }] = useArtistRemoveFavoriteMutation()
+  const [albumAddFav, { isLoading: isAlbumAddFavorite }] = useAlbumAddFavoriteMutation()
+  const [albumRemoveFav, { isLoading: isAlbumRemoveFavorite }] = useAlbumRemoveFavoriteMutation()
+  const [playlistAddFav, { isLoading: isPlaylistAddFavorite }] = usePlaylistAddFavoriteMutation()
+  const [playlistRemoveFav, { isLoading: isPlaylistRemoveFavorite }] = usePlaylistRemoveFavoriteMutation()
+  const [trackAddFav, { isLoading: isTrackAddFavorite }] = useTrackAddFavoriteMutation()
+  const [trackRemoveFav, { isLoading: isTrackRemoveFavorite }] = useTrackRemoveFavoriteMutation()
 
   const isLoadingAddFav = (isArtistAddFavorite || isAlbumAddFavorite || isPlaylistAddFavorite || isTrackAddFavorite)
   const isLoadingRemoveFav = (isArtistRemoveFavorite || isAlbumRemoveFavorite || isPlaylistRemoveFavorite || isTrackRemoveFavorite)
@@ -44,18 +44,23 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
     if (!isAuthenticated) return router.replace(loginUrl)
 
     if (favoriteType === "artist") {
-      artistAddFav({artistSlug: slugFav})
+      artistAddFav({ artistSlug: slugFav })
         .unwrap()
         .then((data) => {
-          toast.success(data?.msg || "Artist add to favorite successfully")
+          toast.success("Artist added to favorites successfully", {
+            description: data?.msg || "You can view your favorite artists in your profile.",
+          });
         })
-        .catch(() => {
-          toast.error("Failed to added artist to favorite.")
+        .catch((error) => {
+          toast.error("Failed to add artist to favorites.", {
+            description: error?.message || error?.data?.detail || "Please try again or contact support.",
+          });
+
         })
     }
 
     if (favoriteType === "album") {
-      albumAddFav({albumSlug: slugFav})
+      albumAddFav({ albumSlug: slugFav })
         .unwrap()
         .then((data) => {
           toast.success(data?.msg || "Album add to favorite successfully")
@@ -66,7 +71,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
     }
 
     if (favoriteType === "playlist") {
-      playlistAddFav({playlistSlug: slugFav})
+      playlistAddFav({ playlistSlug: slugFav })
         .unwrap()
         .then((data) => {
           toast.success(data?.msg || "Playlist add to favorite successfully")
@@ -77,7 +82,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
     }
 
     if (favoriteType === "track" || favoriteType === "trackPlayer") {
-      trackAddFav({trackSlug: slugFav || trackSlug})
+      trackAddFav({ trackSlug: slugFav || trackSlug })
         .unwrap()
         .then((data) => {
           toast.success(data?.msg || "Track liked successfully")
@@ -94,7 +99,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
     if (!isAuthenticated) return router.replace(loginUrl)
 
     if (favoriteType === "artist") {
-      artistRemoveFav({artistSlug: slugFav})
+      artistRemoveFav({ artistSlug: slugFav })
         .unwrap()
         .then((data) => {
           toast.success(data?.msg || "Artist remove from favorite successfully")
@@ -105,7 +110,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
     }
 
     if (favoriteType === "album") {
-      albumRemoveFav({albumSlug: slugFav})
+      albumRemoveFav({ albumSlug: slugFav })
         .unwrap()
         .then((data) => {
           toast.success(data?.msg || "Album remove from favorite successfully")
@@ -116,7 +121,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
     }
 
     if (favoriteType === "playlist") {
-      playlistRemoveFav({playlistSlug: slugFav})
+      playlistRemoveFav({ playlistSlug: slugFav })
         .unwrap()
         .then((data) => {
           toast.success(data?.msg || "Playlist remove from favorite successfully")
@@ -127,7 +132,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
     }
 
     if (favoriteType === "track" || favoriteType === "trackPlayer") {
-      trackRemoveFav({trackSlug: slugFav || trackSlug})
+      trackRemoveFav({ trackSlug: slugFav || trackSlug })
         .unwrap()
         .then((data) => {
           toast.success(data?.msg || "Track remove from favorite successfully")
@@ -143,7 +148,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
 
     if (!isAuthenticated) return router.replace(loginUrl)
 
-    userFollow({userId: userIdFollow})
+    userFollow({ userId: userIdFollow })
       .unwrap()
       .then((data) => {
         toast.success(data?.msg || "Follow successfully")
@@ -158,7 +163,7 @@ export default function useFavoriteFollow({favoriteType, userIdFollow, slugFav, 
 
     if (!isAuthenticated) return router.replace(loginUrl)
 
-    userUnfollow({userId: userIdFollow})
+    userUnfollow({ userId: userIdFollow })
       .unwrap()
       .then((data) => {
         toast.success(data?.msg || "Unfollow successfully")
