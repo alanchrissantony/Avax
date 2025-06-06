@@ -34,7 +34,7 @@ export default function LikedTracksPage() {
             alt="Liked Songs"
             height={170}
             width={170}
-            className="aspect-square object-cover shadow-2xl rounded-sm h-24 w-24 sm:h-32 sm:w-32 md:h-36 md:w-36 lg:h-44 lg:w-44"
+            className="aspect-square object-cover shadow-2xl rounded-sm hidden sm:block h-32 w-32 md:h-36 md:w-36 lg:h-44 lg:w-44"
             priority
           />
           <div className="flex flex-col gap-3">

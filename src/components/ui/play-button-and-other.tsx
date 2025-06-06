@@ -5,6 +5,7 @@ import { Track } from "@/types/types";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/general/Loader";
 import useFavoriteFollow from "@/hooks/use-favorite-follow";
+import LikeButton from "@/components/ui/like-button";
 
 interface Props {
   className?: string;
@@ -64,38 +65,16 @@ export default function PlayButtonAndOther({
         />
       )}
       {isShowFavorite && (
-        <TooltipProvider>
-          <Tooltip>
-            {isFavorite ? (
-              <>
-                <TooltipTrigger onClick={handleRemoveFav} disabled={isLoadingRemoveFav}>
-                  {isLoadingRemoveFav ?
-                    <Loader
-                      className={`${favoriteType === "trackPlayer" ? "w-[21px] h-[21px]" : "w-[32px] h-[32px]"}`} /> : (
-                      <Star size={favoriteType === "trackPlayer" ? 20 : 33}
-                        className="text-primary fill-primary hover:scale-105 duration-150" />
-                    )}
-                </TooltipTrigger>
-                <TooltipContent className="text-white bg-[#202020]">
-                  <p>Remove from Your library</p>
-                </TooltipContent>
-              </>
-            ) : (
-              <>
-                <TooltipTrigger onClick={handleAddFav} disabled={isLoadingAddFav}>
-                  {isLoadingAddFav ? <Loader
-                    className={`${favoriteType === "trackPlayer" ? "w-[21px] h-[21px]" : "w-[32px] h-[32px]"}`} /> : (
-                    <Star size={favoriteType === "trackPlayer" ? 20 : 33}
-                      className="text-[#909090] hover:scale-105 duration-150 hover:text-gray-100" />
-                  )}
-                </TooltipTrigger>
-                <TooltipContent className="text-white bg-[#202020]">
-                  <p>Save to Your library</p>
-                </TooltipContent>
-              </>
-            )}
-          </Tooltip>
-        </TooltipProvider>
+        <LikeButton 
+          isFavorite={isFavorite} 
+          favoriteType={favoriteType} 
+          handleAddFav={handleAddFav} 
+          handleRemoveFav={handleRemoveFav} 
+          isLoadingAddFav={isLoadingAddFav} 
+          isLoadingRemoveFav={isLoadingRemoveFav}
+          bgColor={bgColor}
+          className={className}
+          />
       )}
 
       {isShowFollow && (

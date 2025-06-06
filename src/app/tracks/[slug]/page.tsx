@@ -75,28 +75,44 @@ export default function TracksPage({ params }: Props) {
 
   return (
     <MainSection bgColor={trackAlbumBgColor} bgGradient="30%">
-      <div className="h-52 sm:h-60 lg:h-64 bg-gradient-to-t from-black/25 to-black/0">
-        <div className="flex items-end gap-6 p-4 pt-14">
+      <div className="relative h-60 lg:h-64">
+
+        {track?.image && (
+          <div
+            className="absolute inset-0 sm:hidden bg-cover bg-center"
+            style={{ backgroundImage: `url(${track.image})` }}
+          >
+            <div className="absolute inset-0 bg-black/60" />
+          </div>
+        )}
+
+
+        <div className="absolute inset-0 hidden sm:block bg-gradient-to-t from-black/25 to-black/0" />
+
+        <div className="relative z-10 flex items-end gap-6 p-4 pt-14">
           {track && (
             <>
-              {track.image.length > 0 ? (
-                <Image
-                  src={track.image}
-                  alt={track.title}
-                  height={170}
-                  width={170}
-                  className="aspect-square object-cover shadow-2xl rounded-sm h-24 w-24 sm:h-32 sm:w-32 md:h-36 md:w-36 lg:h-44 lg:w-44"
-                  priority
-                />
-              ) : (
-                <div>
-                  <Music size={160} />
-                </div>
-              )}
+      
+              <div className="hidden sm:block">
+                {track.image.length > 0 ? (
+                  <Image
+                    src={track.image}
+                    alt={track.title}
+                    height={170}
+                    width={170}
+                    className="aspect-square object-cover shadow-2xl rounded-sm h-36 w-36 lg:h-44 lg:w-44"
+                    priority
+                  />
+                ) : (
+                  <div>
+                    <Music size={160} />
+                  </div>
+                )}
+              </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 text-white">
                 <h5 className="text-xs font-bold">Song</h5>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">{track.title}</h2>
+                <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold">{track.title}</h2>
 
                 <div className="flex items-center text-sm font-normal">
                   <Image
@@ -118,7 +134,6 @@ export default function TracksPage({ params }: Props) {
                       </Link>
                     </>
                   )}
-
                   {track.release_date && (
                     <>
                       <Dot className="hidden sm:block" />
@@ -140,6 +155,7 @@ export default function TracksPage({ params }: Props) {
                     </>
                   )}
                 </div>
+
                 <PlayButtonAndOther
                   track={track}
                   isShowFavorite={true}
@@ -159,13 +175,6 @@ export default function TracksPage({ params }: Props) {
       <ContentSection>
         {load ? <FullScreenSpinner /> : (
           <>
-            <PlayButtonAndOther
-              track={track}
-              isShowFavorite={true}
-              favoriteType="track"
-              isFavorite={tracksFav?.results?.some((trackFav) => trackFav?.slug === track?.slug)}
-              slugFav={track?.slug}
-            />
 
             {(recommendations?.count || 0) > 0 &&
               <TitleShowAll

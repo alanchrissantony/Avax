@@ -93,7 +93,7 @@ export default function Header({ bgOpacity = 0.9, bgOpacityBlack = 0, bgColor = 
                 </Link>
               </div>
             )}
-          <div className="sm:hidden">
+          <div className="lg:hidden">
             <SidebarMobile isLoading={isLoading} isAuthenticated={isAuthenticated} />
           </div>
         </div>

@@ -80,7 +80,7 @@ export default function MainSection({
       className="h-full items-stretch"
     >
       <ResizablePanel defaultSize={defaultLayout?.[0] || 20} minSize={20} maxSize={45}
-                      className="min-w-60 hidden sm:block">
+                      className="min-w-60 hidden lg:block">
         <Sidebar/>
       </ResizablePanel>
       <ResizableHandle

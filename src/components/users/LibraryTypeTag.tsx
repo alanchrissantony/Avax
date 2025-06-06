@@ -10,7 +10,7 @@ export default function LibraryTypeTag({active, onClick, children}: Props) {
 
   return (
     <button
-      className={`py-2 px-3 transition-colors rounded-full ${
+      className={`py-2 px-2 xl:px-3 transition-colors rounded-full ${
         active ? activeStyles : inactiveStyles
       }`}
       onClick={onClick}

@@ -205,7 +205,7 @@ export default function MyTracksTable({ tracks, albums, license, page, setPage }
                     <TableCell className="font-medium">
                       <div className="relative flex-shrink-0 w-12 h-12">
                         <Image
-                          src={track.album.image}
+                          src={track.image}
                           alt={track.title}
                           height={50}
                           width={50}
