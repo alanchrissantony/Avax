@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {useAppSelector} from "@/lib/hooks";
 import {useLazyDownloadTrackQuery} from "@/lib/features/tracks/trackApiSlice";
 import Loader from "@/components/general/Loader";
+import { useInfobar } from "@/providers/InfobarProvider";
 
 export default function AdditionalControllers() {
   const {
@@ -16,6 +17,8 @@ export default function AdditionalControllers() {
 
   const {user} = useAppSelector(state => state.auth);
   const {activeTrack} = useAppSelector(state => state.track);
+
+  const { toggleInfobar } = useInfobar();
 
   const [triggerDownloadTrack, {isFetching: isDownloading}] = useLazyDownloadTrackQuery();
 
@@ -89,7 +92,7 @@ export default function AdditionalControllers() {
       <button className="hidden md:block">
         <Mic2 size={20} className="text-white/60 hover:text-gray-100"/>
       </button>
-      <button className="hidden md:block">
+      <button className="hidden md:block" onClick={toggleInfobar}>
         <ListMusic size={20} className="text-white/60 hover:text-gray-100"/>
       </button>
       <button className="" onClick={toggleMute}>

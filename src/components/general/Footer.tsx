@@ -60,7 +60,7 @@ export default function Footer() {
                 <a href="#" className="hover:underline hover:text-white">Premium Individual</a>
               </li>
               <li>
-                <a href="#" className="hover:underline hover:text-white">Premium Dou</a>
+                <a href="#" className="hover:underline hover:text-white">Premium Duo</a>
               </li>
               <li>
                 <a href="#" className="hover:underline hover:text-white">Premium Family</a>

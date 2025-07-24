@@ -162,7 +162,10 @@ class PlaylistFavoriteListAPIView(generics.ListAPIView):
     search_fields = ["user__display_name", "playlist__title", "playlist__tracks__title", "playlist__genre__name"]
     ordering_fields = ["playlist__release_date", "playlist__created_at"]
 
+    
+
     def get_queryset(self):
+        
         return FavoritePlaylist.objects.select_related("user", "playlist", "playlist__genre", "playlist__user").filter(
             user=self.request.user
         )

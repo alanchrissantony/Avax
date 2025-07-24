@@ -35,34 +35,6 @@ export function SidebarMobile({ isLoading, isAuthenticated }: { isLoading: boole
 
           <div className="p-2 rounded-lg bg-[#131313] my-1 mb-1 mt-0 h-full overflow-y-auto">
             <UserLibrary />
-
-            {isLoading ? <Skeleton className="h-12 w-12 rounded-full" /> :
-              isAuthenticated ? (
-                <div className="flex items-center space-x-4 p-2 pt-10">
-                  <Link href={`/premium`}>
-                    <Button variant="outline"
-                      className="h-8 border-2 border-[#404040] hover:bg-[#252525] hover:scale-105 duration-150 bg-[#202020] rounded-full font-medium"
-                      size="default">
-                      Explore Premium
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex items-center justify-center w-full space-x-2 pt-10">
-                  <Link href={signupUrl}>
-                    <Button variant="ghost" className="block rounded-full font-semibold"
-                      size="lg">
-                      Sign up
-                    </Button>
-                  </Link>
-                  <Link href={loginUrl}>
-                    <Button className="text-black bg-white rounded-full font-semibold"
-                      size="lg">
-                      Log in
-                    </Button>
-                  </Link>
-                </div>
-              )}
           </div>
         </aside>
       </SheetContent>

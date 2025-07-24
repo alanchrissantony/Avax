@@ -1,9 +1,11 @@
 import Header from "@/components/general/Header";
-import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable";
-import {Sidebar} from "@/components/general/Siderbar";
-import {getCookie, setCookie} from 'cookies-next';
-import {useEffect, useRef, useState} from "react";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { Sidebar } from "@/components/general/Siderbar";
+import { getCookie, setCookie } from 'cookies-next';
+import { useEffect, useRef, useState } from "react";
 import FullScreenSpinner from "@/components/general/FullScreenSpinner";
+import Infobar from "./Infobar";
+import { useInfobar } from "@/providers/InfobarProvider";
 
 interface Props {
   children: React.ReactNode;
@@ -13,16 +15,18 @@ interface Props {
 }
 
 export default function MainSection({
-                                      children,
-                                      bgColor = "#202020",
-                                      className,
-                                      bgGradient = '',
-                                    }: Props) {
+  children,
+  bgColor = "#202020",
+  className,
+  bgGradient = '',
+}: Props) {
   const [defaultLayout, setDefaultLayout] = useState<number[]>([20, 80]);
   const [isLayoutLoaded, setIsLayoutLoaded] = useState(false);
   const mainContentRef = useRef<HTMLDivElement>(null);
   const [bgOpacity, setBgOpacity] = useState(0);
   const [bgOpacityBlack, setBgOpacityBlack] = useState(0);
+
+  const { showInfobar } = useInfobar();
 
   useEffect(() => {
     const value = getCookie("react-resizable-panels:layout");
@@ -70,7 +74,7 @@ export default function MainSection({
   }, [mainContentRef]);
 
   if (!isLayoutLoaded) {
-    return <FullScreenSpinner className="h-[calc(96vh-3.8rem)]"/>;
+    return <FullScreenSpinner className="h-[calc(96vh-3.8rem)]" />;
   }
 
   return (
@@ -80,11 +84,11 @@ export default function MainSection({
       className="h-full items-stretch"
     >
       <ResizablePanel defaultSize={defaultLayout?.[0] || 20} minSize={20} maxSize={45}
-                      className="min-w-60 hidden lg:block">
-        <Sidebar/>
+        className="min-w-60 hidden lg:block">
+        <Sidebar />
       </ResizablePanel>
       <ResizableHandle
-        className="bg-black/0 hover:bg-white/40 hidden sm:flex my-4 ml-[0.20rem] mr-[0.20rem] cursor-grab active:cursor-grabbing"/>
+        className="bg-black/0 hidden sm:flex my-4 ml-[0.20rem] mr-[0.20rem] cursor-grab active:cursor-grabbing" />
       <ResizablePanel defaultSize={defaultLayout?.[1] || 80}>
         <div className="grid grid-cols-8">
           <div
@@ -97,15 +101,23 @@ export default function MainSection({
                 style={{
                   backgroundImage: `linear-gradient(to bottom, ${bgColor} 0%, #131313 ${bgGradient}, #131313 100%)`,
                   transition: 'background-image 1s ease',
-                }}
-              >
-                <Header bgOpacity={bgOpacity} bgOpacityBlack={bgOpacityBlack} bgColor={bgColor}/>
+                }}>
+                <Header bgOpacity={bgOpacity} bgOpacityBlack={bgOpacityBlack} bgColor={bgColor} />
                 {children}
               </div>
             </main>
           </div>
         </div>
       </ResizablePanel>
+      {showInfobar && (
+        <>
+          <ResizableHandle
+            className="bg-black/0 hidden sm:flex my-4 cursor-grab active:cursor-grabbing" />
+          <ResizablePanel defaultSize={defaultLayout?.[0] || 20} minSize={20} maxSize={40} className="min-w-60 hidden lg:block">
+            <Infobar />
+          </ResizablePanel>
+        </>
+      )}
     </ResizablePanelGroup>
   );
 }

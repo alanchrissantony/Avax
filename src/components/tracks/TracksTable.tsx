@@ -182,7 +182,7 @@ export default function TracksTable({
               </div>
             )}
             <div
-              className={`${(showAlbum || showPlaysCount) ? (showIndex ? "col-span-6" : "col-span-7") : (showIndex ? "col-span-10" : "col-span-11")} text-sm text-left`}
+              className={`${(showAlbum || showPlaysCount) ? (showIndex ? "col-span-4" : "col-span-5") : (showIndex ? "col-span-8" : "col-span-9")} text-sm text-left`}
             >
               Title
             </div>
@@ -199,7 +199,7 @@ export default function TracksTable({
               </div>
             )}
 
-            <div className="col-span-1 ml-2 flex justify-center">
+            <div className="col-span-3 ml-2 flex justify-center">
               <Clock3 size={16} />
             </div>
           </header>
@@ -234,7 +234,7 @@ export default function TracksTable({
             )}
 
             <div
-              className={`${showAlbum || showPlaysCount ? (showIndex ? "col-span-6" : "col-span-7") : (showIndex ? "col-span-10" : "col-span-11")} flex items-center w-full`}
+              className={`${showAlbum || showPlaysCount ? (showIndex ? "col-span-4" : "col-span-5") : (showIndex ? "col-span-8" : "col-span-9")} flex items-center w-full`}
             >
               <div className="flex items-center w-full gap-3">
                 {showCover && (
@@ -308,7 +308,7 @@ export default function TracksTable({
               </div>
             )}
 
-            <small className="flex items-center justify-center col-span-1 text-sm font-medium text-white/60 ">
+            <small className="flex items-center justify-center col-span-3 text-sm font-medium text-white/60 ">
               <div className="flex items-center w-full gap-3">
                 {!showAddToPlaylist && (
                   <TooltipProvider>
