@@ -32,23 +32,21 @@ services:
 #            - rabbitmq
         networks:
             - avax
-    # frontend:
-    #     build:
-    #         context: .
-    #         dockerfile: docker/local/frontend/Dockerfile
-    #     ports:
-    #         - "3000:3000"
-    #     volumes:
-    #         - ./:/app
-    #         - /app/node_modules
-    #     environment:
-    #         - CHOKIDAR_USEPOLLING=true
-    #     env_file:
-    #         - ./.env
-    #     depends_on:
-    #         - server
-    #     networks:
-    #         - avax
+    frontend:
+        build:
+            context: .
+            dockerfile: docker/local/frontend/Dockerfile
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./:/app
+            - /app/node_modules
+        env_file:
+            - ./.env
+        depends_on:
+            - server
+        networks:
+            - avax
     redis:
         restart: unless-stopped
         image: redis:7.2.5-alpine
