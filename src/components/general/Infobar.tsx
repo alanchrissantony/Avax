@@ -49,9 +49,9 @@ function Infobar() {
                         <p className="text-lg font-bold">{activeTrack?.artist?.display_name}</p>
                         <p className="text-md text-gray-300 pt-2">{activeTrack?.plays_count} monthly listeners</p>
                         <p className="text-sm text-gray-300 leading-relaxed pt-2 line-clamp-4">
-                            I'm an artist who believes in the power of sound to say what words sometimes can't.
+                            I&apos;m an artist who believes in the power of sound to say what words sometimes can&apos;t.
                             Every song I create is a reflection of real moments, raw emotions, and the stories that shape us.
-                            Whether it's through melody, rhythm, or silence —
+                            Whether it&apos;s through melody, rhythm, or silence —
                             I make music to connect, to feel, and to leave something that lasts beyond the last note.
                         </p>
                     </div>
