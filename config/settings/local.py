@@ -17,7 +17,7 @@ INSTALLED_APPS += [
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    env("CORS_ALLOWED_ORIGINS"),
 ]
 CORS_URLS_REGEX = r"^/api/.*$"
 
