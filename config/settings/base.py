@@ -135,8 +135,6 @@ USE_TZ = True
 
 SITE_ID = 1
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
 
 DOMAIN = env("DOMAIN", default="localhost:8000")
 SITE_NAME = "Avax"
